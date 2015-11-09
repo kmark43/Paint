@@ -17,6 +17,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	private ArrayList<Tool> tools = new ArrayList<Tool>();
 	private LayerManager layerManager = new LayerManager();
 	
+	private String filePath = "";
+	
 	private BufferedImage temp;
 	
 	private JFrame frame = new JFrame();
@@ -190,6 +192,22 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	public void registerTool(Tool tool)
 	{
 		tools.add(tool);
+	}
+	
+	public void save()
+	{
+		if (path.equals(""))
+		{
+			JFileChooser fc = new JFileChooser();
+			fc.showSaveDialog(null);
+			File file = fc.getSelectedFile();
+			if (file == null)
+				return;
+			
+		} else
+		{
+			
+		}
 	}
 	
 	public void loadNew(int width, int height, FillType type)

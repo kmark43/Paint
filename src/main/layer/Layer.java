@@ -15,6 +15,16 @@ public class Layer
 	*/
 	private String name;
 	
+	/* 
+	* The x value for layer movement
+	*/
+	private int x;
+	
+	/* 
+	* The y value for layer movement
+	*/
+	private int y;
+	
 	/**
 	* Determines layer visibility
 	*/
@@ -116,6 +126,28 @@ public class Layer
 	public void setName(String n) { name = n; }
 	
 	public boolean isVisible() { return visible; }
+	
+	/* 
+	* Sets the x value
+	* @param x The new x value
+	*/
+	public void setX(int x) { this.x = x; }
+	
+	/* 
+	* Sets the y value
+	* @param The new y value
+	*/
+	public void setY(int y) { this.y = y; }
+	
+	/* 
+	* @return the layer's x-position
+	*/
+	public int getX() { return x; }
+	
+	/*
+	* @return the layer's y-poistion
+	*/
+	public int getY() { return y; }
 	
 	public String toString() { return "main.layer.Layer[name = " + name + ", visible = " + visible + ", img = " + img + "]"; }
 }

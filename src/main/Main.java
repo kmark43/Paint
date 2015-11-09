@@ -65,7 +65,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 				grabFocus();
 			}
 		});
-		// new NewImageDialog(this, null);
 	}
 	
 	private void init()
@@ -120,6 +119,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 			}
 		};
 		
+		fileMenu  .setMnemonic('F');
 		itmNew    .setMnemonic('N');
 		itmOpen   .setMnemonic('O');
 		itmSave   .setMnemonic('S');

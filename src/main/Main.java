@@ -39,13 +39,13 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				grabFocus();
-			}
-		});
+		// SwingUtilities.invokeLater(new Runnable()
+		// {
+			// public void run()
+			// {
+				// grabFocus();
+			// }
+		// });
 		new NewImageDialog(this, null);
 	}
 	
@@ -130,23 +130,29 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	}
 	
-	@Override
-	public void mousePressed(MouseEvent e)
+	public DrawEvent getEvent(MouseEvent e)
 	{
-		if (layerManager.getCurrentLayer() == null) return;
 		Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
 		Graphics2D tempG  = (Graphics2D)temp.getGraphics();
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 		tempG.setColor(new Color(0, 0, 0, 0));
 		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, null);
-		Color c = e.getButton() <= 1 ? foreColor : backColor;
-		bufG.setColor(c);
-		tempG.setColor(c);
+		DrawEvent event = new DrawEvent(e, bufG, tempG);
+		return event;
+	}
+	
+	Color current;
+	
+	@Override
+	public void mousePressed(MouseEvent e)
+	{
+		if (layerManager.getCurrentLayer() == null) return;
+		DrawEvent event = getEvent(e);
+		current = e.getButton() == 3 ? backColor : foreColor;
+		event.setColor(current);
 		currentTool.mouseDown(event);
-		bufG.dispose();
-		tempG.dispose();
+		event.dispose();
 		repaint();
 	}
 	
@@ -154,19 +160,10 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseDragged(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null) return;
-		Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
-		Graphics2D tempG  = (Graphics2D)temp.getGraphics();
-		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		tempG.setColor(new Color(0, 0, 0, 0));
-		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
-		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, null);
-		Color c = e.getButton() <= 1 ? foreColor : backColor;
-		bufG.setColor(c);
-		tempG.setColor(c);
+		DrawEvent event = getEvent(e);
+		event.setColor(current);
 		currentTool.mouseDrag(event);
-		bufG.dispose();
-		tempG.dispose();
+		event.dispose();
 		repaint();
 	}
 	
@@ -174,19 +171,10 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseReleased(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null) return;
-		Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
-		Graphics2D tempG  = (Graphics2D)temp.getGraphics();
-		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		tempG.setColor(new Color(0, 0, 0, 0));
-		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
-		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, null);
-		Color c = e.getButton() <= 1 ? foreColor : backColor;
-		bufG.setColor(c);
-		tempG.setColor(c);
+		DrawEvent event = getEvent(e);
+		event.setColor(current);
 		currentTool.mouseUp(event);
-		bufG.dispose();
-		tempG.dispose();
+		event.dispose();
 		repaint();
 	}
 	

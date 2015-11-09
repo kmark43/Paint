@@ -76,4 +76,16 @@ public class DrawEvent
 	* and is overwritten with each draw call
 	*/
 	public Graphics2D getTempG() { return temp; }
+	
+	public void dispose()
+	{
+		g.dispose();
+		temp.dispose();
+	}
+	
+	public void setColor(Color c)
+	{
+		g.setColor(c);
+		temp.setColor(c);
+	}
 }

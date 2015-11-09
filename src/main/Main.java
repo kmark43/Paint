@@ -26,6 +26,21 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	private JPanel toolPane     = new JPanel();
 	private JMenuBar menu       = new JMenuBar();
 	
+	private JMenu fileMenu      = new JMenu("File");
+	private JMenuItem itmNew    = new JMenuItem("New");
+	private JMenuItem itmOpen   = new JMenuItem("Open");
+	private JMenuItem itmSave   = new JMenuItem("Save");
+	private JMenuItem itmSaveAs = new JMenuItem("Save As");
+	private JMenuItem itmExit   = new JMenuItem("Exit");
+	
+	private JMenu editMenu = new JMenu("Edit");
+	
+	private JMenu filterMenu = new JMenu("Filters");
+	
+	private JMenu toolMenu = new JMenu("Tools");
+	
+	private JMenu windowMenu = new JMenu("Window");
+	
 	private float zoom = 1;
 	
 	private Tool currentTool;
@@ -39,14 +54,14 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
-		// SwingUtilities.invokeLater(new Runnable()
-		// {
-			// public void run()
-			// {
-				// grabFocus();
-			// }
-		// });
-		new NewImageDialog(this, null);
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				grabFocus();
+			}
+		});
+		// new NewImageDialog(this, null);
 	}
 	
 	private void init()
@@ -62,13 +77,71 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		JPanel toolPane = new JPanel();
 		ToolRegister.registerTools(this);
 		ButtonGroup bg = new ButtonGroup();
+		
 		for (Tool t : tools)
-			addTool(t, toolPane, bg);
+			addTool(t, toolMenu, toolPane, bg);
 		bg.getElements().nextElement().doClick();
+		
+		fileMenu.add(itmNew);
+		fileMenu.add(itmOpen);
+		fileMenu.add(itmSave);
+		fileMenu.add(itmSaveAs);
+		fileMenu.add(new JSeparator());
+		fileMenu.add(itmExit);
+		
+		Main main = this;
+		
+		ActionListener fileMenuListener = new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (e.getSource() == itmNew)
+				{
+					new NewImageDialog(main, null);
+				} else if (e.getSource() == itmOpen)
+				{
+					
+				} else if (e.getSource() == itmSave)
+				{
+					
+				} else if (e.getSource() == itmSaveAs)
+				{
+				
+				} else if (e.getSource() == itmExit)
+				{
+					System.exit(0);
+				}
+			}
+		};
+		
+		itmNew    .setMnemonic('N');
+		itmOpen   .setMnemonic('O');
+		itmSave   .setMnemonic('S');
+		itmSaveAs .setMnemonic('A');
+		itmExit   .setMnemonic('E');
+		
+		itmNew    .addActionListener(fileMenuListener);
+		itmOpen   .addActionListener(fileMenuListener);
+		itmSave   .addActionListener(fileMenuListener);
+		itmSaveAs .addActionListener(fileMenuListener);
+		itmExit   .addActionListener(fileMenuListener);
+		
+		itmNew .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+		itmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+		itmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		itmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		
+		menu.add(fileMenu);
+		menu.add(editMenu);
+		menu.add(filterMenu);
+		menu.add(toolMenu);
+		menu.add(windowMenu);
 		
 		mainPane.add(toolPane, BorderLayout.WEST);
 		mainPane.add(scroll, BorderLayout.CENTER);
 		mainPane.add(propertyPane, BorderLayout.EAST);
+		mainPane.add(menu, BorderLayout.NORTH);
 		
 		frame.add(mainPane);
 		
@@ -76,12 +149,24 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		addMouseMotionListener(this);
 	}
 	
-	private void addTool(Tool t, JPanel toolPane, ButtonGroup bg)
+	private void addTool(Tool t, JMenu toolMenu, JPanel toolPane, ButtonGroup bg)
 	{
 		JToggleButton btn = new JToggleButton(t.getName());
+		JMenuItem itm = new JMenuItem(t.getName());
 		toolPane.add(btn);
 		btn.setFocusable(false);
 		bg.add(btn);
+		
+		toolMenu.add(itm);
+		
+		itm.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				btn.doClick();
+			}
+		});
 		
 		btn.addActionListener(new ActionListener()
 		{

@@ -42,6 +42,11 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		list.revalidate();
 	}
 	
+	public void setSelected(int index)
+	{
+		list.getSelectionModel().setSelectionInterval(index, index);
+	}
+	
 	public void mergeRange(int start, int end)
 	{
 		

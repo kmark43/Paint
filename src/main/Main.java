@@ -63,6 +63,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		ButtonGroup bg = new ButtonGroup();
 		for (Tool t : tools)
 			addTool(t, toolPane, bg);
+		bg.getElements().nextElement().doClick();
 		
 		mainPane.add(toolPane, BorderLayout.WEST);
 		mainPane.add(scroll, BorderLayout.CENTER);
@@ -113,13 +114,16 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 			case BACKGROUND:
 				layerManager.addLayer(new Layer("Background", width, height, backColor));
 				layerManager.addLayer(new Layer("Default", width, height, new Color(0, 0, 0, 0)));
+				layerManager.setSelected(1);
 				break;
 			case FOREGROUND:
 				layerManager.addLayer(new Layer("Background", width, height, foreColor));
 				layerManager.addLayer(new Layer("Default", width, height, new Color(0, 0, 0, 0)));
+				layerManager.setSelected(1);
 				break;
 			case TRANSPARENT:
 				layerManager.addLayer(new Layer("Default", width, height, new Color(0, 0, 0, 0)));
+				layerManager.setSelected(0);
 				break;
 		}
 	}

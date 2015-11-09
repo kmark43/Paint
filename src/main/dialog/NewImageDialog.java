@@ -1,0 +1,95 @@
+package main.dialog;
+
+import main.Main;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class NewImageDialog extends JDialog implements ActionListener, FocusListener
+{
+	private Main main;
+	
+	private JSpinner widthSpinner  = new JSpinner(new SpinnerNumberModel(500, 1, 1000000, 1));
+	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 1000000, 1));
+	
+	private JButton btnOk     = new JButton("OK");
+	private JButton btnCancel = new JButton("Cancel");
+	
+	private JRadioButton btnFillBackground  = new JRadioButton("Fill with background color", true);
+	private JRadioButton btnFillForeground  = new JRadioButton("Fill with foreground color");
+	private JRadioButton btnFillTransparent = new JRadioButton("Fill with transparancy");
+	
+	public NewImageDialog(Main main, JFrame frame)
+	{
+		super(frame, "Create Image");
+		this.main = main;
+		init();
+		pack();
+		setLocationRelativeTo(frame);
+		setVisible(true);
+	}
+	
+	private void init()
+	{
+		getRootPane().setDefaultButton(btnOk);
+		
+		JPanel mainPane = new JPanel(new GridLayout(6, 1));
+		
+		((JSpinner.DefaultEditor)widthSpinner.getEditor()).getTextField().addFocusListener(this);
+		((JSpinner.DefaultEditor)heightSpinner.getEditor()).getTextField().addFocusListener(this);
+		
+		addRow(mainPane, new JLabel("Width:"), widthSpinner);
+		addRow(mainPane, new JLabel("Height:"), heightSpinner);
+		addRow(mainPane, btnFillBackground);
+		addRow(mainPane, btnFillForeground);
+		addRow(mainPane, btnFillTransparent);
+		addRow(mainPane, btnOk, btnCancel);
+		
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(btnFillBackground);
+		bg.add(btnFillForeground);
+		bg.add(btnFillTransparent);
+		
+		btnOk.addActionListener(this);
+		btnCancel.addActionListener(this);
+		
+		add(mainPane);
+	}
+	
+	private void addRow(JPanel main, Component... components)
+	{
+		JPanel temp = new JPanel();
+		for (Component c : components)
+			temp.add(c);
+		main.add(temp);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource() == btnOk)
+		{
+			main.loadNew((Integer)widthSpinner.getValue(), (Integer)heightSpinner.getValue(), btnFillBackground.isSelected() ? FillType.BACKGROUND : btnFillForeground.isSelected() ? FillType.FOREGROUND : FillType.TRANSPARENT);
+			setVisible(false);
+		} else
+			setVisible(false);
+	}
+	
+	@Override
+	public void focusGained(final FocusEvent e)
+	{
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				JTextField source = (JTextField)e.getSource();
+				source.selectAll();
+			}
+		});
+	}
+	
+	@Override
+	public void focusLost(FocusEvent e){}
+}

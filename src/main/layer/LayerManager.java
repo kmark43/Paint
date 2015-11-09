@@ -62,13 +62,20 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		for (int i = 0; i <= index; i++)
 			if (mdl.get(i).isVisible())
 				g.drawImage(mdl.get(i).getImage(), 0, 0, null);
-		g.drawImage(temp, 0, 0, null);
+		if (temp != null)
+			g.drawImage(temp, 0, 0, null);
 		for (int i = index + 1; i < mdl.getRowCount(); i++)
 			if (mdl.get(i).isVisible())
 				g.drawImage(mdl.get(i).getImage(), 0, 0, null);
 	}
 	
-	public Layer getCurrentLayer() { return mdl.get(list.getSelectionModel().getLeadSelectionIndex()); }
+	public Layer getCurrentLayer()
+	{
+		int index = list.getSelectionModel().getLeadSelectionIndex();
+		if (index == -1)
+			return null;
+		return mdl.get(index);
+	}
 	
 	// /**
 	// * Returns the layer at the specified index

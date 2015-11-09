@@ -42,6 +42,17 @@ public class Layer
 	}
 	
 	/**
+	* Creates a new layer from an image
+	* @param name The name of the layer
+	* @param img The image for the layer to use
+	*/
+	public Layer(String name, BufferedImage img)
+	{
+		this.name = name;
+		this.img = img;
+	}
+	
+	/**
 	* Create a layer from a file
 	* @param name The layer name
 	* @param file The file where the image is stored

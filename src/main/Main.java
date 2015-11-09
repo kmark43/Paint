@@ -5,10 +5,12 @@ import main.tool.*;
 import main.layer.*;
 
 import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.io.*;
 
 public class Main extends JPanel implements MouseListener, MouseMotionListener
 {
@@ -103,13 +105,14 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 					new NewImageDialog(main, null);
 				} else if (e.getSource() == itmOpen)
 				{
-					
+					open();
 				} else if (e.getSource() == itmSave)
 				{
-					
+					save();
 				} else if (e.getSource() == itmSaveAs)
 				{
-				
+					filePath = "";
+					save();
 				} else if (e.getSource() == itmExit)
 				{
 					System.exit(0);
@@ -194,19 +197,60 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		tools.add(tool);
 	}
 	
+	public void open()
+	{
+		if (layerManager.getCurrentLayer() == null)
+		{
+			JFileChooser fc = new JFileChooser();
+			fc.showOpenDialog(null);
+			File file = fc.getSelectedFile();
+			if (file == null)
+				return;
+			try
+			{
+				BufferedImage img = ImageIO.read(file);
+				layerManager.addLayer(new Layer(file.getName(), img));
+				setSize(img.getWidth(), img.getHeight());
+			} catch(IOException ex)
+			{
+				System.err.println("Error loading " + file.getPath());
+				ex.printStackTrace();
+			}
+		} else
+		{
+			
+		}
+	}
+	
 	public void save()
 	{
-		if (path.equals(""))
+		if (filePath.equals(""))
 		{
 			JFileChooser fc = new JFileChooser();
 			fc.showSaveDialog(null);
 			File file = fc.getSelectedFile();
 			if (file == null)
 				return;
-			
+			save(file);
 		} else
 		{
-			
+			save(new File(filePath));
+		}
+	}
+	
+	public void save(File file)
+	{
+		try
+		{
+			BufferedImage img = new BufferedImage(layerManager.getCurrentLayer().getImage().getWidth(), layerManager.getCurrentLayer().getImage().getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = (Graphics2D)img.getGraphics();
+			layerManager.draw(g, null, 1);
+			ImageIO.write(img, "PNG", file);
+			filePath = file.getPath();
+		} catch(IOException ex)
+		{
+			System.err.println("Error saving " + file.getPath());
+			ex.printStackTrace();
 		}
 	}
 	

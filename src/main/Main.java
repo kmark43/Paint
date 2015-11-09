@@ -46,6 +46,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 				grabFocus();
 			}
 		});
+		new NewImageDialog(this, null);
 	}
 	
 	private void init()
@@ -126,6 +127,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 				layerManager.setSelected(0);
 				break;
 		}
+		temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	}
 	
 	@Override
@@ -152,6 +154,19 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseDragged(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null) return;
+		Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
+		Graphics2D tempG  = (Graphics2D)temp.getGraphics();
+		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		tempG.setColor(new Color(0, 0, 0, 0));
+		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
+		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		DrawEvent event = new DrawEvent(e, bufG, null);
+		Color c = e.getButton() <= 1 ? foreColor : backColor;
+		bufG.setColor(c);
+		tempG.setColor(c);
+		currentTool.mouseDrag(event);
+		bufG.dispose();
+		tempG.dispose();
 		repaint();
 	}
 	
@@ -159,7 +174,19 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseReleased(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null) return;
-		
+		Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
+		Graphics2D tempG  = (Graphics2D)temp.getGraphics();
+		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		tempG.setColor(new Color(0, 0, 0, 0));
+		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
+		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		DrawEvent event = new DrawEvent(e, bufG, null);
+		Color c = e.getButton() <= 1 ? foreColor : backColor;
+		bufG.setColor(c);
+		tempG.setColor(c);
+		currentTool.mouseUp(event);
+		bufG.dispose();
+		tempG.dispose();
 		repaint();
 	}
 	

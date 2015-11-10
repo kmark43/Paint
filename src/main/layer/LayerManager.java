@@ -39,6 +39,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	public void addLayer(Layer layer)
 	{
 		mdl.add(layer);
+		setSelected(mdl.getRowCount() - 1);
 		list.revalidate();
 	}
 	

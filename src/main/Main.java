@@ -199,26 +199,29 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	
 	public void open()
 	{
-		if (layerManager.getCurrentLayer() == null)
+		JFileChooser fc = new JFileChooser();
+		fc.showOpenDialog(null);
+		File file = fc.getSelectedFile();
+		if (file == null)
+			return;
+		try
 		{
-			JFileChooser fc = new JFileChooser();
-			fc.showOpenDialog(null);
-			File file = fc.getSelectedFile();
-			if (file == null)
-				return;
-			try
+			BufferedImage img = ImageIO.read(file);
+			if (layerManager.getCurrentLayer() == null)
 			{
-				BufferedImage img = ImageIO.read(file);
 				layerManager.addLayer(new Layer(file.getName(), img));
 				setSize(img.getWidth(), img.getHeight());
-			} catch(IOException ex)
+			} else
 			{
-				System.err.println("Error loading " + file.getPath());
-				ex.printStackTrace();
+				layerManager.addLayer(new Layer(file.getName(), img));
+				int width = (int)Math.max(img.getWidth(), getWidth());
+				int height = (int)Math.max(img.getHeight(), getHeight());
+				setSize(width, height);
 			}
-		} else
+		} catch(IOException ex)
 		{
-			
+			System.err.println("Error loading " + file.getPath());
+			ex.printStackTrace();
 		}
 	}
 	

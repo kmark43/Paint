@@ -13,7 +13,7 @@ public abstract class Tool
 	*/
 	protected JPanel property = new JPanel();
 	
-	protected SpinnerNumberModel thicknessModel = new SpinnerNumberModel(1, 1, 100, 1);
+	protected SpinnerNumberModel thicknessModel = new SpinnerNumberModel(3, 1, 100, 1);
 	
 	/**
 	* This method is called when the mouse is pressed.

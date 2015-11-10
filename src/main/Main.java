@@ -12,7 +12,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.io.*;
 
-public class Main extends JPanel implements MouseListener, MouseMotionListener
+public class Main extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener
 {
 	final static long serialVersionUID = 214897289174L;
 	
@@ -153,6 +153,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addMouseWheelListener(this);
 	}
 	
 	private void addTool(Tool t, JMenu toolMenu, JPanel toolPane, ButtonGroup bg)
@@ -219,6 +220,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 				int height = (int)Math.max(img.getHeight(), getHeight());
 				setSize(width, height);
 			}
+			
+			filePath = file.getPath();
 			
 			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		} catch(IOException ex)
@@ -329,6 +332,16 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		currentTool.mouseUp(event);
 		event.dispose();
 		repaint();
+	}
+	
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e)
+	{
+		int dr = e.getWheelRotation();	// 1 down, -1 up
+		if (e.isControlDown())
+		{
+			
+		}
 	}
 	
 	@Override

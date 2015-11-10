@@ -29,6 +29,10 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	private Main main;
 	
+	/**
+	* Creates a new LayerManager object, initilizing the graphical components of the layer manager JPanel
+	* @param main the main class used as a reference to repaint when layers are added
+	*/
 	public LayerManager(Main main)
 	{
 		this.main = main;
@@ -39,6 +43,10 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		add(scroll);
 	}
 	
+	/**
+	* Adds a new layer to the project
+	* @param layer the layer to add
+	*/
 	public void addLayer(Layer layer)
 	{
 		mdl.add(layer);
@@ -47,11 +55,19 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		main.repaint();
 	}
 	
+	/**
+	* Selects the specified index of the list
+	*/
 	public void setSelected(int index)
 	{
 		list.getSelectionModel().setSelectionInterval(index, index);
 	}
 	
+	/**
+	* This method is to merge a range of layers to flatten the amount of data used
+	* @param start the first index
+	* @param end the last index
+	*/
 	public void mergeRange(int start, int end)
 	{
 		

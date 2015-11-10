@@ -6,20 +6,56 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+* This class for user creation of a new project
+*/
 public class NewImageDialog extends JDialog implements ActionListener, FocusListener
 {
+	/**
+	* The main class used to call back when the ok button is pressed
+	*/
 	private Main main;
 	
+	/**
+	* The spinner which specifies the width of the new image
+	*/
 	private JSpinner widthSpinner  = new JSpinner(new SpinnerNumberModel(500, 1, 1000000, 1));
+	
+	/**
+	* The spinner which specifies the height of the new image
+	*/
 	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 1000000, 1));
 	
+	/**
+	* The submit button to create the new image
+	*/
 	private JButton btnOk     = new JButton("OK");
+	
+	/**
+	* The cancel button to prevent the creation of the new image
+	*/
 	private JButton btnCancel = new JButton("Cancel");
 	
+	/**
+	* The fill background option used to fill the image with the secondary color in a separate layer
+	*/
 	private JRadioButton btnFillBackground  = new JRadioButton("Fill with background color", true);
+	
+	/**
+	* The fill foreground option used to fill the image with the first color in a separate layer
+	*/
 	private JRadioButton btnFillForeground  = new JRadioButton("Fill with foreground color");
+	
+	/**
+	* The fill transparent which does not create a background layer
+	*/
 	private JRadioButton btnFillTransparent = new JRadioButton("Fill with transparancy");
 	
+	/**
+	* Initilizes the graphics and settings of the dialog
+	* @param main the main class
+	* @param frame the frame to draw in relation to
+	*/
 	public NewImageDialog(Main main, JFrame frame)
 	{
 		super(frame, "Create Image");

@@ -17,7 +17,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 	final static long serialVersionUID = 214897289174L;
 	
 	private ArrayList<Tool> tools = new ArrayList<Tool>();
-	private LayerManager layerManager = new LayerManager();
+	private LayerManager layerManager = new LayerManager(this);
 	
 	private String filePath = "";
 	
@@ -147,6 +147,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 		mainPane.add(scroll, BorderLayout.CENTER);
 		mainPane.add(propertyPane, BorderLayout.EAST);
 		mainPane.add(menu, BorderLayout.NORTH);
+		mainPane.add(layerManager, BorderLayout.SOUTH);
 		
 		frame.add(mainPane);
 		
@@ -218,6 +219,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener
 				int height = (int)Math.max(img.getHeight(), getHeight());
 				setSize(width, height);
 			}
+			
+			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		} catch(IOException ex)
 		{
 			System.err.println("Error loading " + file.getPath());

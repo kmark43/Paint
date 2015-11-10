@@ -27,8 +27,11 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	*/
 	private JTable list = new JTable(mdl);
 	
-	public LayerManager()
+	private Main main;
+	
+	public LayerManager(Main main)
 	{
+		this.main = main;
 		list.getSelectionModel().addListSelectionListener(this);
 		list.addKeyListener(this);
 		JScrollPane scroll = new JScrollPane(list);
@@ -41,6 +44,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		mdl.add(layer);
 		setSelected(mdl.getRowCount() - 1);
 		list.revalidate();
+		main.repaint();
 	}
 	
 	public void setSelected(int index)
@@ -86,7 +90,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	public void valueChanged(ListSelectionEvent e)
 	{
-		
+		main.repaint();
 	}
 	
 	@Override

@@ -39,11 +39,12 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	private JMenu editMenu = new JMenu("Edit");
 	
-	private JMenu filterMenu = new JMenu("Filters");
 	
+	private JMenu filterMenu = new JMenu("Filters");
 	private JMenu toolMenu = new JMenu("Tools");
 	
 	private JMenu windowMenu = new JMenu("Window");
+	
 	
 	private float zoom = 1;
 	
@@ -100,22 +101,18 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			public void actionPerformed(ActionEvent e)
 			{
 				if (e.getSource() == itmNew)
-				{
 					new NewImageDialog(main, null);
-				} else if (e.getSource() == itmOpen)
-				{
+				else if (e.getSource() == itmOpen)
 					open();
-				} else if (e.getSource() == itmSave)
-				{
+				else if (e.getSource() == itmSave)
 					save();
-				} else if (e.getSource() == itmSaveAs)
+				else if (e.getSource() == itmSaveAs)
 				{
 					filePath = "";
 					save();
-				} else if (e.getSource() == itmExit)
-				{
-					System.exit(0);
 				}
+				else if (e.getSource() == itmExit)
+					System.exit(0);
 			}
 		};
 		
@@ -340,7 +337,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		int dr = e.getWheelRotation();	// 1 down, -1 up
 		if (e.isControlDown())
 		{
-			
+			zoom = zoom * (float)Math.pow(.75, dr);
+			setSize(((int)layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
+			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
 	}
 	

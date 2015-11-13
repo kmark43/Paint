@@ -82,12 +82,12 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		int index = list.getSelectionModel().getLeadSelectionIndex();
 		for (int i = 0; i <= index; i++)
 			if (mdl.get(i).isVisible())
-				g.drawImage(mdl.get(i).getImage(), 0, 0, null);
+				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);
 		if (temp != null)
 			g.drawImage(temp, 0, 0, null);
 		for (int i = index + 1; i < mdl.getRowCount(); i++)
 			if (mdl.get(i).isVisible())
-				g.drawImage(mdl.get(i).getImage(), 0, 0, null);
+				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);
 	}
 	
 	public Layer getCurrentLayer()
@@ -95,6 +95,11 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		int index = list.getSelectionModel().getLeadSelectionIndex();
 		if (index == -1)
 			return null;
+		return mdl.get(index);
+	}
+	
+	public Layer getLayer(int index)
+	{
 		return mdl.get(index);
 	}
 	

@@ -129,10 +129,10 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		itmSaveAs .addActionListener(fileMenuListener);
 		itmExit   .addActionListener(fileMenuListener);
 		
-		itmNew .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
-		itmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
-		itmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
-		itmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		itmNew    .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
+		itmOpen   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+		itmSave   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+		itmSaveAs .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 		
 		menu.add(fileMenu);
 		menu.add(editMenu);
@@ -338,7 +338,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (e.isControlDown())
 		{
 			zoom = zoom * (float)Math.pow(.75, dr);
-			setSize(((int)layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
+			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
 			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
 	}

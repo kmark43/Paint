@@ -19,12 +19,12 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	/**
 	* The spinner which specifies the width of the new image
 	*/
-	private JSpinner widthSpinner  = new JSpinner(new SpinnerNumberModel(500, 1, 1000000, 1));
+	private JSpinner widthSpinner  = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
 	
 	/**
 	* The spinner which specifies the height of the new image
 	*/
-	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 1000000, 1));
+	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
 	
 	/**
 	* The submit button to create the new image

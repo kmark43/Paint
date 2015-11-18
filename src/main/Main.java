@@ -93,6 +93,10 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		fileMenu.add(new JSeparator());
 		fileMenu.add(itmExit);
 		
+		JPanel eastPane = new JPanel(new BorderLayout());
+		eastPane.add(propertyPane, BorderLayout.NORTH);
+		eastPane.add(layerManager, BorderLayout.SOUTH);
+		
 		Main main = this;
 		
 		ActionListener fileMenuListener = new ActionListener()
@@ -142,9 +146,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		mainPane.add(toolPane, BorderLayout.WEST);
 		mainPane.add(scroll, BorderLayout.CENTER);
-		mainPane.add(propertyPane, BorderLayout.EAST);
+		mainPane.add(eastPane, BorderLayout.EAST);
 		mainPane.add(menu, BorderLayout.NORTH);
-		mainPane.add(layerManager, BorderLayout.SOUTH);
 		
 		frame.add(mainPane);
 		

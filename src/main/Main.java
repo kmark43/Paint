@@ -45,7 +45,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	private JMenu windowMenu = new JMenu("Window");
 	
-	
 	private float zoom = 1;
 	
 	private Tool currentTool;
@@ -294,7 +293,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		tempG.setColor(new Color(0, 0, 0, 0));
 		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, tempG);
+		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom);
 		return event;
 	}
 	
@@ -340,7 +339,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		int dr = e.getWheelRotation();	// 1 down, -1 up
 		if (e.isControlDown())
 		{
-			zoom = zoom * (float)Math.pow(.75, dr);
+			zoom = zoom * (float)Math.pow(.99, dr);
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
 			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}

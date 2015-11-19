@@ -25,26 +25,33 @@ public class DrawEvent
 	private Graphics2D temp;
 	
 	/**
+	* Stores the amount to scale the image and points drawn to image by
+	*/
+	private float invzoom;
+	
+	/**
 	* @param e The MouseEvent used to determine mouse info for drawing
 	* @param g The main graphics object which draws to the image
 	* @param tempG The temporary graphics object to draw directly to the canvas
+	* @param zoom The zoom ratio of the image
 	*/
-	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG)
+	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG, float zoom)
 	{
 		this.g = g;
 		mouseEvent = e;
 		temp = tempG;
+		this.invzoom =  1 / zoom;
 	}
 	
 	/**
 	* Returns the x coordinate of the mouse
 	*/
-	public int getX() { return mouseEvent.getX(); }
+	public int getX() { return (int)(mouseEvent.getX() * invzoom); }
 	
 	/**
 	* Returns the y coordinate of the mouse
 	*/
-	public int getY() { return mouseEvent.getY(); }
+	public int getY() { return (int)(mouseEvent.getY() * invzoom); }
 	
 	/**
 	* Determines if the control modifyer is being used

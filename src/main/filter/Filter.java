@@ -1,6 +1,8 @@
 package main.filter;
 
+import java.awt.image.BufferedImage;
+
 public abstract class Filter
 {
-	public abstract void changeImage(BufferedImage img);
+	public abstract void modifyImage(BufferedImage img);
 }

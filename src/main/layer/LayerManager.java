@@ -124,7 +124,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	public void keyReleased(KeyEvent e){}
 	public void keyTyped(KeyEvent e){}
 	
-	private static class LayerModel extends AbstractTableModel
+	private class LayerModel extends AbstractTableModel
 	{
 		private List<Layer> layers;
 		
@@ -210,6 +210,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 					layers.get(rowIndex).setVisible((Boolean)value);
 					break;
 			}
+			main.repaint();
 		}
 		
 		@Override

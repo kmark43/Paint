@@ -294,6 +294,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom);
+		event.setColor(current);
 		return event;
 	}
 	
@@ -305,7 +306,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (layerManager.getCurrentLayer() == null) return;
 		DrawEvent event = getEvent(e);
 		current = e.getButton() == 3 ? backColor : foreColor;
-		event.setColor(current);
 		currentTool.mouseDown(event);
 		event.dispose();
 		repaint();
@@ -316,7 +316,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	{
 		if (layerManager.getCurrentLayer() == null) return;
 		DrawEvent event = getEvent(e);
-		event.setColor(current);
 		currentTool.mouseDrag(event);
 		event.dispose();
 		repaint();
@@ -327,7 +326,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	{
 		if (layerManager.getCurrentLayer() == null) return;
 		DrawEvent event = getEvent(e);
-		event.setColor(current);
 		currentTool.mouseUp(event);
 		event.dispose();
 		repaint();

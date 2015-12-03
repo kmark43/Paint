@@ -24,7 +24,7 @@ public class Grayscale extends Filter
 				int green = (rgb >> 8) & 0xff;
 				int blue  = rgb & 0xff;
 				int ave = (red + green + blue) / 3;
-				img.setRGB(i, j, (red << 16) + (green << 8) + blue);
+				img.setRGB(i, j, (ave << 16) + (ave << 8) + ave);
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package main;
 
 import main.dialog.*;
 import main.tool.*;
+import main.filter.*;
 import main.layer.*;
 
 import javax.swing.*;
@@ -17,6 +18,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	final static long serialVersionUID = 214897289174L;
 	
 	private ArrayList<Tool> tools = new ArrayList<Tool>();
+	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	private LayerManager layerManager = new LayerManager(this);
 	
 	private String filePath = "";
@@ -69,6 +71,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	private void init()
 	{
+		ToolRegister.registerTools(this);
+		FilterRegister.registerFilters(this);
+		
 		JPanel mainPane = new JPanel(new BorderLayout());
 		
 		JPanel container = new JPanel();
@@ -78,12 +83,14 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		scroll.setPreferredSize(new Dimension(800, 600));
 		
 		JPanel toolPane = new JPanel();
-		ToolRegister.registerTools(this);
 		ButtonGroup bg = new ButtonGroup();
 		
 		for (Tool t : tools)
 			addTool(t, toolMenu, toolPane, bg);
 		bg.getElements().nextElement().doClick();
+		
+		for (Filter f : filters)
+			addFilter(f, filterMenu);
 		
 		fileMenu.add(itmNew);
 		fileMenu.add(itmOpen);
@@ -155,6 +162,22 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		addMouseWheelListener(this);
 	}
 	
+	private void addFilter(Filter f, JMenu filterMenu)
+	{
+		JMenuItem itm = new JMenuItem(f.getName());
+		filterMenu.add(itm);
+		Main main = this;
+		itm.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				f.modifyImage(layerManager);
+				main.repaint();
+			}
+		});
+	}
+	
 	private void addTool(Tool t, JMenu toolMenu, JPanel toolPane, ButtonGroup bg)
 	{
 		JToggleButton btn = new JToggleButton(t.getName());
@@ -193,10 +216,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		frame.revalidate();
 	}
 	
-	public void registerTool(Tool tool)
-	{
-		tools.add(tool);
-	}
+	public void registerTool(Tool tool) { tools.add(tool); }
+	public void registerFilter(Filter filter) { filters.add(filter); }
 	
 	public void open()
 	{

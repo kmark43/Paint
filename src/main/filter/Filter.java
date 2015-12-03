@@ -1,8 +1,20 @@
 package main.filter;
 
-import java.awt.image.BufferedImage;
+import main.layer.*;
 
+/**
+* This class difines the methods required for making a filter
+*/
 public abstract class Filter
 {
-	public abstract void modifyImage(BufferedImage img);
+	/**
+	* Runs the current filter on the image
+	* @param layerManager The component to access each layer when filtering
+	*/
+	public abstract void modifyImage(LayerManager layerManager);
+	
+	/**
+	* @return The name of the filter
+	*/
+	public abstract String getName();
 }

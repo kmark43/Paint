@@ -2,6 +2,7 @@ src/main/Main.java
 
 src/main/filter/Filter.java
 src/main/filter/FilterRegister.java
+src/main/filter/Grayscale.java
 
 src/main/dialog/FillType.java
 src/main/dialog/NewImageDialog.java

@@ -47,6 +47,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	private JMenu windowMenu = new JMenu("Window");
 	
+	private JPanel container = new JPanel();
+	private JScrollPane scroll = new JScrollPane(container, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	
 	private float zoom = 1;
 	
 	private Tool currentTool;
@@ -76,10 +79,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		JPanel mainPane = new JPanel(new BorderLayout());
 		
-		JPanel container = new JPanel();
 		container.setLayout(null);
 		container.add(this);
-		JScrollPane scroll = new JScrollPane(container);
+		container.addMouseWheelListener(this);
 		scroll.setPreferredSize(new Dimension(800, 600));
 		
 		JPanel toolPane = new JPanel();
@@ -159,7 +161,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
-		addMouseWheelListener(this);
+		addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
 	}
 	
 	private void addFilter(Filter f, JMenu filterMenu)
@@ -221,9 +223,10 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	public void open()
 	{
-		JFileChooser fc = new JFileChooser();
-		fc.showOpenDialog(null);
-		File file = fc.getSelectedFile();
+		// JFileChooser fc = new JFileChooser();
+		// fc.showOpenDialog(null);
+		// File file = fc.getSelectedFile();
+		File file = new File("H:/My Documents/My Pictures/Desert.jpg");
 		if (file == null)
 			return;
 		try
@@ -232,6 +235,13 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			if (layerManager.getCurrentLayer() == null)
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
+				double width = img.getWidth() / (double)container.getWidth();
+				double height = img.getHeight() / (double)container.getHeight();
+				// setSize(1, 1);
+				// if (width < 1 && height < 1)
+					// setZoom((float)Math.max(1 / width, 1 / height));
+				// else
+					// setZoom((float)Math.min(1 / width, 1 / height));
 				setSize(img.getWidth(), img.getHeight());
 			} else
 			{
@@ -262,9 +272,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				return;
 			save(file);
 		} else
-		{
 			save(new File(filePath));
-		}
 	}
 	
 	public void save(File file)
@@ -286,6 +294,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	public void loadNew(int width, int height, FillType type)
 	{
 		setSize(width, height);
+		container.setPreferredSize(new Dimension(width, height));
 		switch (type)
 		{
 			case BACKGROUND:
@@ -319,14 +328,32 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		return event;
 	}
 	
+	@Override
+	public void setSize(int width, int height)
+	{
+		super.setSize(width, height);
+		container.setPreferredSize(new Dimension(width, height));
+		scroll.revalidate();
+	}
+	
 	Color current;
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (layerManager.getCurrentLayer() == null) return;
+		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible()) return;
+		
+		switch(e.getButton())
+		{
+			case 1:
+				current = foreColor;
+				break;
+			case 3:
+				current = backColor;
+				break;
+			default: current = null; return;
+		}
 		DrawEvent event = getEvent(e);
-		current = e.getButton() == 3 ? backColor : foreColor;
 		currentTool.mouseDown(event);
 		event.dispose();
 		repaint();
@@ -335,7 +362,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		if (layerManager.getCurrentLayer() == null) return;
+		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		DrawEvent event = getEvent(e);
 		currentTool.mouseDrag(event);
 		event.dispose();
@@ -345,7 +372,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		if (layerManager.getCurrentLayer() == null) return;
+		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		DrawEvent event = getEvent(e);
 		currentTool.mouseUp(event);
 		event.dispose();
@@ -359,6 +386,16 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (e.isControlDown())
 		{
 			zoom = zoom * (float)Math.pow(.99, dr);
+			setZoom(zoom);
+		}
+		else
+			scroll.dispatchEvent(e);
+	}
+	
+	public void setZoom(float zoom)
+	{
+		if (getWidth() > 0 && getHeight() > 0)
+		{
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
 			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}

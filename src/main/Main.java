@@ -13,7 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.io.*;
 
-public class Main extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener
+public class Main extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener
 {
 	final static long serialVersionUID = 214897289174L;
 	
@@ -84,7 +84,24 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		container.addMouseWheelListener(this);
 		scroll.setPreferredSize(new Dimension(800, 600));
 		
-		JPanel toolPane = new JPanel();
+		JPanel colorPane = new JPanel(new GridLayout(1, 2));
+		
+		JButton btnForecolor = new JButton();
+		btnForecolor.setBackground(foreColor);
+		
+		JButton btnBackcolor = new JButton();
+		btnBackcolor.setBackground(backColor);
+		
+		btnForecolor.setActionCommand("foreground");
+		btnForecolor.addActionListener(this);
+		btnBackcolor.setActionCommand("background");
+		btnBackcolor.addActionListener(this);
+		
+		colorPane.add(btnForecolor);
+		colorPane.add(btnBackcolor);
+		
+		JPanel toolPane = new JPanel(new GridLayout(20, 1));
+		
 		ButtonGroup bg = new ButtonGroup();
 		
 		for (Tool t : tools)
@@ -93,6 +110,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		for (Filter f : filters)
 			addFilter(f, filterMenu);
+		
+		toolPane.add(colorPane);
 		
 		fileMenu.add(itmNew);
 		fileMenu.add(itmOpen);
@@ -390,6 +409,26 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		}
 		else
 			scroll.dispatchEvent(e);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		JColorChooser chooser = new JColorChooser();
+		JButton source = (JButton)e.getSource();
+		if (e.getActionCommand().equals("foreground"))
+		{
+			Color c = chooser.showDialog(frame, "Pick Color", foreColor);
+			if (c != null)
+				foreColor = c;
+			source.setBackground(foreColor);
+		} else
+		{
+			Color c = chooser.showDialog(frame, "Pick Color", backColor);
+			if (c != null)
+				backColor = c;
+			source.setBackground(backColor);
+		}
 	}
 	
 	public void setZoom(float zoom)

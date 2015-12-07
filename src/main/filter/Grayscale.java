@@ -3,14 +3,8 @@ package main.filter;
 import java.awt.image.*;
 import main.layer.*;
 
-/**
-* This filter converts a color image into grayscale
-*/
 public class Grayscale extends Filter
 {
-	/**
-	* 
-	*/
 	@Override
 	public void modifyImage(LayerManager layerManager)
 	{

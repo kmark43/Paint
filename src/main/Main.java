@@ -242,10 +242,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	public void open()
 	{
-		// JFileChooser fc = new JFileChooser();
-		// fc.showOpenDialog(null);
-		// File file = fc.getSelectedFile();
-		File file = new File("H:/My Documents/My Pictures/Desert.jpg");
+		JFileChooser fc = new JFileChooser();
+		fc.showOpenDialog(null);
+		File file = fc.getSelectedFile();
 		if (file == null)
 			return;
 		try
@@ -254,14 +253,13 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			if (layerManager.getCurrentLayer() == null)
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
-				double width = img.getWidth() / (double)container.getWidth();
-				double height = img.getHeight() / (double)container.getHeight();
-				// setSize(1, 1);
-				// if (width < 1 && height < 1)
-					// setZoom((float)Math.max(1 / width, 1 / height));
-				// else
-					// setZoom((float)Math.min(1 / width, 1 / height));
-				setSize(img.getWidth(), img.getHeight());
+				double width = (double)container.getWidth() / img.getWidth();
+				double height = (double)container.getHeight() / img.getHeight();
+				setSize(1, 1);
+				if (width < 1 && height < 1)
+					setZoom((float)Math.max(width * .9, height * .9));
+				// if (width > 1 || height > 1)
+					// setZoom((float)Math.min(width - .02, height - .02));
 			} else
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
@@ -437,6 +435,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		{
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
 			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			this.zoom = zoom;
 		}
 	}
 	

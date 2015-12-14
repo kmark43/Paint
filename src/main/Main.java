@@ -13,7 +13,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.io.*;
 
-public class Main extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener
+public class Main extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener, KeyListener
 {
 	final static long serialVersionUID = 214897289174L;
 	
@@ -25,7 +25,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	private BufferedImage temp;
 	
-	private JFrame frame = new JFrame();
+	private JFrame frame = new JFrame("Paint");
 	
 	private JPanel propertyPane = new JPanel();
 	private JPanel statusPane   = new JPanel();
@@ -180,6 +180,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addKeyListener(this);
 		addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
 	}
 	
@@ -255,11 +256,11 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				layerManager.addLayer(new Layer(file.getName(), img));
 				double width = (double)container.getWidth() / img.getWidth();
 				double height = (double)container.getHeight() / img.getHeight();
-				setSize(1, 1);
+				// setSize(1, 1);
 				if (width < 1 && height < 1)
 					setZoom((float)Math.max(width * .9, height * .9));
-				// if (width > 1 || height > 1)
-					// setZoom((float)Math.min(width - .02, height - .02));
+				else
+					setSize(img.getWidth(), img.getHeight());
 			} else
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
@@ -270,7 +271,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			
 			filePath = file.getPath();
 			
-			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			temp = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		} catch(IOException ex)
 		{
 			System.err.println("Error loading " + file.getPath());
@@ -345,6 +346,19 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		return event;
 	}
 	
+	public DrawEvent getEvent(KeyEvent e)
+	{
+		Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
+		Graphics2D tempG  = (Graphics2D)temp.getGraphics();
+		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		tempG.setColor(new Color(0, 0, 0, 0));
+		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
+		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, MouseInfo.getPointerInfo().getLocation().x - getX() - frame.getX(), MouseInfo.getPointerInfo().getLocation().y - getY() - frame.getY());
+		event.setColor(current);
+		return event;
+	}
+	
 	@Override
 	public void setSize(int width, int height)
 	{
@@ -392,8 +406,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		DrawEvent event = getEvent(e);
 		currentTool.mouseUp(event);
-		event.dispose();
 		repaint();
+		event.dispose();
 	}
 	
 	@Override
@@ -402,12 +416,36 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		int dr = e.getWheelRotation();	// 1 down, -1 up
 		if (e.isControlDown())
 		{
-			zoom = zoom * (float)Math.pow(.99, dr);
-			setZoom(zoom);
+			float zoom = this.zoom * (float)Math.pow(.99, dr);
+			// setZoom(zoom);
+			setZoom(zoom, e.getX(), e.getY());
 		}
 		else
 			scroll.dispatchEvent(e);
 	}
+	
+	@Override
+	public void keyPressed(KeyEvent e)
+	{
+		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
+		DrawEvent event = getEvent(e);
+		currentTool.keyDown(event);
+		repaint();
+		event.dispose();
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e)
+	{
+		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
+		DrawEvent event = getEvent(e);
+		currentTool.keyUp(event);
+		repaint();
+		event.dispose();
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e){}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -431,10 +469,25 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	
 	public void setZoom(float zoom)
 	{
-		if (getWidth() > 0 && getHeight() > 0)
+		if (layerManager.getLayer(0).getImage() != null)
 		{
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
-			temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			// temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			this.zoom = zoom;
+		}
+	}
+	
+	public void setZoom(float zoom, int focusX, int focusY)
+	{
+		if (layerManager.getLayer(0).getImage() != null)
+		{
+			float dzoom = zoom - this.zoom + 1;
+			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
+			Rectangle view = scroll.getViewport().getViewRect();
+			view.x = (int)(view.x * dzoom);
+			view.y = (int)(view.y * dzoom);
+			scroll.getViewport().scrollRectToVisible(view);
+			// temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			this.zoom = zoom;
 		}
 	}

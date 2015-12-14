@@ -45,6 +45,9 @@ public abstract class Tool
 	*/
 	public abstract String getName();
 	
+	public void keyDown(DrawEvent e){}
+	public void keyUp(DrawEvent e){}
+	
 	/**
 	* This method returns the property panel used for tool properties like
 	* line thickness, radius, etc...

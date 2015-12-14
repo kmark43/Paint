@@ -15,6 +15,11 @@ public class DrawEvent
 	private MouseEvent mouseEvent;
 	
 	/**
+	* Stores the key configuration at the event creation point
+	*/
+	private KeyEvent keyEvent;
+	
+	/**
 	* Used to draw directly to the current layer, 
 	*/
 	private Graphics2D g;
@@ -29,6 +34,10 @@ public class DrawEvent
 	*/
 	private float invzoom;
 	
+	private int x;
+	
+	private int y;
+	
 	/**
 	* @param e The MouseEvent used to determine mouse info for drawing
 	* @param g The main graphics object which draws to the image
@@ -40,18 +49,38 @@ public class DrawEvent
 		this.g = g;
 		mouseEvent = e;
 		temp = tempG;
+		x = e.getX();
+		y = e.getY();
 		this.invzoom =  1 / zoom;
+	}
+	
+	/**
+	* @param e The MouseEvent used to determine mouse info for drawing
+	* @param g The main graphics object which draws to the image
+	* @param tempG The temporary graphics object to draw directly to the canvas
+	* @param zoom The zoom ratio of the image
+	*/
+	public DrawEvent(KeyEvent e1, Graphics2D g, Graphics2D tempG, float zoom, int x, int y)
+	{
+		this.g = g;
+		keyEvent = e1;
+		temp = tempG;
+		this.invzoom =  1 / zoom;
+		this.x = x;
+		this.y = y;
 	}
 	
 	/**
 	* Returns the x coordinate of the mouse
 	*/
-	public int getX() { return (int)(mouseEvent.getX() * invzoom); }
+	public int getX() { return (int)(x * invzoom); }
 	
 	/**
 	* Returns the y coordinate of the mouse
 	*/
-	public int getY() { return (int)(mouseEvent.getY() * invzoom); }
+	public int getY() { return (int)(y * invzoom); }
+	
+	public int invZoom(int val) { return (int)(val * invzoom); }
 	
 	/**
 	* Determines if the control modifyer is being used
@@ -71,7 +100,7 @@ public class DrawEvent
 	/**
 	* Returns the MouseEvent to get extra information about the mouse status
 	*/
-	public MouseEvent getEvent() { return mouseEvent; }
+	public MouseEvent getMouseEvent() { return mouseEvent; }
 	
 	/**
 	* Returns the graphics object that draws to the image

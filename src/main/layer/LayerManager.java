@@ -84,7 +84,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 			if (mdl.get(i).isVisible())
 				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);
 		if (temp != null)
-			g.drawImage(temp, 0, 0, null);
+			g.drawImage(temp, 0, 0, (int)(temp.getWidth() * zoom), (int)(temp.getHeight() * zoom), null);
 		for (int i = index + 1; i < mdl.getRowCount(); i++)
 			if (mdl.get(i).isVisible())
 				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);

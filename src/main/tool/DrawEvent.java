@@ -103,6 +103,11 @@ public class DrawEvent
 	public MouseEvent getMouseEvent() { return mouseEvent; }
 	
 	/**
+	* Returns the KeyEvent to get the key pressed and alternate information
+	*/
+	public KeyEvent getKeyEvent() { return keyEvent; }
+	
+	/**
 	* Returns the graphics object that draws to the image
 	*/
 	public Graphics2D getGraphics() { return g; }
@@ -113,12 +118,18 @@ public class DrawEvent
 	*/
 	public Graphics2D getTempG() { return temp; }
 	
+	/**
+	* The dispose method to dispose of the graphics objects
+	*/
 	public void dispose()
 	{
 		g.dispose();
 		temp.dispose();
 	}
 	
+	/**
+	* The set color method to set the color of each graphics object
+	*/
 	public void setColor(Color c)
 	{
 		g.setColor(c);

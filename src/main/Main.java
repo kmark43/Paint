@@ -55,6 +55,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	private Tool currentTool;
 	private Color foreColor = Color.BLACK, backColor = Color.WHITE;
 	
+	private int mouseX, mouseY;
+	
 	public Main()
 	{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -277,6 +279,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			System.err.println("Error loading " + file.getPath());
 			ex.printStackTrace();
 		}
+		requestFocus();
 	}
 	
 	public void save()
@@ -331,6 +334,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				break;
 		}
 		temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		requestFocus();
 	}
 	
 	public DrawEvent getEvent(MouseEvent e)
@@ -354,7 +358,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		tempG.setColor(new Color(0, 0, 0, 0));
 		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, MouseInfo.getPointerInfo().getLocation().x - getX() - frame.getX(), MouseInfo.getPointerInfo().getLocation().y - getY() - frame.getY());
+		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, mouseX, mouseY);
 		event.setColor(current);
 		return event;
 	}
@@ -393,6 +397,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
+		mouseX = e.getX();
+		mouseY = e.getY();
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		DrawEvent event = getEvent(e);
 		currentTool.mouseDrag(event);
@@ -408,6 +414,13 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		currentTool.mouseUp(event);
 		repaint();
 		event.dispose();
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e)
+	{
+		mouseX = e.getX();
+		mouseY = e.getY();
 	}
 	
 	@Override
@@ -430,6 +443,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		DrawEvent event = getEvent(e);
 		currentTool.keyDown(event);
+		if (e.isControlDown()) layerManager.keyPressed(e);
 		repaint();
 		event.dispose();
 	}
@@ -472,7 +486,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (layerManager.getLayer(0).getImage() != null)
 		{
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
-			// temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			this.zoom = zoom;
 		}
 	}
@@ -487,7 +500,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			view.x = (int)(view.x * dzoom);
 			view.y = (int)(view.y * dzoom);
 			scroll.getViewport().scrollRectToVisible(view);
-			// temp = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			this.zoom = zoom;
 		}
 	}
@@ -496,7 +508,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	public void mouseClicked(MouseEvent e){}
 	public void mouseEntered(MouseEvent e){}
 	public void mouseExited(MouseEvent e){}
-	public void mouseMoved(MouseEvent e){}
 	
 	@Override
 	public void paintComponent(Graphics g)

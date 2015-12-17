@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
 * This class is to manage layers
 */
-public class LayerManager extends JPanel implements ListSelectionListener, KeyListener
+public class LayerManager extends JPanel implements ListSelectionListener, KeyListener, ActionListener
 {
 	/**
 	* Stores the layers inside of the table
@@ -27,6 +27,10 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	*/
 	private JTable list = new JTable(mdl);
 	
+	private JButton btnCopy   = new JButton("Copy");
+	private JButton btnDelete = new JButton("Delete");
+	private JButton btnAdd    = new JButton("Add");
+	
 	private Main main;
 	
 	/**
@@ -36,11 +40,21 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	public LayerManager(Main main)
 	{
 		this.main = main;
+		setLayout(new GridLayout(2, 1));
+		JPanel buttons = new JPanel(new GridLayout(8, 1));
 		list.getSelectionModel().addListSelectionListener(this);
 		list.addKeyListener(this);
+		list.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		JScrollPane scroll = new JScrollPane(list);
 		scroll.setPreferredSize(new Dimension(200, 200));
 		add(scroll);
+		buttons.add(btnAdd);
+		buttons.add(btnCopy);
+		buttons.add(btnDelete);
+		btnAdd.addActionListener(this);
+		btnCopy.addActionListener(this);
+		btnDelete.addActionListener(this);
+		add(buttons);
 	}
 	
 	/**
@@ -53,6 +67,20 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		setSelected(mdl.getRowCount() - 1);
 		list.revalidate();
 		main.repaint();
+		list.scrollRectToVisible(list.getCellRect(mdl.getRowCount() - 1, 0, true));
+	}
+	
+	/**
+	* Adds a new layer to the project
+	* @param layer the layer to add
+	*/
+	public void addLayer(Layer layer, int index)
+	{
+		mdl.add(layer, index);
+		setSelected(index);
+		list.revalidate();
+		main.repaint();
+		list.scrollRectToVisible(list.getCellRect(index, 0, true));
 	}
 	
 	/**
@@ -79,7 +107,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	*/
 	public void draw(Graphics g, BufferedImage temp, float zoom)
 	{
-		int index = list.getSelectionModel().getLeadSelectionIndex();
+		int index = list.getSelectionModel().getMinSelectionIndex();
 		for (int i = 0; i <= index; i++)
 			if (mdl.get(i).isVisible())
 				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);
@@ -92,7 +120,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	public Layer getCurrentLayer()
 	{
-		int index = list.getSelectionModel().getLeadSelectionIndex();
+		int index = list.getSelectionModel().getMinSelectionIndex();
 		if (index == -1)
 			return null;
 		return mdl.get(index);
@@ -103,12 +131,6 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		return mdl.get(index);
 	}
 	
-	// /**
-	// * Returns the layer at the specified index
-	// * @param index The index to retrieve
-	// */
-	// public Layer getLayer(int index) { return layers.get(index); }
-	
 	public void valueChanged(ListSelectionEvent e)
 	{
 		main.repaint();
@@ -117,12 +139,60 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		
+		switch(e.getKeyCode())
+		{
+			case KeyEvent.VK_DELETE:
+				delete();
+				break;
+			case KeyEvent.VK_A:
+				if (e.isControlDown())
+				{
+					add();
+				}
+				break;
+			case KeyEvent.VK_D:
+				if (e.isControlDown())
+				{
+					copy();
+				}
+				break;
+		}
 	}
+	
+	private void add() { addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), getCurrentLayer().getImage().getHeight(), Color.white), list.getSelectionModel().getMinSelectionIndex() + 1); }
+	private void copy() { addLayer(new Layer(getCurrentLayer()), list.getSelectionModel().getMinSelectionIndex() + 1); }
+	
+	private void delete()
+	{
+		int index = list.getSelectionModel().getMinSelectionIndex();
+		if (index != -1)
+		{
+			if (index > 0)
+				setSelected(index - 1);
+			else
+				setSelected(0);
+			mdl.remove(index);
+		}
+		list.revalidate();
+		list.repaint();
+		main.repaint();
+	}
+	
 	
 	@Override
 	public void keyReleased(KeyEvent e){}
 	public void keyTyped(KeyEvent e){}
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource() == btnAdd)
+			add();
+		else if (e.getSource() == btnCopy)
+			copy();
+		else if (e.getSource() == btnDelete)
+			delete();
+	}
 	
 	private class LayerModel extends AbstractTableModel
 	{
@@ -140,6 +210,8 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		
 		public Layer get(int row) { return layers.get(row); }
 		public void add(Layer layer) { layers.add(layer); }
+		public void add(Layer layer, int index) { layers.add(index, layer); }
+		public void remove(int index) { layers.remove(index); }
 		
 		public void swap(int x, int y)
 		{

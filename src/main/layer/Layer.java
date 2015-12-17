@@ -103,7 +103,14 @@ public class Layer
 	* Creates a layer from another layer as a copy
 	* @param otherLayer The layer to duplicate
 	*/
-	public Layer(Layer otherLayer) { name = otherLayer.name + " - copy"; }
+	public Layer(Layer otherLayer)
+	{
+		name = otherLayer.name + " - copy";
+		img = new BufferedImage(otherLayer.img.getWidth(), otherLayer.img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		for (int i = 0; i < img.getWidth(); i++)
+			for (int j = 0; j < img.getHeight(); j++)
+				img.setRGB(i, j, otherLayer.img.getRGB(i, j));
+	}
 	
 	/**
 	* Sets the visibility of the current layer

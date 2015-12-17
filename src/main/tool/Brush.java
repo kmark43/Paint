@@ -18,19 +18,22 @@ public class Brush extends Tool
 	
 	public void mouseDown(DrawEvent e)
 	{
-		Graphics2D g = e.getGraphics();
-		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 		boolean before = lastX == -100 || !e.isControlDown();
 		if (before)
 		{
+			Graphics2D g = e.getGraphics();
+			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			lastX = e.getX();
 			lastY = e.getY();
+			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
-		g.drawLine(lastX, lastY, e.getX(), e.getY());
 		if (!before)
 		{
-			lastX = e.getX();
-			lastY = e.getY();
+			Graphics2D g = e.getTempG();
+			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}
 	
@@ -40,6 +43,7 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getGraphics();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 			lastX = e.getX();
 			lastY = e.getY();
@@ -47,6 +51,7 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}
@@ -55,6 +60,7 @@ public class Brush extends Tool
 	{
 		Graphics2D g = e.getGraphics();
 		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.drawLine(lastX, lastY, e.getX(), e.getY());
 		lastX = e.getX();
 		lastY = e.getY();
@@ -62,9 +68,13 @@ public class Brush extends Tool
 	
 	public void keyDown(DrawEvent e)
 	{
-		Graphics2D g = e.getTempG();
-		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-		g.drawLine(lastX, lastY, e.getX(), e.getY());
+		if (e.getKeyEvent().getKeyCode() == KeyEvent.VK_CONTROL)
+		{
+			Graphics2D g = e.getTempG();
+			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.drawLine(lastX, lastY, e.getX(), e.getY());
+		}
 	}
 	
 	public void keyUp(DrawEvent e)

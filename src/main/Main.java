@@ -443,7 +443,15 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		DrawEvent event = getEvent(e);
 		currentTool.keyDown(event);
-		if (e.isControlDown()) layerManager.keyPressed(e);
+		// System.out.println(1);
+		if (e.isControlDown())
+		{
+			int index = e.getKeyChar() - '1';
+			if (index < Math.min(9, layerManager.getLayerCount()) && index >= 0)
+			{
+				layerManager.setSelected(index);
+			}
+		}
 		repaint();
 		event.dispose();
 	}

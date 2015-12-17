@@ -146,21 +146,25 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 				break;
 			case KeyEvent.VK_A:
 				if (e.isControlDown())
-				{
 					add();
-				}
 				break;
 			case KeyEvent.VK_D:
 				if (e.isControlDown())
-				{
 					copy();
-				}
 				break;
 		}
 	}
 	
-	private void add() { addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), getCurrentLayer().getImage().getHeight(), Color.white), list.getSelectionModel().getMinSelectionIndex() + 1); }
-	private void copy() { addLayer(new Layer(getCurrentLayer()), list.getSelectionModel().getMinSelectionIndex() + 1); }
+	private void add()
+	{
+		if (mdl.getRowCount() > 0)
+			addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), getCurrentLayer().getImage().getHeight(), Color.white), list.getSelectionModel().getMinSelectionIndex() + 1);
+	}
+	private void copy()
+	{
+		if (list.getSelectionModel().getMinSelectionIndex() != -1)
+			addLayer(new Layer(getCurrentLayer()), list.getSelectionModel().getMinSelectionIndex() + 1);
+	}
 	
 	private void delete()
 	{
@@ -193,6 +197,8 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		else if (e.getSource() == btnDelete)
 			delete();
 	}
+	
+	public int getLayerCount() { return mdl.getRowCount(); }
 	
 	private class LayerModel extends AbstractTableModel
 	{

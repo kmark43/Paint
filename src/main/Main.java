@@ -72,6 +72,12 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				grabFocus();
 			}
 		});
+		
+		// try
+		// {
+			// Thread.sleep(1000);
+		// } catch(Exception ex){}
+		// grabFocus();
 	}
 	
 	private void init()
@@ -184,6 +190,19 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		addMouseMotionListener(this);
 		addKeyListener(this);
 		addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
+		removeFocus(mainPane);
+		setFocusable(true);
+	}
+	
+	public void removeFocus(Container root)
+	{
+		Component comp[] = root.getComponents();
+		root.setFocusable(false);
+		for (Component c : comp)
+			if (c instanceof Container)
+				removeFocus((Container)c);
+			else
+				c.setFocusable(false);
 	}
 	
 	private void addFilter(Filter f, JMenu filterMenu)
@@ -279,7 +298,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			System.err.println("Error loading " + file.getPath());
 			ex.printStackTrace();
 		}
-		requestFocus();
+		grabFocus();
 	}
 	
 	public void save()
@@ -334,7 +353,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				break;
 		}
 		temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		requestFocus();
+		grabFocus();
 	}
 	
 	public DrawEvent getEvent(MouseEvent e)
@@ -440,18 +459,15 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
-		DrawEvent event = getEvent(e);
-		currentTool.keyDown(event);
-		// System.out.println(1);
 		if (e.isControlDown())
 		{
 			int index = e.getKeyChar() - '1';
 			if (index < Math.min(9, layerManager.getLayerCount()) && index >= 0)
-			{
 				layerManager.setSelected(index);
-			}
 		}
+		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
+		DrawEvent event = getEvent(e);
+		currentTool.keyDown(event);
 		repaint();
 		event.dispose();
 	}

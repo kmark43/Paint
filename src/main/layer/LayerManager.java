@@ -54,6 +54,9 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		btnAdd.addActionListener(this);
 		btnCopy.addActionListener(this);
 		btnDelete.addActionListener(this);
+		btnAdd.setFocusable(false);
+		btnCopy.setFocusable(false);
+		btnDelete.setFocusable(false);
 		add(buttons);
 	}
 	
@@ -151,6 +154,11 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 			case KeyEvent.VK_D:
 				if (e.isControlDown())
 					copy();
+				break;
+			case KeyEvent.VK_SPACE:
+				int index = list.getSelectionModel().getMinSelectionIndex();
+				if (index != -1)
+					mdl.setValueAt(false, index, 1);
 				break;
 		}
 	}

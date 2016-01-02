@@ -166,7 +166,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	private void add()
 	{
 		if (mdl.getRowCount() > 0)
-			addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), getCurrentLayer().getImage().getHeight(), Color.white), list.getSelectionModel().getMinSelectionIndex() + 1);
+			addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), getCurrentLayer().getImage().getHeight(), new Color(0, true)), list.getSelectionModel().getMinSelectionIndex() + 1);
 	}
 	private void copy()
 	{

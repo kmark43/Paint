@@ -13,5 +13,6 @@ public class ToolRegister
 	public static void registerTools(Main main)
 	{
 		main.registerTool(new Brush());
+		main.registerTool(new RectangleSelect(main));
 	}
 }

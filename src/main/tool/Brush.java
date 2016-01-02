@@ -18,8 +18,7 @@ public class Brush extends Tool
 	
 	public void mouseDown(DrawEvent e)
 	{
-		boolean before = lastX == -100 || !e.isControlDown();
-		if (before)
+		if (lastX == -100 || !e.isControlDown())
 		{
 			Graphics2D g = e.getGraphics();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
@@ -28,7 +27,7 @@ public class Brush extends Tool
 			lastY = e.getY();
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
-		if (!before)
+		else
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
@@ -75,11 +74,6 @@ public class Brush extends Tool
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
-	}
-	
-	public void keyUp(DrawEvent e)
-	{
-		
 	}
 	
 	public String getName() { return "Brush"; }

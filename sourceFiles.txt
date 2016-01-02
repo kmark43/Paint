@@ -17,5 +17,6 @@ src/main/tool/Erase.java
 src/main/tool/Fill.java
 src/main/tool/Oval.java
 src/main/tool/Rect.java
+src/main/tool/RectangleSelect.java
 src/main/tool/Tool.java
 src/main/tool/ToolRegister.java

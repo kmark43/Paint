@@ -269,6 +269,11 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		File file = fc.getSelectedFile();
 		if (file == null)
 			return;
+		open(file);
+	}
+	
+	public void open(File file)
+	{
 		try
 		{
 			BufferedImage img = ImageIO.read(file);

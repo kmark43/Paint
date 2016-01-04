@@ -21,6 +21,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	private LayerManager layerManager = new LayerManager(this);
 	
+	private HashMap<Integer, Tool> keyToolMap = new HashMap<Integer, Tool>();
+	
 	private String filePath = "";
 	
 	private BufferedImage temp;

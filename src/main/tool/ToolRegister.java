@@ -14,5 +14,6 @@ public class ToolRegister
 	{
 		main.registerTool(new Brush());
 		main.registerTool(new RectangleSelect(main));
+		main.registerTool(new Circle());
 	}
 }

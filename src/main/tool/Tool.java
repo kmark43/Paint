@@ -53,4 +53,6 @@ public abstract class Tool
 	* line thickness, radius, etc...
 	*/
 	public JPanel getProperty() { return property; }
+	
+	public int getShortcut() { return 0; }
 }

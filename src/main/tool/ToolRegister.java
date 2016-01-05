@@ -13,7 +13,11 @@ public class ToolRegister
 	public static void registerTools(Main main)
 	{
 		main.registerTool(new Brush());
+		main.registerTool(new Erase());
+		main.registerTool(new Fill(main));
 		main.registerTool(new RectangleSelect(main));
+		main.registerTool(new Rect());
+		main.registerTool(new Oval());
 		main.registerTool(new Circle());
 	}
 }

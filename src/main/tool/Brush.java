@@ -77,5 +77,5 @@ public class Brush extends Tool
 	}
 	
 	public String getName() { return "Brush"; }
-	public int getShortcut() { return 'B' };
+	public int getShortcut() { return 'B'; }
 }

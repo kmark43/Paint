@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.io.*;
 
 public class Main extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, ActionListener, KeyListener
@@ -21,7 +22,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	private LayerManager layerManager = new LayerManager(this);
 	
-	private HashMap<Integer, Tool> keyToolMap = new HashMap<Integer, Tool>();
+	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
 	
 	private String filePath = "";
 	
@@ -233,6 +234,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		toolMenu.add(itm);
 		
+		if (t.getShortcut() != 0)
+			keyToolMap.put(t.getShortcut(), btn);
+		
 		itm.addActionListener(new ActionListener()
 		{
 			@Override
@@ -371,7 +375,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		tempG.setColor(new Color(0, 0, 0, 0));
 		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom);
+		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, layerManager);
 		event.setColor(current);
 		return event;
 	}
@@ -384,7 +388,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		tempG.setColor(new Color(0, 0, 0, 0));
 		tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
 		tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, mouseX, mouseY);
+		DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, mouseX, mouseY, layerManager);
 		event.setColor(current);
 		return event;
 	}
@@ -466,6 +470,12 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		JToggleButton btn = keyToolMap.get(e.getKeyCode());
+		if (btn != null)
+		{
+			btn.doClick();
+			return;
+		}
 		if (e.isControlDown())
 		{
 			int index = e.getKeyChar() - '1';

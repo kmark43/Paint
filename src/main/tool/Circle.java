@@ -1,5 +1,6 @@
 package main.tool;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Circle extends Tool
@@ -9,13 +10,19 @@ public class Circle extends Tool
 	private OutlineDrawer outlineDrawer = new OutlineDrawer();
 	private OvalDrawer currentDrawer = outlineDrawer;
 	
-	public Circle(){}
+	private JCheckBox chkFilled = new JCheckBox("Filled");
+	
+	public Circle()
+	{
+		property.add(chkFilled);
+	}
 	
 	public void mouseDown(DrawEvent e)
 	{
 		Graphics2D g = e.getTempG();
 		lastX = e.getX();
 		lastY = e.getY();
+		currentDrawer = chkFilled.isSelected() ? fillDrawer : outlineDrawer;
 		drawOval(g, e);
 	}
 	
@@ -35,19 +42,8 @@ public class Circle extends Tool
 	{
 		int x1 = lastX;
 		int y1 = lastY;
-		int x2 = e.getX();
-		int y2 = e.getY();
-		if (x2 < x1)
-		{
-			x1 = e.getX();
-			x2 = lastX;
-		}
-		if (y2 < y1)
-		{
-			y1 = e.getY();
-			y2 = lastY;
-		}
-		currentDrawer.drawOval(g, x1, y1, x2 - x1, y2 - y1);
+		int radius = (int)Math.sqrt((e.getX() - lastX) * (e.getX() - lastX) + (e.getY() - lastY) * (e.getY() - lastY));
+		currentDrawer.drawOval(g, x1 - radius, y1 - radius, radius * 2, radius * 2);;
 	}
 	
 	private interface OvalDrawer { public void drawOval(Graphics g, int x, int y, int width, int height); }
@@ -67,5 +63,5 @@ public class Circle extends Tool
 	}
 	
 	public String getName() { return "Circle"; }
-	public int getShortcut() { return 'C' };
+	public int getShortcut() { return 'C'; }
 }

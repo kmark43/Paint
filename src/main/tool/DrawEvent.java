@@ -1,5 +1,7 @@
 package main.tool;
 
+import main.layer.LayerManager;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -38,13 +40,15 @@ public class DrawEvent
 	
 	private int y;
 	
+	private LayerManager manager;
+	
 	/**
 	* @param e The MouseEvent used to determine mouse info for drawing
 	* @param g The main graphics object which draws to the image
 	* @param tempG The temporary graphics object to draw directly to the canvas
 	* @param zoom The zoom ratio of the image
 	*/
-	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG, float zoom)
+	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG, float zoom, LayerManager manager)
 	{
 		this.g = g;
 		mouseEvent = e;
@@ -52,6 +56,7 @@ public class DrawEvent
 		x = e.getX();
 		y = e.getY();
 		this.invzoom =  1 / zoom;
+		this.manager = manager;
 	}
 	
 	/**
@@ -60,7 +65,7 @@ public class DrawEvent
 	* @param tempG The temporary graphics object to draw directly to the canvas
 	* @param zoom The zoom ratio of the image
 	*/
-	public DrawEvent(KeyEvent e1, Graphics2D g, Graphics2D tempG, float zoom, int x, int y)
+	public DrawEvent(KeyEvent e1, Graphics2D g, Graphics2D tempG, float zoom, int x, int y, LayerManager manager)
 	{
 		this.g = g;
 		keyEvent = e1;
@@ -68,6 +73,7 @@ public class DrawEvent
 		this.invzoom =  1 / zoom;
 		this.x = x;
 		this.y = y;
+		this.manager = manager;
 	}
 	
 	/**
@@ -117,6 +123,8 @@ public class DrawEvent
 	* and is overwritten with each draw call
 	*/
 	public Graphics2D getTempG() { return temp; }
+	
+	public LayerManager getManager() { return manager; }
 	
 	/**
 	* The dispose method to dispose of the graphics objects

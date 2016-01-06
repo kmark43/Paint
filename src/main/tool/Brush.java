@@ -22,7 +22,6 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getGraphics();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			lastX = e.getX();
 			lastY = e.getY();
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -31,7 +30,6 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}
@@ -42,7 +40,6 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getGraphics();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 			lastX = e.getX();
 			lastY = e.getY();
@@ -50,7 +47,6 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}
@@ -59,7 +55,6 @@ public class Brush extends Tool
 	{
 		Graphics2D g = e.getGraphics();
 		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.drawLine(lastX, lastY, e.getX(), e.getY());
 		lastX = e.getX();
 		lastY = e.getY();
@@ -71,7 +66,6 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}

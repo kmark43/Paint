@@ -22,7 +22,6 @@ public class Erase extends Tool
 		{
 			Graphics2D g = e.getGraphics();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setColor(new Color(0, 0, 0, 0));
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 			lastX = e.getX();
@@ -33,7 +32,6 @@ public class Erase extends Tool
 		{
 			// Graphics2D g = e.getTempG();
 			// g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			// g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 			// g.setColor(new Color(0, 0, 0, 0));
 			// g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -46,7 +44,6 @@ public class Erase extends Tool
 		{
 			Graphics2D g = e.getGraphics();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 			g.setColor(new Color(0, 0, 0, 0));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -56,7 +53,6 @@ public class Erase extends Tool
 		{
 			// Graphics2D g = e.getTempG();
 			// g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			// g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			// g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 			// g.setColor(new Color(0, 0, 0, 0));
 			// g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -67,7 +63,6 @@ public class Erase extends Tool
 	{
 		Graphics2D g = e.getGraphics();
 		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 		g.setColor(new Color(0, 0, 0, 0));
 		g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -81,7 +76,6 @@ public class Erase extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}

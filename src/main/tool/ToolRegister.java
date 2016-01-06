@@ -14,6 +14,7 @@ public class ToolRegister
 	{
 		main.registerTool(new Brush());
 		main.registerTool(new Erase());
+		main.registerTool(new Spray(main));
 		main.registerTool(new Fill(main));
 		main.registerTool(new RectangleSelect(main));
 		main.registerTool(new Rect());

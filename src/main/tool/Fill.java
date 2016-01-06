@@ -29,10 +29,9 @@ public class Fill extends Tool
 			int y = e.getY();
 			Point p = new Point(x, y);
 			Queue<Point> q = new LinkedList<Point>();
-			Color targetColor = new Color(img.getRGB(p.x, p.y));
+			Color targetColor = new Color(img.getRGB(p.x, p.y), true);
 			Color changeColor = e.getGraphics().getColor();
 			int tolerance = (Integer)toleranceSpinner.getValue();
-			System.out.println(tolerance);
 			boolean painted[][] = new boolean[img.getHeight()][img.getWidth()];
 			q.add(p);
 			while (!q.isEmpty())
@@ -40,8 +39,8 @@ public class Fill extends Tool
 				p = q.remove();
 				if (p.x >= 0 && p.x < img.getWidth() && p.y >= 0 && p.y < img.getHeight())
 				{
-					Color current = new Color(img.getRGB(p.x, p.y));
-					if (!painted[p.y][p.x] && Math.abs(current.getRed() - targetColor.getRed()) <= tolerance && Math.abs(current.getGreen() - targetColor.getGreen()) <= tolerance && Math.abs(current.getBlue() - targetColor.getBlue()) <= tolerance)
+					Color current = new Color(img.getRGB(p.x, p.y), true);
+					if (!painted[p.y][p.x] && targetColor.getAlpha() == current.getAlpha() && Math.abs(current.getRed() - targetColor.getRed()) <= tolerance && Math.abs(current.getGreen() - targetColor.getGreen()) <= tolerance && Math.abs(current.getBlue() - targetColor.getBlue()) <= tolerance)
 					{
 						painted[p.y][p.x] = true;
 						img.setRGB(p.x, p.y, changeColor.getRGB());

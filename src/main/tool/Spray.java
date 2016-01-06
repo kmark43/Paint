@@ -1,0 +1,84 @@
+package main.tool;
+
+import main.Main;
+import main.layer.LayerManager;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Spray extends Tool implements Runnable
+{
+	private JSpinner radiusSpinner    = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
+	private JSpinner thicknessSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
+	
+	private LayerManager layerManager;
+	private Color c;
+	private Main main;
+	
+	private int x, y;
+	
+	private boolean spraying = false;
+	
+	public Spray(Main main)
+	{
+		this.main = main;
+		property.setLayout(new GridLayout(2, 2));
+		property.add(new JLabel("Radius:"));
+		property.add(radiusSpinner);
+		property.add(new JLabel("Thickness:"));
+		property.add(thicknessSpinner);
+	}
+	
+	public void run()
+	{
+		Graphics g = layerManager.getCurrentLayer().getImage().getGraphics();
+		g.setColor(c);
+		int radius = (Integer)radiusSpinner.getValue();
+		int thickness = (Integer)thicknessSpinner.getValue();
+		while (spraying)
+		{
+			for (int i = 0; i < thickness; i++)
+			{
+				int xPos = (int)(Math.random() * (2 * radius + 1)) - radius;
+				int yRange = (int)Math.sqrt(radius * radius - xPos * xPos);
+				int yPos = (int)(Math.random() * (2 * yRange + 1)) - yRange;
+				xPos += x;
+				yPos += y;
+				g.drawLine(xPos, yPos, xPos, yPos);
+			}
+			main.repaint(x - radius - 1, y - radius - 1, x + radius + 1, y + radius + 1);
+			try
+			{
+				Thread.sleep(10);
+			} catch(Exception ex){}
+		}
+	}
+	
+	public void mouseDown(DrawEvent e)
+	{
+		layerManager = e.getManager();
+		spraying = true;
+		c = e.getGraphics().getColor();
+		x = e.getX();
+		y = e.getY();
+		new Thread(this).start();
+	}
+	
+	public void mouseDrag(DrawEvent e)
+	{
+		c = e.getGraphics().getColor();
+		x = e.getX();
+		y = e.getY();
+	}
+	
+	public void mouseUp  (DrawEvent e)
+	{
+		c = e.getGraphics().getColor();
+		x = e.getX();
+		y = e.getY();
+		spraying = false;
+	}
+	
+	public String getName() { return "Spray Paint"; }
+	public int getShortcut() { return 'S'; }
+}

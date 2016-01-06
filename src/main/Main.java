@@ -117,7 +117,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		
 		for (Tool t : tools)
 			addTool(t, toolMenu, toolPane, bg);
-		bg.getElements().nextElement().doClick();
 		
 		for (Filter f : filters)
 			addFilter(f, filterMenu);
@@ -195,6 +194,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
 		removeFocus(mainPane);
 		setFocusable(true);
+		bg.getElements().nextElement().doClick();
 	}
 	
 	public void removeFocus(Container root)

@@ -14,6 +14,7 @@ src/main/tool/Brush.java
 src/main/tool/Circle.java
 src/main/tool/DrawEvent.java
 src/main/tool/Erase.java
+src/main/tool/Spray.java
 src/main/tool/Fill.java
 src/main/tool/Oval.java
 src/main/tool/Rect.java

@@ -38,12 +38,41 @@ public class RectangleSelect extends Tool
 	
 	public void mouseDown(DrawEvent e)
 	{
-		
+		lastX = e.getX();
+		lastY = e.getY();
+		constructRect(e);
+		drawSelection(e.getTempG());
+	}
+	
+	public void drawSelection(Graphics g)
+	{
+		int i = 0;
+		for (i = rect.x; i < rect.x + rect.width - 5; i += 10)
+		{
+			g.drawLine(i, rect.y, i + 5, rect.y);
+			g.drawLine(i, rect.y + rect.height, i + 5, rect.y + rect.height);
+		}
+		if (i < rect.x + rect.width)
+		{
+			g.drawLine(i, rect.y, rect.x + rect.width, rect.y);
+			g.drawLine(i, rect.y + rect.height, rect.x + rect.width, rect.y + rect.height);
+		}
+		for (i = rect.y; i < rect.y + rect.height - 5; i += 10)
+		{
+			g.drawLine(rect.x, i, rect.x, i + 5);
+			g.drawLine(rect.x + rect.width, i, rect.x + rect.width, i + 5);
+		}
+		if (i < rect.y + rect.height)
+		{
+			g.drawLine(rect.x, i, rect.x, rect.y + rect.height);
+			g.drawLine(rect.x + rect.width, i, rect.x + rect.width, rect.y + rect.height);
+		}
 	}
 	
 	public void mouseDrag(DrawEvent e)
 	{
-		
+		constructRect(e);
+		drawSelection(e.getTempG());
 	}
 	
 	public void mouseUp(DrawEvent e)
@@ -56,7 +85,7 @@ public class RectangleSelect extends Tool
 		
 	}
 	
-	public Rectangle getRect()
+	public void constructRect(DrawEvent e)
 	{
 		int x1 = lastX;
 		int y1 = lastY;

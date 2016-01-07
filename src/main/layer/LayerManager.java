@@ -8,6 +8,7 @@ import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.awt.geom.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	* Stores the layers inside of the table
 	*/
 	private LayerModel mdl = new LayerModel();
+	
+	private Area clippingRegion = new Area();
+	private BufferedImage temp;
 	
 	/**
 	* The graphical component showing the list of layers
@@ -108,7 +112,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	* Draws each layer to the graphics object
 	* @param g The graphics object to draw to
 	*/
-	public void draw(Graphics g, BufferedImage temp, float zoom)
+	public void draw(Graphics g, float zoom)// BufferedImage temp, float zoom)
 	{
 		int index = list.getSelectionModel().getMinSelectionIndex();
 		for (int i = 0; i <= index; i++)
@@ -128,6 +132,10 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 			return null;
 		return mdl.get(index);
 	}
+	
+	public BufferedImage getTemp() { return temp; }
+	
+	public void setTemp(BufferedImage temp) { this.temp = temp; }
 	
 	public Layer getLayer(int index)
 	{

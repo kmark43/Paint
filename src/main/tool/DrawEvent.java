@@ -42,6 +42,12 @@ public class DrawEvent
 	
 	private LayerManager manager;
 	
+	public DrawEvent(LayerManager manager)
+	{
+		this.manager = manager;
+		invzoom = 1;
+	}
+	
 	/**
 	* @param e The MouseEvent used to determine mouse info for drawing
 	* @param g The main graphics object which draws to the image
@@ -74,6 +80,42 @@ public class DrawEvent
 		this.x = x;
 		this.y = y;
 		this.manager = manager;
+	}
+	
+	public void init(MouseEvent e)
+	{
+		this.g = g;
+		mouseEvent = e;
+		keyEvent = null;
+		// temp = tempG;
+		x = e.getX();
+		y = e.getY();
+	}
+	
+	public void init(KeyEvent e1, int x, int y)
+	{
+		keyEvent = e1;
+		mouseEvent = null;
+		this.x = x;
+		this.y = y;
+		this.manager = manager;
+	}
+	
+	public void setTempG() { temp = (Graphics2D)manager.getTemp().getGraphics(); }
+	
+	public void setZoom(float zoom)
+	{
+		this.invzoom = 1 / zoom;
+	}
+	
+	public void setGraphics(Graphics2D gr)
+	{
+		gr.setClip(g.getClip());
+		gr.setColor(g.getColor());
+		gr.setStroke(g.getStroke());
+		gr.setComposite(g.getComposite());
+		g.dispose();
+		g = gr;
 	}
 	
 	/**

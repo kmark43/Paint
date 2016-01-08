@@ -17,6 +17,8 @@ public class Spray extends Tool implements Runnable
 	
 	private int x, y;
 	
+	private Graphics g;
+	
 	private boolean spraying = false;
 	
 	public Spray(Main main)
@@ -31,7 +33,8 @@ public class Spray extends Tool implements Runnable
 	
 	public void run()
 	{
-		Graphics g = layerManager.getCurrentLayer().getImage().getGraphics();
+		// Graphics g = layerManager.getCurrentLayer().getImage().getGraphics();
+		
 		g.setColor(c);
 		int radius = (Integer)radiusSpinner.getValue();
 		int thickness = (Integer)thicknessSpinner.getValue();
@@ -58,6 +61,7 @@ public class Spray extends Tool implements Runnable
 	{
 		layerManager = e.getManager();
 		spraying = true;
+		g = e.getGraphics();
 		c = e.getGraphics().getColor();
 		x = e.getX();
 		y = e.getY();

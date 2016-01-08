@@ -298,8 +298,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			} else
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
-				int width = (int)Math.max(img.getWidth(), getWidth());
-				int height = (int)Math.max(img.getHeight(), getHeight());
+				int width = Math.max(img.getWidth(), getWidth());
+				int height = Math.max(img.getHeight(), getHeight());
 				setSize(width, height);
 			}
 			
@@ -524,17 +524,17 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JColorChooser chooser = new JColorChooser();
+		// JColorChooser chooser = new JColorChooser();
 		JButton source = (JButton)e.getSource();
 		if (e.getActionCommand().equals("foreground"))
 		{
-			Color c = chooser.showDialog(frame, "Pick Color", foreColor);
+			Color c = JColorChooser.showDialog(frame, "Pick Color", foreColor);
 			if (c != null)
 				foreColor = c;
 			source.setBackground(foreColor);
 		} else
 		{
-			Color c = chooser.showDialog(frame, "Pick Color", backColor);
+			Color c = JColorChooser.showDialog(frame, "Pick Color", backColor);
 			if (c != null)
 				backColor = c;
 			source.setBackground(backColor);

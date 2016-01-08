@@ -11,6 +11,8 @@ import java.awt.event.*;
 */
 public class NewImageDialog extends JDialog implements ActionListener, FocusListener
 {
+	final static long serialVersionUID = 19287497124L;
+	
 	/**
 	* The main class used to call back when the ok button is pressed
 	*/

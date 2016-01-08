@@ -5,6 +5,7 @@ import main.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 
 public class RectangleSelect extends Tool
 {
@@ -79,7 +80,8 @@ public class RectangleSelect extends Tool
 	
 	public void mouseUp(DrawEvent e)
 	{
-		
+		e.getArea().reset();
+		e.getArea().add(new Area(rect));
 	}
 	
 	public void drawSelection()

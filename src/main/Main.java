@@ -547,6 +547,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		{
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
 			this.zoom = zoom;
+			drawEvent.setZoom(zoom);
 		}
 	}
 	
@@ -561,6 +562,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			view.y = (int)(view.y * dzoom);
 			scroll.getViewport().scrollRectToVisible(view);
 			this.zoom = zoom;
+			drawEvent.setZoom(zoom);
 		}
 	}
 	

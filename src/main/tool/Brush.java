@@ -21,7 +21,7 @@ public class Brush extends Tool
 		if (lastX == -100 || !e.isControlDown())
 		{
 			Graphics2D g = e.getGraphics();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 			lastX = e.getX();
 			lastY = e.getY();
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -55,7 +55,7 @@ public class Brush extends Tool
 	public void mouseUp(DrawEvent e)
 	{
 		Graphics2D g = e.getGraphics();
-		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+		// g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 		g.drawLine(lastX, lastY, e.getX(), e.getY());
 		lastX = e.getX();
 		lastY = e.getY();
@@ -66,7 +66,7 @@ public class Brush extends Tool
 		if (e.getKeyEvent().getKeyCode() == KeyEvent.VK_CONTROL)
 		{
 			Graphics2D g = e.getTempG();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			// g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}

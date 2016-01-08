@@ -4,6 +4,7 @@ import main.layer.LayerManager;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.*;
 
 /**
 * This class is to store information relevent to drawing to the screen
@@ -41,6 +42,8 @@ public class DrawEvent
 	private int y;
 	
 	private LayerManager manager;
+	
+	private Area clippingRegion = new Area();
 	
 	public DrawEvent(LayerManager manager)
 	{
@@ -86,9 +89,10 @@ public class DrawEvent
 	{
 		mouseEvent = e;
 		keyEvent = null;
-		// temp = tempG;
 		x = e.getX();
 		y = e.getY();
+		g.setClip(clippingRegion);
+		temp.setClip(clippingRegion);
 		clearTemp();
 	}
 	
@@ -99,6 +103,8 @@ public class DrawEvent
 		this.x = x;
 		this.y = y;
 		this.manager = manager;
+		g.setClip(clippingRegion);
+		temp.setClip(clippingRegion);
 		clearTemp();
 	}
 	
@@ -112,11 +118,7 @@ public class DrawEvent
 	}
 	
 	public void setTempG() { temp = (Graphics2D)manager.getTemp().getGraphics(); }
-	
-	public void setZoom(float zoom)
-	{
-		this.invzoom = 1 / zoom;
-	}
+	public void setZoom(float zoom) { this.invzoom = 1 / zoom; }
 	
 	public void setGraphics(Graphics2D gr)
 	{
@@ -181,6 +183,13 @@ public class DrawEvent
 	
 	public LayerManager getManager() { return manager; }
 	
+	public Area getArea() { return clippingRegion; }
+	
+	// public void clip()
+	// {
+		
+	// }
+	
 	/**
 	* The dispose method to dispose of the graphics objects
 	*/
@@ -196,6 +205,12 @@ public class DrawEvent
 	public void setColor(Color c)
 	{
 		g.setColor(c);
-		// temp.setColor(c);
+		temp.setColor(c);
+	}
+	
+	public void setStroke(Stroke stroke)
+	{
+		g.setStroke(stroke);
+		temp.setStroke(stroke);
 	}
 }

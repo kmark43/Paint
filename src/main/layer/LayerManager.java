@@ -18,12 +18,12 @@ import java.util.ArrayList;
 */
 public class LayerManager extends JPanel implements ListSelectionListener, KeyListener, ActionListener
 {
+	final static long serialVersionUID = 12984791824L;
 	/**
 	* Stores the layers inside of the table
 	*/
 	private LayerModel mdl = new LayerModel();
 	
-	private Area clippingRegion = new Area();
 	private BufferedImage temp;
 	
 	/**
@@ -218,6 +218,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	private class LayerModel extends AbstractTableModel
 	{
+		final static long serialVersionUID = 987129847l;
 		private List<Layer> layers;
 		
 		public LayerModel()

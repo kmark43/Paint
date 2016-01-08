@@ -402,6 +402,11 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	{
 		super.setSize(width, height);
 		container.setPreferredSize(new Dimension(width, height));
+		layerManager.setTemp(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
+		if (drawEvent.getTempG() != null)
+			drawEvent.getTempG().dispose();
+		// drawEvent.setTempG((Graphics2D)layerManager.getTemp().getGraphics());
+		drawEvent.setTempG();
 		scroll.revalidate();
 	}
 	
@@ -411,7 +416,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	public void mousePressed(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible()) return;
-		
+		drawEvent.setTempG();
 		switch(e.getButton())
 		{
 			case 1:
@@ -422,9 +427,13 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				break;
 			default: current = null; return;
 		}
+		if (drawEvent.getGraphics() != null)
+			drawEvent.getGraphics().dispose();
+		Graphics2D g = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
+		drawEvent.setGraphics(g);
 		// DrawEvent event = getEvent(e);
-		drawEvent.getGraphics().setColor(current);
 		drawEvent.init(e);
+		drawEvent.setColor(current);
 		currentTool.mouseDown(drawEvent);
 		// event.dispose();
 		repaint();
@@ -447,9 +456,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	public void mouseReleased(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
-		DrawEvent event = getEvent(e);
+		// DrawEvent event = getEvent(e);
 		drawEvent.init(e);
-		currentTool.mouseUp(event);
+		currentTool.mouseUp(drawEvent);
 		repaint();
 		// event.dispose();
 	}
@@ -572,6 +581,7 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		for (int i = 0; i < getWidth(); i += 10)
 			for (int j = 10 - (i % 20); j < getHeight(); j += 20)
 				g.fillRect(i, j, 10, 10);
+		
 		layerManager.draw(g, zoom);
 	}
 	

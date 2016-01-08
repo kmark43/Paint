@@ -72,7 +72,9 @@ public class RectangleSelect extends Tool
 	public void mouseDrag(DrawEvent e)
 	{
 		constructRect(e);
-		drawSelection(e.getTempG());
+		Graphics2D g = e.getTempG();
+		drawSelection(g);
+		// g.setColor(Color.BLACK);
 	}
 	
 	public void mouseUp(DrawEvent e)

@@ -84,12 +84,12 @@ public class DrawEvent
 	
 	public void init(MouseEvent e)
 	{
-		this.g = g;
 		mouseEvent = e;
 		keyEvent = null;
 		// temp = tempG;
 		x = e.getX();
 		y = e.getY();
+		clearTemp();
 	}
 	
 	public void init(KeyEvent e1, int x, int y)
@@ -99,6 +99,16 @@ public class DrawEvent
 		this.x = x;
 		this.y = y;
 		this.manager = manager;
+		clearTemp();
+	}
+	
+	public void clearTemp()
+	{
+		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		temp.setColor(new Color(0, 0, 0, 0));
+		temp.fillRect(0, 0, manager.getTemp().getWidth(), manager.getTemp().getHeight());
+		temp.setColor(g.getColor());
+		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	}
 	
 	public void setTempG() { temp = (Graphics2D)manager.getTemp().getGraphics(); }
@@ -110,11 +120,14 @@ public class DrawEvent
 	
 	public void setGraphics(Graphics2D gr)
 	{
-		gr.setClip(g.getClip());
-		gr.setColor(g.getColor());
-		gr.setStroke(g.getStroke());
-		gr.setComposite(g.getComposite());
-		g.dispose();
+		if (g != null)
+		{
+			gr.setClip(g.getClip());
+			gr.setColor(g.getColor());
+			gr.setStroke(g.getStroke());
+			gr.setComposite(g.getComposite());
+			g.dispose();
+		}
 		g = gr;
 	}
 	
@@ -183,6 +196,6 @@ public class DrawEvent
 	public void setColor(Color c)
 	{
 		g.setColor(c);
-		temp.setColor(c);
+		// temp.setColor(c);
 	}
 }

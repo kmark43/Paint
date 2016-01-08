@@ -29,6 +29,7 @@ public class Brush extends Tool
 		else
 		{
 			Graphics2D g = e.getTempG();
+			// System.out.println(g);
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}

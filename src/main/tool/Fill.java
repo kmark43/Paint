@@ -37,7 +37,7 @@ public class Fill extends Tool
 			while (!q.isEmpty())
 			{
 				p = q.remove();
-				if (p.x >= 0 && p.x < img.getWidth() && p.y >= 0 && p.y < img.getHeight())
+				if (e.getArea().contains(p.x, p.y))// if (p.x >= 0 && p.x < img.getWidth() && p.y >= 0 && p.y < img.getHeight())
 				{
 					Color current = new Color(img.getRGB(p.x, p.y), true);
 					if (!painted[p.y][p.x] && targetColor.getAlpha() == current.getAlpha() && Math.abs(current.getRed() - targetColor.getRed()) <= tolerance && Math.abs(current.getGreen() - targetColor.getGreen()) <= tolerance && Math.abs(current.getBlue() - targetColor.getBlue()) <= tolerance)

@@ -17,6 +17,7 @@ public class ToolRegister
 		main.registerTool(new Spray(main));
 		main.registerTool(new Fill(main));
 		main.registerTool(new RectangleSelect(main));
+		main.registerTool(new FreeSelect(main));
 		main.registerTool(new Rect());
 		main.registerTool(new Oval());
 		main.registerTool(new Circle());

@@ -91,8 +91,6 @@ public class DrawEvent
 		keyEvent = null;
 		x = e.getX();
 		y = e.getY();
-		// g.setClip(clippingRegion);
-		// temp.setClip(clippingRegion);
 		clearTemp();
 	}
 	
@@ -103,8 +101,6 @@ public class DrawEvent
 		this.x = x;
 		this.y = y;
 		this.manager = manager;
-		// g.setClip(clippingRegion);
-		// temp.setClip(clippingRegion);
 		clearTemp();
 	}
 	

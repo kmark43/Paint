@@ -585,12 +585,13 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				g.fillRect(i, j, 10, 10);
 		
 		layerManager.draw(g, zoom);
-		if (drawEvent.getGraphics() != null && drawEvent.getGraphics().getClip() != null)
+		if (drawEvent.getTempG().getClip() != null)
 		{
+			// System.out.println(drawEvent.getGraphics().getClip());
 			Graphics2D g2 = (Graphics2D)g;
 			g2.scale(zoom, zoom);
 			g2.setColor(Color.blue);
-			Shape outline = drawEvent.getGraphics().getClip();
+			Shape outline = drawEvent.getTempG().getClip();
 			g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{5}, 0));
 			g2.draw(outline);
 		}

@@ -42,12 +42,15 @@ public class RectangleSelect extends Tool
 		lastX = e.getX();
 		lastY = e.getY();
 		constructRect(e);
-		drawSelection(e.getTempG());
+		Graphics g = e.getTempG();
+		g.setClip(null);
+		drawSelection(g);
 	}
 	
 	public void drawSelection(Graphics g)
 	{
 		int i = 0;
+		// System.out.println(g.getClip());
 		for (i = rect.x; i < rect.x + rect.width - 5; i += 10)
 		{
 			g.drawLine(i, rect.y, i + 5, rect.y);
@@ -74,6 +77,7 @@ public class RectangleSelect extends Tool
 	{
 		constructRect(e);
 		Graphics2D g = e.getTempG();
+		// Graphics2D g = (Graphics2D)e.getManager().getTemp().getGraphics();
 		drawSelection(g);
 		// g.setColor(Color.BLACK);
 	}
@@ -82,6 +86,7 @@ public class RectangleSelect extends Tool
 	{
 		e.getArea().reset();
 		e.getArea().add(new Area(rect));
+		e.setClip(e.getArea());
 	}
 	
 	public void drawSelection()

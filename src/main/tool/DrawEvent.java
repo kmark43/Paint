@@ -91,8 +91,8 @@ public class DrawEvent
 		keyEvent = null;
 		x = e.getX();
 		y = e.getY();
-		g.setClip(clippingRegion);
-		temp.setClip(clippingRegion);
+		// g.setClip(clippingRegion);
+		// temp.setClip(clippingRegion);
 		clearTemp();
 	}
 	
@@ -103,9 +103,16 @@ public class DrawEvent
 		this.x = x;
 		this.y = y;
 		this.manager = manager;
-		g.setClip(clippingRegion);
-		temp.setClip(clippingRegion);
+		// g.setClip(clippingRegion);
+		// temp.setClip(clippingRegion);
 		clearTemp();
+	}
+	
+	public void setClip(Area clip)
+	{
+		clippingRegion = clip;
+		g.setClip(clip);
+		temp.setClip(clip);
 	}
 	
 	public void clearTemp()
@@ -184,11 +191,6 @@ public class DrawEvent
 	public LayerManager getManager() { return manager; }
 	
 	public Area getArea() { return clippingRegion; }
-	
-	// public void clip()
-	// {
-		
-	// }
 	
 	/**
 	* The dispose method to dispose of the graphics objects

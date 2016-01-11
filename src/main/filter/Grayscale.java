@@ -1,24 +1,47 @@
 package main.filter;
 
+import main.tool.DrawEvent;
+
+import java.awt.*;
 import java.awt.image.*;
+import java.awt.geom.*;
 import main.layer.*;
 
 public class Grayscale extends Filter
 {
 	@Override
-	public void modifyImage(LayerManager layerManager)
+	public void modifyImage(DrawEvent e)
 	{
-		BufferedImage img = layerManager.getCurrentLayer().getImage();
-		for (int i = 0; i < img.getWidth(); i++)
+		// for (int i = 0; i < img.getWidth(); i++)
+		// {
+			// for (int j = 0; j < img.getHeight(); j++)
+			// {
+				// int rgb   = img.getRGB(i, j);
+				// int red   = (rgb >> 16) & 0xff;
+				// int green = (rgb >> 8) & 0xff;
+				// int blue  = rgb & 0xff;
+				// int ave = (red + green + blue) / 3;
+				// img.setRGB(i, j, (ave << 16) + (ave << 8) + ave);
+			// }
+		// }
+		
+		BufferedImage img = e.getManager().getCurrentLayer().getImage();
+		Area area = e.getArea();
+		Rectangle bounds = area.getBounds();
+		for (int x = bounds.x; x < bounds.x + bounds.width; x++)
 		{
-			for (int j = 0; j < img.getHeight(); j++)
+			for (int y = bounds.y; y < bounds.y + bounds.height; y++)
 			{
-				int rgb   = img.getRGB(i, j);
-				int red   = (rgb >> 16) & 0xff;
-				int green = (rgb >> 8) & 0xff;
-				int blue  = rgb & 0xff;
-				int ave = (red + green + blue) / 3;
-				img.setRGB(i, j, (ave << 16) + (ave << 8) + ave);
+				if (area.contains(x, y))
+				{
+					int rgb   = img.getRGB(x, y);
+					int alpha = (rgb >> 24);
+					int red   = (rgb >> 16) & 0xff;
+					int green = (rgb >> 8) & 0xff;
+					int blue  = rgb & 0xff;
+					int ave = (red + green + blue) / 3;
+					img.setRGB(x, y, (alpha << 24) + (ave << 16) + (ave << 8) + ave);
+				}
 			}
 		}
 	}

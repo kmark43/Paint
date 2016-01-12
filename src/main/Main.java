@@ -284,13 +284,16 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	{
 		try
 		{
-			BufferedImage img = ImageIO.read(file);
+			Image originalImage = ImageIO.read(file);
+			BufferedImage img = new BufferedImage(originalImage.getWidth(null), originalImage.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+			Graphics g = img.getGraphics();
+			g.drawImage(originalImage, 0, 0, null);
+			g.dispose();
 			if (layerManager.getCurrentLayer() == null)
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
 				double width = (double)container.getWidth() / img.getWidth();
 				double height = (double)container.getHeight() / img.getHeight();
-				// setSize(1, 1);
 				if (width < 1 && height < 1)
 					setZoom((float)Math.max(width * .9, height * .9));
 				else
@@ -369,34 +372,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		grabFocus();
 	}
 	
-	public DrawEvent getEvent(MouseEvent e)
-	{
-		// Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
-		// Graphics2D tempG  = (Graphics2D)temp.getGraphics();
-		// tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		// tempG.setColor(new Color(0, 0, 0, 0));
-		// tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
-		// tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		// DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, layerManager);
-		// event.setColor(current);
-		// return event;
-		return null;
-	}
-	
-	public DrawEvent getEvent(KeyEvent e)
-	{
-		// Graphics2D bufG   = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
-		// Graphics2D tempG  = (Graphics2D)temp.getGraphics();
-		// tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-		// tempG.setColor(new Color(0, 0, 0, 0));
-		// tempG.fillRect(0, 0, temp.getWidth(), temp.getHeight());
-		// tempG.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		// DrawEvent event = new DrawEvent(e, bufG, tempG, zoom, mouseX, mouseY, layerManager);
-		// event.setColor(current);
-		// return event;
-		return null;
-	}
-	
 	@Override
 	public void setSize(int width, int height)
 	{
@@ -405,7 +380,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		layerManager.setTemp(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 		if (drawEvent.getTempG() != null)
 			drawEvent.getTempG().dispose();
-		// drawEvent.setTempG((Graphics2D)layerManager.getTemp().getGraphics());
 		drawEvent.setTempG();
 		scroll.revalidate();
 	}
@@ -431,11 +405,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			drawEvent.getGraphics().dispose();
 		Graphics2D g = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
 		drawEvent.setGraphics(g);
-		// DrawEvent event = getEvent(e);
 		drawEvent.init(e);
 		drawEvent.setColor(current);
 		currentTool.mouseDown(drawEvent);
-		// event.dispose();
 		repaint();
 	}
 	
@@ -445,10 +417,8 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		mouseX = e.getX();
 		mouseY = e.getY();
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
-		// DrawEvent event = getEvent(e);
 		drawEvent.init(e);
 		currentTool.mouseDrag(drawEvent);
-		// event.dispose();
 		repaint();
 	}
 	
@@ -456,11 +426,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	public void mouseReleased(MouseEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
-		// DrawEvent event = getEvent(e);
 		drawEvent.init(e);
 		currentTool.mouseUp(drawEvent);
 		repaint();
-		// event.dispose();
 	}
 	
 	@Override
@@ -500,22 +468,18 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				layerManager.setSelected(index);
 		}
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
-		// DrawEvent event = getEvent(e);
 		drawEvent.init(e, mouseX, mouseY);
 		currentTool.keyDown(drawEvent);
 		repaint();
-		// event.dispose();
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
-		// DrawEvent event = getEvent(e);
 		drawEvent.init(e, mouseX, mouseY);
 		currentTool.keyUp(drawEvent);
 		repaint();
-		// event.dispose();
 	}
 	
 	@Override
@@ -524,7 +488,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		// JColorChooser chooser = new JColorChooser();
 		JButton source = (JButton)e.getSource();
 		if (e.getActionCommand().equals("foreground"))
 		{
@@ -587,7 +550,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 		layerManager.draw(g, zoom);
 		if (drawEvent.getTempG().getClip() != null)
 		{
-			// System.out.println(drawEvent.getGraphics().getClip());
 			Graphics2D g2 = (Graphics2D)g;
 			g2.scale(zoom, zoom);
 			g2.setColor(Color.blue);

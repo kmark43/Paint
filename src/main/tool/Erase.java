@@ -18,45 +18,24 @@ public class Erase extends Tool
 	
 	public void mouseDown(DrawEvent e)
 	{
-		if (lastX == -100 || !e.isControlDown())
-		{
-			Graphics2D g = e.getGraphics();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setColor(new Color(0, 0, 0, 0));
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-			lastX = e.getX();
-			lastY = e.getY();
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
-		}
-		else
-		{
-			// Graphics2D g = e.getTempG();
-			// g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			// g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-			// g.setColor(new Color(0, 0, 0, 0));
-			// g.drawLine(lastX, lastY, e.getX(), e.getY());
-		}
+		Graphics2D g = e.getGraphics();
+		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+		g.setColor(new Color(0, 0, 0, 0));
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		lastX = e.getX();
+		lastY = e.getY();
+		g.drawLine(lastX, lastY, e.getX(), e.getY());
 	}
 	
 	public void mouseDrag(DrawEvent e)
 	{
-		if (!e.isControlDown())
-		{
-			Graphics2D g = e.getGraphics();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-			g.setColor(new Color(0, 0, 0, 0));
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
-			lastX = e.getX();
-			lastY = e.getY();
-		} else
-		{
-			// Graphics2D g = e.getTempG();
-			// g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			// g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-			// g.setColor(new Color(0, 0, 0, 0));
-			// g.drawLine(lastX, lastY, e.getX(), e.getY());
-		}
+		Graphics2D g = e.getGraphics();
+		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+		g.setColor(new Color(0, 0, 0, 0));
+		g.drawLine(lastX, lastY, e.getX(), e.getY());
+		lastX = e.getX();
+		lastY = e.getY();
 	}
 	
 	public void mouseUp(DrawEvent e)
@@ -68,17 +47,6 @@ public class Erase extends Tool
 		g.drawLine(lastX, lastY, e.getX(), e.getY());
 		lastX = e.getX();
 		lastY = e.getY();
-	}
-	
-	public void keyDown(DrawEvent e)
-	{
-		if (e.getKeyEvent().getKeyCode() == KeyEvent.VK_CONTROL)
-		{
-			Graphics2D g = e.getTempG();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
-		}
 	}
 	
 	public String getName() { return "Eraser"; }

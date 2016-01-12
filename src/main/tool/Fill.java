@@ -34,10 +34,13 @@ public class Fill extends Tool
 			int tolerance = (Integer)toleranceSpinner.getValue();
 			boolean painted[][] = new boolean[img.getHeight()][img.getWidth()];
 			q.add(p);
+			Shape clipArea = e.getGraphics().getClip();
+			if (clipArea == null)
+				clipArea = new Rectangle(0, 0, e.getManager().getCurrentLayer().getImage().getWidth(), e.getManager().getCurrentLayer().getImage().getHeight());
 			while (!q.isEmpty())
 			{
 				p = q.remove();
-				if (e.getArea().contains(p.x, p.y))// if (p.x >= 0 && p.x < img.getWidth() && p.y >= 0 && p.y < img.getHeight())
+				if (clipArea.contains(p.x, p.y))
 				{
 					Color current = new Color(img.getRGB(p.x, p.y), true);
 					if (!painted[p.y][p.x] && targetColor.getAlpha() == current.getAlpha() && Math.abs(current.getRed() - targetColor.getRed()) <= tolerance && Math.abs(current.getGreen() - targetColor.getGreen()) <= tolerance && Math.abs(current.getBlue() - targetColor.getBlue()) <= tolerance)

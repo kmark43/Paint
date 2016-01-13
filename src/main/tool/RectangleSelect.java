@@ -50,7 +50,6 @@ public class RectangleSelect extends Tool
 	public void drawSelection(Graphics g)
 	{
 		int i = 0;
-		// System.out.println(g.getClip());
 		for (i = rect.x; i < rect.x + rect.width - 5; i += 10)
 		{
 			g.drawLine(i, rect.y, i + 5, rect.y);

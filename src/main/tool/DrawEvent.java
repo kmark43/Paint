@@ -100,7 +100,6 @@ public class DrawEvent
 		mouseEvent = null;
 		this.x = x;
 		this.y = y;
-		this.manager = manager;
 		clearTemp();
 	}
 	

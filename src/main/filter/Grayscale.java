@@ -30,6 +30,7 @@ public class Grayscale extends Filter
 		Rectangle bounds = area.getBounds();
 		if (e.getGraphics().getClip() ==  null)
 			area.add(new Area(new Rectangle(0, 0, e.getManager().getCurrentLayer().getImage().getWidth(), e.getManager().getCurrentLayer().getImage().getHeight())));
+		bounds = area.getBounds();
 		for (int x = bounds.x; x < bounds.x + bounds.width; x++)
 		{
 			for (int y = bounds.y; y < bounds.y + bounds.height; y++)

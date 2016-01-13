@@ -220,6 +220,9 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				Graphics2D g = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
+				drawEvent.setGraphics(g);
+				drawEvent.init(null, mouseX, mouseY);
 				f.modifyImage(drawEvent);
 				main.repaint();
 			}

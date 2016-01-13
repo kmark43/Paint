@@ -6,6 +6,9 @@ import main.layer.LayerManager;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+* This tool represents spray paint
+*/
 public class Spray extends Tool implements Runnable
 {
 	private JSpinner radiusSpinner    = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
@@ -21,6 +24,10 @@ public class Spray extends Tool implements Runnable
 	
 	private boolean spraying = false;
 	
+	/**
+	* Defines the property panel for the spray paint tool
+	* @param main Used to repaint the main panel when more points have been painted
+	*/
 	public Spray(Main main)
 	{
 		this.main = main;
@@ -31,10 +38,9 @@ public class Spray extends Tool implements Runnable
 		property.add(thicknessSpinner);
 	}
 	
+	@Override
 	public void run()
 	{
-		// Graphics g = layerManager.getCurrentLayer().getImage().getGraphics();
-		
 		g.setColor(c);
 		int radius = (Integer)radiusSpinner.getValue();
 		int thickness = (Integer)thicknessSpinner.getValue();
@@ -57,6 +63,9 @@ public class Spray extends Tool implements Runnable
 		}
 	}
 	
+	/**
+	* Begins the execution thread for drawing
+	*/
 	public void mouseDown(DrawEvent e)
 	{
 		layerManager = e.getManager();
@@ -68,6 +77,9 @@ public class Spray extends Tool implements Runnable
 		new Thread(this).start();
 	}
 	
+	/**
+	* Updates the x and y coords and color accordingly
+	*/
 	public void mouseDrag(DrawEvent e)
 	{
 		c = e.getGraphics().getColor();
@@ -75,6 +87,9 @@ public class Spray extends Tool implements Runnable
 		y = e.getY();
 	}
 	
+	/**
+	* Updates the x and y coords and color accordingly and stops spraying
+	*/
 	public void mouseUp  (DrawEvent e)
 	{
 		c = e.getGraphics().getColor();

@@ -27,7 +27,7 @@ public class SettingsDialog extends JDialog
 		setVisible(true);
 	}
 	
-	public void initGUI()
+	private void initGUI()
 	{
 		JPanel mainPane = new JPanel(new GridLayout(2, 1));
 		JPanel temp = new JPanel();
@@ -36,7 +36,7 @@ public class SettingsDialog extends JDialog
 		mainPane.add(temp);
 	}
 	
-	public File getSettingsFile()
+	private File getSettingsFile()
 	{
 		String os = (System.getProperty("os.name")).toUpperCase();
 		String workingDir = "";
@@ -48,7 +48,7 @@ public class SettingsDialog extends JDialog
 		return file;
 	}
 	
-	public void loadSettings()
+	private void loadSettings()
 	{
 		HashMap<String, Integer> ruleCaster = new HashMap<String, Integer>();
 		ruleCaster.put("autoupdatefilter", AUTOUPDATEDURINGFILTERS);
@@ -73,7 +73,7 @@ public class SettingsDialog extends JDialog
 		}
 	}
 	
-	public void saveSettings()
+	private void saveSettings()
 	{
 		HashMap<Integer, String> ruleWriter = new HashMap<Integer, String>();
 		ruleWriter.put(AUTOUPDATEDURINGFILTERS, "autoupdatefilter");
@@ -91,4 +91,6 @@ public class SettingsDialog extends JDialog
 			ex.printStackTrace();
 		}
 	}
+	
+	public boolean getRule(int rule) { return rules.get(rule); }
 }

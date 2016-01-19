@@ -15,16 +15,25 @@ public class SettingsDialog extends JDialog
 	private HashMap<Integer, Boolean> rules = new HashMap<Integer, Boolean>();
 	private JCheckBox chkAutoUpdateFilters = new JCheckBox("Auto update during filter changes");
 	
-	private JButton btnOk = new JButton();
-	private JButton btn
+	private JButton btnOk = new JButton("OK");
+	private JButton btnCancel = new JButton("Cancel");
 	
 	public SettingsDialog()
 	{
-		rules.put(AUTOUPDATEDURINGFILTERS, false);
+		loadSettings();
 		initGUI();
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+	
+	public void initGUI()
+	{
+		JPanel mainPane = new JPanel(new GridLayout(2, 1));
+		JPanel temp = new JPanel();
+		temp.add(chkAutoUpdateFilters);
+		chkAutoUpdateFilters.setSelected(rules.get(AUTOUPDATEDURINGFILTERS));
+		mainPane.add(temp);
 	}
 	
 	public File getSettingsFile()
@@ -36,8 +45,6 @@ public class SettingsDialog extends JDialog
 		else
 			workingDir = System.getenv("user.home") + "/Library/Application Support/Painter";
 		File file = new File(workingDir, "settings.txt");
-		if (!file.exists())
-			file.createNewFile();
 		return file;
 	}
 	
@@ -48,13 +55,15 @@ public class SettingsDialog extends JDialog
 		try
 		{
 			File settingsFile = getSettingsFile();
-			BufferedReader in = new BufferedReader(new FileReader(getSettingsFile()));
+			if (!settingsFile.exists())
+				settingsFile.createNewFile();
+			BufferedReader in = new BufferedReader(new FileReader(settingsFile));
 			String line;
 			
 			while ((line = in.readLine()) != null)
 			{
-				String tokens = line.split("=");
-				rules.put(ruleCaster.get(tokens[0]));
+				String tokens[] = line.split("=");
+				rules.put(ruleCaster.get(tokens[0]), Boolean.parseBoolean(tokens[1]));
 			}
 			
 			in.close();
@@ -67,25 +76,19 @@ public class SettingsDialog extends JDialog
 	public void saveSettings()
 	{
 		HashMap<Integer, String> ruleWriter = new HashMap<Integer, String>();
-		ruleCaster.put(AUTOUPDATEDURINGFILTERS, "autoupdatefilter");
+		ruleWriter.put(AUTOUPDATEDURINGFILTERS, "autoupdatefilter");
 		try
 		{
 			File settingsFile = getSettingsFile();
-			BufferedWriter out = new BufferedWriter(new FileWriter(getSettingsFile()));
-			out.write(ruleCaster.get(AUTOUPDATEDURINGFILTERS) + "=" + rules.get(AUTOUPDATEDURINGFILTERS));
+			if (!settingsFile.exists())
+				settingsFile.createNewFile();
+			BufferedWriter out = new BufferedWriter(new FileWriter(settingsFile));
+			out.write(ruleWriter.get(AUTOUPDATEDURINGFILTERS) + "=" + rules.get(AUTOUPDATEDURINGFILTERS));
 			out.newLine();
 			out.close();
 		} catch(IOException ex)
 		{
 			ex.printStackTrace();
 		}
-	}
-	
-	public void initGUI()
-	{
-		JPanel mainPane = new JPanel(new GridLayout(2, 1));
-		JPanel temp = new JPanel();
-		temp.add(chkAutoUpdateFilters);
-		mainPane.add(temp);
 	}
 }

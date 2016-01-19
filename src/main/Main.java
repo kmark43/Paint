@@ -23,10 +23,11 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	private LayerManager layerManager = new LayerManager(this);
 	
 	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
+	private StringBuilder currentPhrase = new StringBuilder();
+	private char initialChar = ' ';
+	private boolean phraseActive = false;
 	
 	private String filePath = "";
-	
-	// private BufferedImage temp;
 	
 	private JFrame frame = new JFrame("Paint");
 	
@@ -77,12 +78,6 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 				grabFocus();
 			}
 		});
-		
-		// try
-		// {
-			// Thread.sleep(1000);
-		// } catch(Exception ex){}
-		// grabFocus();
 	}
 	
 	private void init()
@@ -392,6 +387,24 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
+		if (phraseActive)
+		{
+			switch(e.getButton())
+			{
+				case 1:
+					phraseActive = false;
+					System.out.println("Accept");
+					currentPhrase.setLength(0);
+					break;
+				case 3:
+					phraseActive = false;
+					System.out.println("Cancel");
+					currentPhrase.setLength(0);
+					break;
+			}
+			current = null;
+			return;
+		}
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible()) return;
 		drawEvent.setTempG();
 		switch(e.getButton())
@@ -439,6 +452,10 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	{
 		mouseX = e.getX();
 		mouseY = e.getY();
+		if (phraseActive)
+		{
+			
+		}
 	}
 	
 	@Override
@@ -458,17 +475,62 @@ public class Main extends JPanel implements MouseListener, MouseMotionListener, 
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
-		JToggleButton btn = keyToolMap.get(e.getKeyCode());
-		if (btn != null)
-		{
-			btn.doClick();
-			return;
-		}
+		// JToggleButton btn = keyToolMap.get(e.getKeyCode());
+		// if (btn != null)
+		// {
+			// btn.doClick();
+			// return;
+		// }
+		
 		if (e.isControlDown())
 		{
 			int index = e.getKeyChar() - '1';
 			if (index < Math.min(9, layerManager.getLayerCount()) && index >= 0)
 				layerManager.setSelected(index);
+		} else if (!e.isAltDown() && !e.isShiftDown())
+		{
+			if (!phraseActive)
+			{
+				switch (e.getKeyCode())
+				{
+					case 'T':
+						break;
+					
+					default:
+						return;
+				}
+				currentPhrase.append(e.getKeyChar());
+				initialChar = (char)e.getKeyCode();
+				phraseActive = true;
+			}
+			else
+			{
+				switch (e.getKeyCode())
+				{
+					case KeyEvent.VK_ENTER:
+						phraseActive = false;
+						System.out.println("Accept");
+						currentPhrase.setLength(0);
+						break;
+					case KeyEvent.VK_ESCAPE:
+						phraseActive = false;
+						System.out.println("Cancel");
+						currentPhrase.setLength(0);
+						break;
+					default:
+						switch (initialChar)
+						{
+							case 'T':
+								JToggleButton btn = keyToolMap.get(e.getKeyCode());
+								if (btn != null)
+									btn.doClick();
+								phraseActive = false;
+								currentPhrase.setLength(0);
+								break;
+						}
+						break;
+				}
+			}
 		}
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || current == null) return;
 		drawEvent.init(e, mouseX, mouseY);

@@ -10,10 +10,10 @@ import java.awt.geom.*;
 public class RectangleSelect extends Tool
 {
 	private Main main;
-	private JSpinner spinnerX      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 0));
-	private JSpinner spinnerY      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 0));
-	private JSpinner spinnerWidth  = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 0));
-	private JSpinner spinnerHeight = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 0));
+	private JSpinner spinnerX      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
+	private JSpinner spinnerY      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
+	private JSpinner spinnerWidth  = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
+	private JSpinner spinnerHeight = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
 	
 	private int lastX, lastY;
 	

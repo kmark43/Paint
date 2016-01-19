@@ -21,7 +21,7 @@ public class Brush extends Tool
 		if (lastX == -100 || !e.isControlDown())
 		{
 			Graphics2D g = e.getGraphics();
-			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			lastX = e.getX();
 			lastY = e.getY();
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -29,7 +29,7 @@ public class Brush extends Tool
 		else
 		{
 			Graphics2D g = e.getTempG();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}
@@ -39,14 +39,12 @@ public class Brush extends Tool
 		if (!e.isControlDown())
 		{
 			Graphics2D g = e.getGraphics();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 			lastX = e.getX();
 			lastY = e.getY();
 		} else
 		{
 			Graphics2D g = e.getTempG();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}

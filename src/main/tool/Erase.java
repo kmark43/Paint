@@ -19,7 +19,7 @@ public class Erase extends Tool
 	public void mouseDown(DrawEvent e)
 	{
 		Graphics2D g = e.getGraphics();
-		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+		g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 		g.setColor(new Color(0, 0, 0, 0));
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 		lastX = e.getX();
@@ -40,6 +40,7 @@ public class Erase extends Tool
 		Graphics2D g = e.getGraphics();
 		g.drawLine(lastX, lastY, e.getX(), e.getY());
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+		g.setColor(e.getTempG().getColor());
 		lastX = e.getX();
 		lastY = e.getY();
 	}

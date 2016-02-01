@@ -1,6 +1,6 @@
 package main.tool;
 
-import main.Main;
+import main.DrawPanel;
 
 import java.awt.*;
 import java.awt.image.*;
@@ -11,9 +11,9 @@ import java.util.LinkedList;
 public class Fill extends Tool
 {
 	private JSpinner toleranceSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
-	private Main main;
+	private DrawPanel main;
 	
-	public Fill(Main main)
+	public Fill(DrawPanel main)
 	{
 		this.main = main;
 		property.add(new JLabel("Tolerance:"));

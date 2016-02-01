@@ -1,6 +1,6 @@
 package main.dialog;
 
-import main.Main;
+import main.DrawPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,7 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	/**
 	* The main class used to call back when the ok button is pressed
 	*/
-	private Main main;
+	private DrawPanel main;
 	
 	/**
 	* The spinner which specifies the width of the new image
@@ -58,7 +58,7 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	* @param main the main class
 	* @param frame the frame to draw in relation to
 	*/
-	public NewImageDialog(Main main, JFrame frame)
+	public NewImageDialog(DrawPanel main, JFrame frame)
 	{
 		super(frame, "Create Image");
 		this.main = main;

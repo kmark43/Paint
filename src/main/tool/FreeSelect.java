@@ -1,6 +1,6 @@
 package main.tool;
 
-import main.Main;
+import main.DrawPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,12 +9,12 @@ import java.awt.geom.*;
 
 public class FreeSelect extends Tool
 {
-	private Main main;
+	private DrawPanel main;
 	
 	private int lastX, lastY;
 	private Polygon polygon = new Polygon();
 	
-	public FreeSelect(Main main)
+	public FreeSelect(DrawPanel main)
 	{
 		this.main = main;
 	}

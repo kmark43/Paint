@@ -1,6 +1,6 @@
 package main.layer;
 
-import main.Main;
+import main.DrawPanel;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -35,13 +35,13 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	private JButton btnDelete = new JButton("Delete");
 	private JButton btnAdd    = new JButton("Add");
 	
-	private Main main;
+	private DrawPanel main;
 	
 	/**
 	* Creates a new LayerManager object, initilizing the graphical components of the layer manager JPanel
 	* @param main the main class used as a reference to repaint when layers are added
 	*/
-	public LayerManager(Main main)
+	public LayerManager(DrawPanel main)
 	{
 		this.main = main;
 		setLayout(new GridLayout(2, 1));

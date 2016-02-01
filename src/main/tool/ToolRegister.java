@@ -1,6 +1,6 @@
 package main.tool;
 
-import main.Main;
+import main.DrawPanel;
 
 /**
 * This class is to register all tools to the program, it should be used for any new tools added
@@ -10,7 +10,7 @@ public class ToolRegister
 	/**
 	* This method registers the tools
 	*/
-	public static void registerTools(Main main)
+	public static void registerTools(DrawPanel main)
 	{
 		main.registerTool(new Brush());
 		main.registerTool(new Erase());

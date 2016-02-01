@@ -94,12 +94,12 @@ public class DrawEvent
 		clearTemp();
 	}
 	
-	public void init(KeyEvent e1, int x, int y)
+	public void init(KeyEvent e1, Point p)
 	{
 		keyEvent = e1;
 		mouseEvent = null;
-		this.x = x;
-		this.y = y;
+		this.x = p.x;
+		this.y = p.y;
 		clearTemp();
 	}
 	

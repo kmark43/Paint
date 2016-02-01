@@ -1,6 +1,6 @@
 package main.tool;
 
-import main.Main;
+import main.DrawPanel;
 import main.layer.LayerManager;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class Spray extends Tool implements Runnable
 	
 	private LayerManager layerManager;
 	private Color c;
-	private Main main;
+	private DrawPanel main;
 	
 	private int x, y;
 	
@@ -28,7 +28,7 @@ public class Spray extends Tool implements Runnable
 	* Defines the property panel for the spray paint tool
 	* @param main Used to repaint the main panel when more points have been painted
 	*/
-	public Spray(Main main)
+	public Spray(DrawPanel main)
 	{
 		this.main = main;
 		property.setLayout(new GridLayout(2, 2));

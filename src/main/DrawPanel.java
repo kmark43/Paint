@@ -61,7 +61,7 @@ public class DrawPanel extends JPanel implements ActionListener
 	
 	
 	private Tool currentTool;
-	private Color current = backColor;
+	private Color current;
 	private Point pos = new Point();
 	
 	private DrawEvent drawEvent = new DrawEvent(layerManager);

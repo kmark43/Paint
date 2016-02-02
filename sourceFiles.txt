@@ -1,6 +1,7 @@
 src/main/Main.java
 src/main/DrawPanel.java
 src/main/GUIManager.java
+src/main/ImageLoader.java
 
 src/main/event/PanelMouse.java
 src/main/event/PanelKey.java

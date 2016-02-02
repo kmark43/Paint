@@ -98,4 +98,15 @@ public class PanelKey implements KeyListener
 	
 	@Override
 	public void keyTyped(KeyEvent e){}
+	
+	public char getInitialChar() { return initialChar; }
+	public void setInitialChar(char c) { initialChar = c; }
+	public boolean isPhraseActive() { return phraseActive; }
+	
+	public void clearPhrase()
+	{
+		currentPhrase.setLength(0);
+		initialChar = ' ';
+		phraseActive = false;
+	}
 }

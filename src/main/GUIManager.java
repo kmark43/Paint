@@ -72,7 +72,6 @@ public class GUIManager implements ActionListener
 		
 		container.setLayout(null);
 		container.add(drawPane);
-		// container.addMouseWheelListener(this);
 		scroll.setPreferredSize(new Dimension(800, 600));
 		
 		JPanel colorPane = new JPanel(new GridLayout(1, 2));
@@ -121,14 +120,18 @@ public class GUIManager implements ActionListener
 			{
 				if (e.getSource() == itmNew)
 					new NewImageDialog(drawPane, null);
-				// else if (e.getSource() == itmOpen)
-					// open();
-				// else if (e.getSource() == itmSave)
-					// save();
+				else if (e.getSource() == itmOpen)
+				{
+					ImageLoader.open(drawPane, layerManager);
+				}
+				else if (e.getSource() == itmSave)
+				{
+					ImageLoader.save(drawPane, layerManager);
+				}
 				else if (e.getSource() == itmSaveAs)
 				{
-					// filePath = "";
-					// save();
+					ImageLoader.clearFilePath();
+					ImageLoader.save(drawPane, layerManager);
 				}
 				else if (e.getSource() == itmExit)
 					System.exit(0);
@@ -214,8 +217,8 @@ public class GUIManager implements ActionListener
 		
 		toolMenu.add(itm);
 		
-		// if (t.getShortcut() != 0)
-			// keyToolMap.put(t.getShortcut(), btn);
+		if (t.getShortcut() != 0)
+			drawPane.getKeyToolMap().put(t.getShortcut(), btn);
 		
 		itm.addActionListener(new ActionListener()
 		{

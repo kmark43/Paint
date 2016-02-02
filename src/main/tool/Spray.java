@@ -20,7 +20,7 @@ public class Spray extends Tool implements Runnable
 	
 	private int x, y;
 	
-	private Graphics g;
+	private Graphics2D g;
 	
 	private boolean spraying = false;
 	
@@ -74,6 +74,7 @@ public class Spray extends Tool implements Runnable
 		c = e.getGraphics().getColor();
 		x = e.getX();
 		y = e.getY();
+		g.setStroke(new BasicStroke(1));
 		new Thread(this).start();
 	}
 	

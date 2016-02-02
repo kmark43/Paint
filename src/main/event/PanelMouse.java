@@ -15,27 +15,31 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 	private LayerManager layerManager;
 	private JScrollPane scroll;
 	
-	public PanelMouse(DrawPanel drawPanel, DrawEvent e, LayerManager layerManager, JScrollPane scroll)
+	private PanelKey keyListener;
+	
+	public PanelMouse(DrawPanel drawPanel, PanelKey panelKey, DrawEvent e, LayerManager layerManager, JScrollPane scroll)
 	{
 		this.drawPanel = drawPanel;
+		this.keyListener = panelKey;
 		drawEvent = e;
 		this.layerManager = layerManager;
+		this.scroll = scroll;
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (drawPanel.isPhraseActive())
+		if (keyListener.isPhraseActive())
 		{
 			switch(e.getButton())
 			{
 				case 1:
 					System.out.println("Accept");
-					drawPanel.clearPhrase();
+					keyListener.clearPhrase();
 					break;
 				case 3:
 					System.out.println("Cancel");
-					drawPanel.clearPhrase();
+					keyListener.clearPhrase();
 					break;
 			}
 			drawPanel.setCurrent(null);
@@ -96,7 +100,7 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		mouse.x = e.getX();
 		mouse.y = e.getY();
 		drawPanel.setPos(mouse);
-		if (drawPanel.isPhraseActive())
+		if (keyListener.isPhraseActive())
 		{
 			
 		}

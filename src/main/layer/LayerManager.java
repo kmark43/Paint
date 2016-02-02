@@ -216,6 +216,8 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	public int getLayerCount() { return mdl.getRowCount(); }
 	
+	public void setDrawPane(DrawPanel pane) { this.main = pane; }
+	
 	private class LayerModel extends AbstractTableModel
 	{
 		final static long serialVersionUID = 987129847l;

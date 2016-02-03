@@ -6,9 +6,7 @@ import javax.swing.*;
 public class Rect extends Tool
 {
 	private int lastX, lastY;
-	private FillDrawer fillDrawer = new FillDrawer();
-	private OutlineDrawer outlineDrawer = new OutlineDrawer();
-	private RectDrawer currentDrawer = outlineDrawer;
+	private RectType currentDrawer = RectType.OUTLINE;
 	
 	private JCheckBox chkFilled = new JCheckBox("Filled");
 	
@@ -22,7 +20,7 @@ public class Rect extends Tool
 		Graphics2D g = e.getTempG();
 		lastX = e.getX();
 		lastY = e.getY();
-		currentDrawer = chkFilled.isSelected() ? fillDrawer : outlineDrawer;
+		currentDrawer = chkFilled.isSelected() ? RectType.FILLED : RectType.OUTLINE;
 		drawRect(g, e);
 	}
 	
@@ -54,24 +52,18 @@ public class Rect extends Tool
 			y1 = e.getY();
 			y2 = lastY;
 		}
-		currentDrawer.drawRect(g, x1, y1, x2 - x1, y2 - y1);
+		switch (currentDrawer)
+		{
+			case OUTLINE:
+				g.drawRect(x1, y1, x2 - x1, y2 - y1);
+				break;
+			case FILLED:
+				g.fillRect(x1, y1, x2 - x1, y2 - y1);
+				break;
+		}
 	}
 	
-	private interface RectDrawer { public void drawRect(Graphics g, int x, int y, int width, int height); }
-	private class FillDrawer implements RectDrawer
-	{
-		public void drawRect(Graphics g, int x, int y, int width, int height)
-		{
-			g.fillRect(x, y, width, height);
-		}
-	}
-	private class OutlineDrawer implements RectDrawer
-	{
-		public void drawRect(Graphics g, int x, int y, int width, int height)
-		{
-			g.drawRect(x, y, width, height);
-		}
-	}
+	private enum RectType { OUTLINE, FILLED }
 	
 	public String getName() { return "Rectangle"; }
 	public int getShortcut() { return 'R'; }

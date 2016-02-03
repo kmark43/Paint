@@ -16,6 +16,7 @@ public class RectangleSelect extends Tool
 	private JSpinner spinnerHeight = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
 	
 	private int lastX, lastY;
+	private boolean moved = false;
 	
 	private Rectangle rect = new Rectangle();
 	
@@ -45,6 +46,7 @@ public class RectangleSelect extends Tool
 		Graphics g = e.getTempG();
 		g.setClip(null);
 		drawSelection(g);
+		moved = false;
 	}
 	
 	public void drawSelection(Graphics g)
@@ -79,13 +81,20 @@ public class RectangleSelect extends Tool
 		// Graphics2D g = (Graphics2D)e.getManager().getTemp().getGraphics();
 		drawSelection(g);
 		// g.setColor(Color.BLACK);
+		moved = true;
 	}
 	
 	public void mouseUp(DrawEvent e)
 	{
-		e.getArea().reset();
-		e.getArea().add(new Area(rect));
-		e.setClip(e.getArea());
+		// System.out.println(moved);
+		if (moved || e.getGraphics().getClip() == null)
+		{
+			e.getArea().reset();
+			e.getArea().add(new Area(rect));
+			e.setClip(e.getArea());
+		}
+		else
+			e.clearClip();
 	}
 	
 	public void drawSelection()

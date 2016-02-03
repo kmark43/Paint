@@ -6,9 +6,7 @@ import java.awt.*;
 public class Circle extends Tool
 {
 	private int lastX, lastY;
-	private FillDrawer fillDrawer = new FillDrawer();
-	private OutlineDrawer outlineDrawer = new OutlineDrawer();
-	private OvalDrawer currentDrawer = outlineDrawer;
+	private CircleType currentDrawer = CircleType.OUTLINE;
 	
 	private JCheckBox chkFilled = new JCheckBox("Filled");
 	
@@ -22,7 +20,7 @@ public class Circle extends Tool
 		Graphics2D g = e.getTempG();
 		lastX = e.getX();
 		lastY = e.getY();
-		currentDrawer = chkFilled.isSelected() ? fillDrawer : outlineDrawer;
+		currentDrawer = chkFilled.isSelected() ? CircleType.FILLED : CircleType.OUTLINE;
 		drawOval(g, e);
 	}
 	
@@ -43,24 +41,18 @@ public class Circle extends Tool
 		int x1 = lastX;
 		int y1 = lastY;
 		int radius = (int)Math.sqrt((e.getX() - lastX) * (e.getX() - lastX) + (e.getY() - lastY) * (e.getY() - lastY));
-		currentDrawer.drawOval(g, x1 - radius, y1 - radius, radius * 2, radius * 2);;
+		switch (currentDrawer)
+		{
+			case OUTLINE:
+				g.drawOval(x1 - radius, y1 - radius, radius * 2, radius * 2);
+				break;
+			case FILLED:
+				g.fillOval(x1 - radius, y1 - radius, radius * 2, radius * 2);
+				break;
+		}
 	}
 	
-	private interface OvalDrawer { public void drawOval(Graphics g, int x, int y, int width, int height); }
-	private class FillDrawer implements OvalDrawer
-	{
-		public void drawOval(Graphics g, int x, int y, int width, int height)
-		{
-			g.fillOval(x, y, width, height);
-		}
-	}
-	private class OutlineDrawer implements OvalDrawer
-	{
-		public void drawOval(Graphics g, int x, int y, int width, int height)
-		{
-			g.drawOval(x, y, width, height);
-		}
-	}
+	private enum CircleType { OUTLINE, FILLED }
 	
 	public String getName() { return "Circle"; }
 	public int getShortcut() { return 'C'; }

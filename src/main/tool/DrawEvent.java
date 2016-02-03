@@ -110,6 +110,13 @@ public class DrawEvent
 		temp.setClip(clip);
 	}
 	
+	public void clearClip()
+	{
+		clippingRegion.reset();
+		g.setClip(null);
+		temp.setClip(null);
+	}
+	
 	public void clearTemp()
 	{
 		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));

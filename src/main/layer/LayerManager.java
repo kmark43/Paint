@@ -12,6 +12,7 @@ import java.awt.geom.*;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
 * This class is to manage layers
@@ -25,6 +26,8 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	private LayerModel mdl = new LayerModel();
 	
 	private BufferedImage temp;
+	
+	// private Stack<Layer> history = new LinkedList<Layer>();
 	
 	/**
 	* The graphical component showing the list of layers

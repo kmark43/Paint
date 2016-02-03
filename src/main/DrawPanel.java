@@ -136,6 +136,7 @@ public class DrawPanel extends JPanel
 				g.fillRect(i, j, 10, 10);
 		
 		layerManager.draw(g, zoom);
+		
 		if (drawEvent.getGraphics() != null && drawEvent.getGraphics().getClip() != null)
 		{
 			Graphics2D g2 = (Graphics2D)g;

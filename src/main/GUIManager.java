@@ -32,7 +32,7 @@ public class GUIManager implements ActionListener
 	private JMenuItem itmExit   = new JMenuItem("Exit");
 	
 	private JMenu editMenu = new JMenu("Edit");
-	
+	private JMenuItem itmUndo = new JMenuItem("Undo");
 	
 	private JMenu filterMenu = new JMenu("Filters");
 	private JMenu toolMenu = new JMenu("Tools");
@@ -113,31 +113,6 @@ public class GUIManager implements ActionListener
 		eastPane.add(propertyPane, BorderLayout.NORTH);
 		eastPane.add(layerManager, BorderLayout.SOUTH);
 		
-		ActionListener fileMenuListener = new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if (e.getSource() == itmNew)
-					new NewImageDialog(drawPane, null);
-				else if (e.getSource() == itmOpen)
-				{
-					ImageLoader.open(drawPane, layerManager);
-				}
-				else if (e.getSource() == itmSave)
-				{
-					ImageLoader.save(drawPane, layerManager);
-				}
-				else if (e.getSource() == itmSaveAs)
-				{
-					ImageLoader.clearFilePath();
-					ImageLoader.save(drawPane, layerManager);
-				}
-				else if (e.getSource() == itmExit)
-					System.exit(0);
-			}
-		};
-		
 		fileMenu  .setMnemonic('F');
 		itmNew    .setMnemonic('N');
 		itmOpen   .setMnemonic('O');
@@ -145,16 +120,22 @@ public class GUIManager implements ActionListener
 		itmSaveAs .setMnemonic('A');
 		itmExit   .setMnemonic('E');
 		
-		itmNew    .addActionListener(fileMenuListener);
-		itmOpen   .addActionListener(fileMenuListener);
-		itmSave   .addActionListener(fileMenuListener);
-		itmSaveAs .addActionListener(fileMenuListener);
-		itmExit   .addActionListener(fileMenuListener);
+		itmNew    .addActionListener(this);
+		itmOpen   .addActionListener(this);
+		itmSave   .addActionListener(this);
+		itmSaveAs .addActionListener(this);
+		itmExit   .addActionListener(this);
 		
 		itmNew    .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK));
 		itmOpen   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 		itmSave   .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 		itmSaveAs .setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+		
+		editMenu.setMnemonic('E');
+		editMenu.add(itmUndo);
+		itmUndo.setMnemonic('U');
+		itmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
+		itmUndo.addActionListener(this);
 		
 		menu.add(fileMenu);
 		menu.add(editMenu);
@@ -170,9 +151,6 @@ public class GUIManager implements ActionListener
 		frame.add(mainPane);
 		
 		drawPane.addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
-		// addMouseListener(mouseListener);
-		// addMouseMotionListener(mouseListener);
-		// addKeyListener(keyListener);
 		removeFocus(mainPane);
 		drawPane.setFocusable(true);
 		bg.getElements().nextElement().doClick();
@@ -254,19 +232,53 @@ public class GUIManager implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		JButton source = (JButton)e.getSource();
-		if (e.getActionCommand().equals("foreground"))
+		if (e.getSource() instanceof JMenuItem)
 		{
-			Color c = JColorChooser.showDialog(frame, "Pick Color", drawPane.getForeColor());
-			if (c != null)
-				drawPane.setForeColor(c);
-			source.setBackground(c);
-		} else
+			JMenuItem itm = (JMenuItem)e.getSource();
+			JMenu parent = (JMenu)((JPopupMenu)itm.getParent()).getInvoker();
+			if (parent == fileMenu)
+			{
+				if (itm == itmNew)
+					new NewImageDialog(drawPane, null);
+				else if (itm == itmOpen)
+				{
+					ImageLoader.open(drawPane, layerManager);
+				}
+				else if (itm == itmSave)
+				{
+					ImageLoader.save(drawPane, layerManager);
+				}
+				else if (itm == itmSaveAs)
+				{
+					ImageLoader.clearFilePath();
+					ImageLoader.save(drawPane, layerManager);
+				}
+				else if (itm == itmExit)
+					System.exit(0);
+			} else if (parent == editMenu)
+			{
+				if (itm == itmUndo)
+				{
+					
+				}
+			}
+		}
+		else
 		{
-			Color c = JColorChooser.showDialog(frame, "Pick Color", drawPane.getBackColor());
-			if (c != null)
-				drawPane.setBackColor(c);
-			source.setBackground(c);
+			JButton source = (JButton)e.getSource();
+			if (e.getActionCommand().equals("foreground"))
+			{
+				Color c = JColorChooser.showDialog(frame, "Pick Color", drawPane.getForeColor());
+				if (c != null)
+					drawPane.setForeColor(c);
+				source.setBackground(c);
+			} else
+			{
+				Color c = JColorChooser.showDialog(frame, "Pick Color", drawPane.getBackColor());
+				if (c != null)
+					drawPane.setBackColor(c);
+				source.setBackground(c);
+			}
 		}
 	}
 	

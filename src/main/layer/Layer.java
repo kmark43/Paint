@@ -105,11 +105,28 @@ public class Layer
 	*/
 	public Layer(Layer otherLayer)
 	{
-		name = otherLayer.name + " - copy";
+		copy(otherLayer);
+		name += " - copy";
+	}
+	
+	/**
+	* Creates a blank layer object
+	*/
+	public Layer(){}
+	
+	/**
+	* Copies the specified layer
+	*/
+	public Layer copy(Layer otherLayer)
+	{
+		name = otherLayer.name;
 		img = new BufferedImage(otherLayer.img.getWidth(), otherLayer.img.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		for (int i = 0; i < img.getWidth(); i++)
 			for (int j = 0; j < img.getHeight(); j++)
 				img.setRGB(i, j, otherLayer.img.getRGB(i, j));
+		// new Throwable().printStackTrace();
+		// System.out.println(otherLayer + " " + this);
+		return this;
 	}
 	
 	/**

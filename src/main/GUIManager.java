@@ -33,6 +33,7 @@ public class GUIManager implements ActionListener
 	
 	private JMenu editMenu = new JMenu("Edit");
 	private JMenuItem itmUndo = new JMenuItem("Undo");
+	private JMenuItem itmRedo = new JMenuItem("Redo");
 	
 	private JMenu filterMenu = new JMenu("Filters");
 	private JMenu toolMenu = new JMenu("Tools");
@@ -136,6 +137,10 @@ public class GUIManager implements ActionListener
 		itmUndo.setMnemonic('U');
 		itmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
 		itmUndo.addActionListener(this);
+		editMenu.add(itmRedo);
+		itmRedo.setMnemonic('R');
+		itmRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, KeyEvent.CTRL_DOWN_MASK));
+		itmRedo.addActionListener(this);
 		
 		menu.add(fileMenu);
 		menu.add(editMenu);
@@ -259,7 +264,11 @@ public class GUIManager implements ActionListener
 			{
 				if (itm == itmUndo)
 				{
-					
+					layerManager.undo();
+				}
+				else if (itm == itmRedo)
+				{
+					layerManager.redo();
 				}
 			}
 		}

@@ -46,6 +46,7 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 			return;
 		}
 		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible()) return;
+		layerManager.addHistory();
 		drawEvent.setTempG();
 		switch(e.getButton())
 		{

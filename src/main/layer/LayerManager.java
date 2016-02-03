@@ -12,7 +12,7 @@ import java.awt.geom.*;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.LinkedList;
 
 /**
 * This class is to manage layers
@@ -27,7 +27,8 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	private BufferedImage temp;
 	
-	// private Stack<Layer> history = new LinkedList<Layer>();
+	private LinkedList<Layer> history = new LinkedList<Layer>();
+	private LinkedList<Layer> redo = new LinkedList<Layer>();
 	
 	/**
 	* The graphical component showing the list of layers
@@ -147,7 +148,47 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	
 	public void valueChanged(ListSelectionEvent e)
 	{
+		redo.clear();
 		main.repaint();
+	}
+	
+	public void addHistory()
+	{
+		redo.clear();
+		Layer newLayer = new Layer();
+		newLayer.copy(getCurrentLayer());
+		pushElement(history, newLayer);
+	}
+	
+	public void undo()
+	{
+		if (!history.isEmpty())
+		{
+			int index = list.getSelectionModel().getMinSelectionIndex();
+			Layer recent = history.pop();
+			pushElement(redo, getCurrentLayer());
+			mdl.set(index, recent);
+			main.repaint();
+		}
+	}
+	
+	public void redo()
+	{
+		if (!redo.isEmpty())
+		{
+			int index = list.getSelectionModel().getMinSelectionIndex();
+			Layer recent = redo.pop();
+			pushElement(history, getCurrentLayer());
+			mdl.set(index, recent);
+			main.repaint();
+		}
+	}
+	
+	public void pushElement(LinkedList<Layer> list, Layer newLayer)
+	{
+		list.push(newLayer);
+		if (list.size() > 10)
+			list.removeFirst();
 	}
 	
 	@Override
@@ -240,6 +281,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		public void add(Layer layer) { layers.add(layer); }
 		public void add(Layer layer, int index) { layers.add(index, layer); }
 		public void remove(int index) { layers.remove(index); }
+		public void set(int index, Layer value) { layers.set(index, value); }
 		
 		public void swap(int x, int y)
 		{

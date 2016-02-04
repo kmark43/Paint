@@ -42,7 +42,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	private DrawPanel main;
 	
 	/**
-	* Creates a new LayerManager object, initilizing the graphical components of the layer manager JPanel
+	* Creates a new LayerManager object, initializing the graphical components of the layer manager JPanel
 	* @param main the main class used as a reference to repaint when layers are added
 	*/
 	public LayerManager(DrawPanel main)
@@ -121,14 +121,28 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		int index = list.getSelectionModel().getMinSelectionIndex();
 		for (int i = 0; i <= index; i++)
 			if (mdl.get(i).isVisible())
-				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);
+				g.drawImage(mdl.get(i).getImage(),
+							mdl.get(i).getX(),
+							mdl.get(i).getY(),
+							(int)(mdl.get(i).getImage().getWidth() * zoom),
+							(int)(mdl.get(i).getImage().getHeight() * zoom),
+							null);
 		if (temp != null)
 			g.drawImage(temp, 0, 0, (int)(temp.getWidth() * zoom), (int)(temp.getHeight() * zoom), null);
+		
 		for (int i = index + 1; i < mdl.getRowCount(); i++)
 			if (mdl.get(i).isVisible())
-				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(), mdl.get(i).getY(), (int)(mdl.get(i).getImage().getWidth() * zoom), (int)(mdl.get(i).getImage().getHeight() * zoom), null);
+				g.drawImage(mdl.get(i).getImage(), mdl.get(i).getX(),
+							mdl.get(i).getY(),
+							(int)(mdl.get(i).getImage().getWidth() * zoom),
+							(int)(mdl.get(i).getImage().getHeight() * zoom),
+							null);
 	}
 	
+	/**
+	* Gives the current layer to be modified
+	* @return The layer currently selected in the list of layers
+	*/
 	public Layer getCurrentLayer()
 	{
 		int index = list.getSelectionModel().getMinSelectionIndex();
@@ -137,21 +151,37 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		return mdl.get(index);
 	}
 	
+	/**
+	* @return The temporary image to draw to the screen over the current layer
+	*/
 	public BufferedImage getTemp() { return temp; }
 	
+	/**
+	* Reassigns the value of the temp image
+	* @param temp The new temporary image
+	*/
 	public void setTemp(BufferedImage temp) { this.temp = temp; }
 	
+	/**
+	* Retrieves a layer at a specified index
+	* @param index The index to retrieve
+	* @return The layer at the specified index
+	*/
 	public Layer getLayer(int index)
 	{
 		return mdl.get(index);
 	}
 	
+	@Override
 	public void valueChanged(ListSelectionEvent e)
 	{
 		redo.clear();
 		main.repaint();
 	}
 	
+	/**
+	* Adds a copy of the current layer to history
+	*/
 	public void addHistory()
 	{
 		redo.clear();
@@ -160,31 +190,45 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		pushElement(history, newLayer);
 	}
 	
+	/**
+	* Undoes the last action performed
+	*/
 	public void undo()
 	{
-		if (!history.isEmpty())
-		{
-			int index = list.getSelectionModel().getMinSelectionIndex();
-			Layer recent = history.pop();
-			pushElement(redo, getCurrentLayer());
-			mdl.set(index, recent);
-			main.repaint();
-		}
+		shiftBuffer(history, redo);
 	}
 	
+	/**
+	* Redoes the last action performed
+	*/
 	public void redo()
 	{
-		if (!redo.isEmpty())
+		shiftBuffer(redo, history);
+	}
+	
+	/**
+	* Helper method to set the currentLayer as the top of the stack
+	* and move the previous current layer to the opposing stack
+	* @param removalList The stack to pop from and set current layer to
+	* @param additionList The stack to push current layer to
+	*/
+	private void shiftBuffer(LinkedList<Layer> removalList, LinkedList<Layer> additionList)
+	{
+		if (!removalList.isEmpty())
 		{
 			int index = list.getSelectionModel().getMinSelectionIndex();
-			Layer recent = redo.pop();
-			pushElement(history, getCurrentLayer());
+			Layer recent = removalList.pop();
+			pushElement(additionList, getCurrentLayer());
 			mdl.set(index, recent);
 			main.repaint();
 		}
 	}
 	
-	public void pushElement(LinkedList<Layer> list, Layer newLayer)
+	/**
+	* Helper method to push an element to a stack while keeping a
+	* maximum of 10 elements in the stack
+	*/
+	private void pushElement(LinkedList<Layer> list, Layer newLayer)
 	{
 		list.push(newLayer);
 		if (list.size() > 10)
@@ -215,17 +259,29 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		}
 	}
 	
+	/**
+	* Adds a new layer
+	*/
 	private void add()
 	{
 		if (mdl.getRowCount() > 0)
-			addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), getCurrentLayer().getImage().getHeight(), new Color(0, true)), list.getSelectionModel().getMinSelectionIndex() + 1);
+			addLayer(new Layer("New Layer", getCurrentLayer().getImage().getWidth(), 
+								getCurrentLayer().getImage().getHeight(), new Color(0, true)), 
+								list.getSelectionModel().getMinSelectionIndex() + 1);
 	}
+	
+	/**
+	* Copies current layer to next layer
+	*/
 	private void copy()
 	{
 		if (list.getSelectionModel().getMinSelectionIndex() != -1)
 			addLayer(new Layer(getCurrentLayer()), list.getSelectionModel().getMinSelectionIndex() + 1);
 	}
 	
+	/**
+	* Deletes current layer and reassigns selection
+	*/
 	private void delete()
 	{
 		int index = list.getSelectionModel().getMinSelectionIndex();

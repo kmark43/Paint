@@ -14,14 +14,14 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	final static long serialVersionUID = 19287497124L;
 	
 	/**
-	* The main class used to call back when the ok button is pressed
+	* The drawing panel to update when the OK button is pressed
 	*/
 	private DrawPanel main;
 	
 	/**
 	* The spinner which specifies the width of the new image
 	*/
-	private JSpinner widthSpinner  = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
+	private JSpinner widthSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
 	
 	/**
 	* The spinner which specifies the height of the new image
@@ -31,7 +31,7 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	/**
 	* The submit button to create the new image
 	*/
-	private JButton btnOk     = new JButton("OK");
+	private JButton btnOk = new JButton("OK");
 	
 	/**
 	* The cancel button to prevent the creation of the new image
@@ -41,20 +41,20 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	/**
 	* The fill background option used to fill the image with the secondary color in a separate layer
 	*/
-	private JRadioButton btnFillBackground  = new JRadioButton("Fill with background color", true);
+	private JRadioButton btnFillBackground = new JRadioButton("Fill with background color", true);
 	
 	/**
 	* The fill foreground option used to fill the image with the first color in a separate layer
 	*/
-	private JRadioButton btnFillForeground  = new JRadioButton("Fill with foreground color");
+	private JRadioButton btnFillForeground = new JRadioButton("Fill with foreground color");
 	
 	/**
 	* The fill transparent which does not create a background layer
 	*/
-	private JRadioButton btnFillTransparent = new JRadioButton("Fill with transparancy");
+	private JRadioButton btnFillTransparent = new JRadioButton("Fill with transparency");
 	
 	/**
-	* Initilizes the graphics and settings of the dialog
+	* Initializes the graphics and settings of the dialog
 	* @param main the main class
 	* @param frame the frame to draw in relation to
 	*/

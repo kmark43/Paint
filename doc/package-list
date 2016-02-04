@@ -1,4 +1,6 @@
 main
 main.dialog
+main.event
+main.filter
 main.layer
 main.tool

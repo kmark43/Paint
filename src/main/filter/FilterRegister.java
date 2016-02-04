@@ -3,13 +3,13 @@ package main.filter;
 import main.GUIManager;
 
 /**
-* This class is to register all filters to the program, it should be used for any new filtersadded
+* This class is to register all filters to the program, it should be used for any new filters added
 */
 public class FilterRegister
 {
 	/**
 	* This method registers the filters
-	* @parm main The main class
+	* @parm main The GUI manager
 	*/
 	public static void registerFilters(GUIManager main)
 	{

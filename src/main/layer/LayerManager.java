@@ -188,7 +188,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	{
 		list.push(newLayer);
 		if (list.size() > 10)
-			list.removeFirst();
+			list.removeLast();
 	}
 	
 	@Override

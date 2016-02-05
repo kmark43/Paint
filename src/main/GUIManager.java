@@ -244,7 +244,12 @@ public class GUIManager implements ActionListener
 			if (parent == fileMenu)
 			{
 				if (itm == itmNew)
-					new NewImageDialog(drawPane, null);
+				{
+					NewImageDialog dialog = new NewImageDialog();
+					int res = JOptionPane.showConfirmDialog(frame, dialog, "New Image", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+					if (res == JOptionPane.YES_OPTION)
+						drawPane.loadNew(dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType());
+				}
 				else if (itm == itmOpen)
 				{
 					ImageLoader.open(drawPane, layerManager);

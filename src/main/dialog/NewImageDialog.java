@@ -9,14 +9,9 @@ import java.awt.event.*;
 /**
 * This class for user creation of a new project
 */
-public class NewImageDialog extends JDialog implements ActionListener, FocusListener
+public class NewImageDialog extends JPanel implements FocusListener
 {
 	final static long serialVersionUID = 19287497124L;
-	
-	/**
-	* The drawing panel to update when the OK button is pressed
-	*/
-	private DrawPanel main;
 	
 	/**
 	* The spinner which specifies the width of the new image
@@ -28,15 +23,15 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	*/
 	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
 	
-	/**
-	* The submit button to create the new image
-	*/
-	private JButton btnOk = new JButton("OK");
+	// /**
+	// * The submit button to create the new image
+	// */
+	// private JButton btnOk = new JButton("OK");
 	
-	/**
-	* The cancel button to prevent the creation of the new image
-	*/
-	private JButton btnCancel = new JButton("Cancel");
+	// /**
+	// * The cancel button to prevent the creation of the new image
+	// */
+	// private JButton btnCancel = new JButton("Cancel");
 	
 	/**
 	* The fill background option used to fill the image with the secondary color in a separate layer
@@ -58,20 +53,8 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	* @param main the main class
 	* @param frame the frame to draw in relation to
 	*/
-	public NewImageDialog(DrawPanel main, JFrame frame)
+	public NewImageDialog()
 	{
-		super(frame, "Create Image");
-		this.main = main;
-		init();
-		pack();
-		setLocationRelativeTo(frame);
-		setVisible(true);
-	}
-	
-	private void init()
-	{
-		getRootPane().setDefaultButton(btnOk);
-		
 		JPanel mainPane = new JPanel(new GridLayout(6, 1));
 		
 		((JSpinner.DefaultEditor)widthSpinner.getEditor()).getTextField().addFocusListener(this);
@@ -82,15 +65,11 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 		addRow(mainPane, btnFillBackground);
 		addRow(mainPane, btnFillForeground);
 		addRow(mainPane, btnFillTransparent);
-		addRow(mainPane, btnOk, btnCancel);
 		
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(btnFillBackground);
 		bg.add(btnFillForeground);
 		bg.add(btnFillTransparent);
-		
-		btnOk.addActionListener(this);
-		btnCancel.addActionListener(this);
 		
 		add(mainPane);
 	}
@@ -101,17 +80,6 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 		for (Component c : components)
 			temp.add(c);
 		main.add(temp);
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		if (e.getSource() == btnOk)
-		{
-			main.loadNew((Integer)widthSpinner.getValue(), (Integer)heightSpinner.getValue(), btnFillBackground.isSelected() ? FillType.BACKGROUND : btnFillForeground.isSelected() ? FillType.FOREGROUND : FillType.TRANSPARENT);
-			setVisible(false);
-		} else
-			setVisible(false);
 	}
 	
 	@Override
@@ -130,4 +98,8 @@ public class NewImageDialog extends JDialog implements ActionListener, FocusList
 	
 	@Override
 	public void focusLost(FocusEvent e){}
+	
+	public int getImageWidth() { return (Integer)widthSpinner.getValue(); }
+	public int getImageHeight() { return (Integer)heightSpinner.getValue(); }
+	public FillType getFillType() { return btnFillBackground.isSelected() ? FillType.BACKGROUND : btnFillForeground.isSelected() ? FillType.FOREGROUND : FillType.TRANSPARENT; }
 }

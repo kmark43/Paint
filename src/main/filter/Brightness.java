@@ -14,8 +14,8 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 {
 	private DrawPanel drawPane;
 	private JPanel brightnessDialog = new JPanel(new GridLayout(3, 1));
-	private JSlider brightnessSlider = new JSlider(-128, 128);
-	private JSlider contrastSlider = new JSlider(-128, 128);
+	private JSlider brightnessSlider = new JSlider(-255, 255);
+	private JSlider contrastSlider = new JSlider(-255, 255);
 	private JLabel lblBrightness = new JLabel("0");
 	private JLabel lblContrast = new JLabel("0");
 	private JCheckBox chkPreview = new JCheckBox("Preview", true);
@@ -68,7 +68,8 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 	{
 		lblBrightness.setText("" + brightnessSlider.getValue());
 		lblContrast.setText("" + contrastSlider.getValue());
-		filter();
+		if (chkPreview.isSelected())
+			filter();
 	}
 	
 	public void filter()
@@ -79,7 +80,9 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 		if (drawEvent.getGraphics().getClip() ==  null)
 			area.add(new Area(new Rectangle(0, 0, drawEvent.getManager().getCurrentLayer().getImage().getWidth(), drawEvent.getManager().getCurrentLayer().getImage().getHeight())));
 		bounds = area.getBounds();
-		int db = (Integer)brightnessSlider.getValue();
+		int db = brightnessSlider.getValue();
+		int contrast = contrastSlider.getValue();
+		double contrastFactor = (double)(259 * (contrast + 255)) / (255 * (259 - contrast));
 		for (int x = bounds.x; x < bounds.x + bounds.width; x++)
 		{
 			for (int y = bounds.y; y < bounds.y + bounds.height; y++)
@@ -91,6 +94,9 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 					int red   = clamp(db + ((rgb >> 16) & 0xff));
 					int green = clamp(db + ((rgb >> 8) & 0xff));
 					int blue  = clamp(db + (rgb & 0xff + db));
+					red = clamp((int)(contrastFactor * (red - 128) + 128));
+					green = clamp((int)(contrastFactor * (green - 128) + 128));
+					blue = clamp((int)(contrastFactor * (blue - 128) + 128));
 					img.setRGB(x, y, (alpha << 24) + (red << 16) + (green << 8) + blue);
 				}
 			}

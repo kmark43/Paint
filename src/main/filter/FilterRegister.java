@@ -14,5 +14,6 @@ public class FilterRegister
 	public static void registerFilters(GUIManager main)
 	{
 		main.registerFilter(new Grayscale());
+		main.registerFilter(new Negative());
 	}
 }

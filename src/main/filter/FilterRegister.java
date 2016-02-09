@@ -15,5 +15,6 @@ public class FilterRegister
 	{
 		main.registerFilter(new Grayscale());
 		main.registerFilter(new Negative());
+		main.registerFilter(new Brightness(main.getDrawPane()));
 	}
 }

@@ -17,5 +17,6 @@ public class FilterRegister
 		main.registerFilter(new Negative());
 		main.registerFilter(new Brightness(main.getDrawPane()));
 		main.registerFilter(new RedEye());
+		main.registerFilter(new Multiplier(main.getDrawPane()));
 	}
 }

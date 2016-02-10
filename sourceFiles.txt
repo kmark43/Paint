@@ -11,6 +11,7 @@ src/main/filter/FilterRegister.java
 src/main/filter/Grayscale.java
 src/main/filter/Negative.java
 src/main/filter/Brightness.java
+src/main/filter/RedEye.java
 
 src/main/dialog/FillType.java
 src/main/dialog/NewImageDialog.java

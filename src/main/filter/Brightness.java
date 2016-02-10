@@ -128,7 +128,6 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 		g.drawImage(img, 0, 0, null);
 		g.dispose();
 		drawEvent = e;
-		// filter();
 		new Thread(this).start();
 	}
 	

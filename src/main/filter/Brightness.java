@@ -40,17 +40,18 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 		brightnessDialog.add(temp);
 		temp = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		temp.add(chkPreview);
+		chkPreview.addChangeListener(this);
 		brightnessDialog.add(temp);
 	}
 	
 	@Override
 	public void run()
 	{
-		int res = JOptionPane.showConfirmDialog(null, brightnessDialog, "Brightness", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		brightnessSlider.setValue(0);
 		contrastSlider.setValue(0);
 		lblBrightness.setText("0");
 		lblContrast.setText("0");
+		int res = JOptionPane.showConfirmDialog(null, brightnessDialog, "Brightness", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 		if (res == JOptionPane.OK_OPTION)
 			filter();
 		else
@@ -104,7 +105,7 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 		drawPane.repaint();
 	}
 	
-	public int clamp(int value)
+	private int clamp(int value)
 	{
 		if (value < 0) return 0;
 		else if (value > 255) return 255;

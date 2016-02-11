@@ -184,6 +184,7 @@ public class GUIManager implements ActionListener
 				Graphics2D g = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
 				drawPane.getDrawEvent().setGraphics(g);
 				drawPane.getDrawEvent().init(null, drawPane.getPos());
+				layerManager.addHistory();
 				f.modifyImage(drawPane.getDrawEvent());
 				drawPane.repaint();
 			}

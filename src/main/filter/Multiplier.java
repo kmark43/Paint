@@ -32,15 +32,16 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 		multiplierDialog.add(temp);
 		temp = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		temp.add(chkPreview);
+		chkPreview.addChangeListener(this);
 		multiplierDialog.add(temp);
 	}
 	
 	@Override
 	public void run()
 	{
+		multiplierSlider.setValue(255);
+		lblMultiplier.setText("1");
 		int res = JOptionPane.showConfirmDialog(null, multiplierDialog, "Multiplier", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-		multiplierSlider.setValue(0);
-		lblMultiplier.setText("0");
 		if (res == JOptionPane.OK_OPTION)
 			filter();
 		else
@@ -88,7 +89,7 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 		drawPane.repaint();
 	}
 	
-	public int clamp(int value)
+	private int clamp(int value)
 	{
 		if (value < 0) return 0;
 		else if (value > 255) return 255;

@@ -23,16 +23,6 @@ public class NewImageDialog extends JPanel implements FocusListener
 	*/
 	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
 	
-	// /**
-	// * The submit button to create the new image
-	// */
-	// private JButton btnOk = new JButton("OK");
-	
-	// /**
-	// * The cancel button to prevent the creation of the new image
-	// */
-	// private JButton btnCancel = new JButton("Cancel");
-	
 	/**
 	* The fill background option used to fill the image with the secondary color in a separate layer
 	*/

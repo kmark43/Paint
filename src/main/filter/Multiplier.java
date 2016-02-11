@@ -14,7 +14,7 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 {
 	private DrawPanel drawPane;
 	private JPanel multiplierDialog = new JPanel(new GridLayout(2, 1));
-	private JSlider multiplierSlider = new JSlider(0, 255);
+	private JSlider multiplierSlider = new JSlider(0, 510, 255);
 	private JLabel lblMultiplier = new JLabel("0");
 	private JCheckBox chkPreview = new JCheckBox("Preview", true);
 	
@@ -56,7 +56,7 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
-		lblMultiplier.setText("" + multiplierSlider.getValue());
+		lblMultiplier.setText("" + ((float)multiplierSlider.getValue() / 255));
 		if (chkPreview.isSelected())
 			filter();
 	}

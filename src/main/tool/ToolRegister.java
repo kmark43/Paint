@@ -14,10 +14,10 @@ public class ToolRegister
 	{
 		main.registerTool(new Brush());
 		main.registerTool(new Erase());
-		main.registerTool(new Spray(main.getDrawPane()));
-		main.registerTool(new Fill(main.getDrawPane()));
-		main.registerTool(new RectangleSelect(main.getDrawPane()));
-		main.registerTool(new FreeSelect(main.getDrawPane()));
+		main.registerTool(new Spray(main));
+		main.registerTool(new Fill());
+		main.registerTool(new RectangleSelect());
+		main.registerTool(new FreeSelect());
 		main.registerTool(new Rect());
 		main.registerTool(new Oval());
 		main.registerTool(new Circle());

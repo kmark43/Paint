@@ -1,6 +1,6 @@
 package main.event;
 
-import main.DrawPanel;
+import main.GUIManager;
 import main.layer.*;
 import main.tool.*;
 
@@ -11,20 +11,18 @@ import java.util.HashMap;
 
 public class PanelKey implements KeyListener
 {
-	private DrawPanel drawPanel;
+	private GUIManager manager;
 	private DrawEvent drawEvent;
-	private LayerManager layerManager;
 	private StringBuilder currentPhrase = new StringBuilder();
 	private char initialChar = ' ';
 	private boolean phraseActive = false;
 	
 	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
 	
-	public PanelKey(DrawPanel drawPanel, DrawEvent e, LayerManager layerManager, HashMap<Integer, JToggleButton> keyToolMap)
+	public PanelKey(GUIManager manager, DrawEvent e, HashMap<Integer, JToggleButton> keyToolMap)
 	{
-		this.drawPanel = drawPanel;
+		this.manager = manager;
 		drawEvent = e;
-		this.layerManager = layerManager;
 		this.keyToolMap = keyToolMap;
 	}
 	
@@ -34,8 +32,8 @@ public class PanelKey implements KeyListener
 		if (e.isControlDown())
 		{
 			int index = e.getKeyChar() - '1';
-			if (index < Math.min(9, layerManager.getLayerCount()) && index >= 0)
-				layerManager.setSelected(index);
+			if (index < Math.min(9, manager.getDrawPane().getLayerManager().getLayerCount()) && index >= 0)
+				manager.getDrawPane().getLayerManager().setSelected(index);
 		} else if (!e.isAltDown() && !e.isShiftDown())
 		{
 			if (!phraseActive)
@@ -81,19 +79,19 @@ public class PanelKey implements KeyListener
 				}
 			}
 		}
-		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || drawPanel.getCurrent() == null) return;
-		drawEvent.init(e, drawPanel.getPos());
-		drawPanel.getCurrentTool().keyDown(drawEvent);
-		drawPanel.repaint();
+		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible() || manager.getDrawPane().getCurrent() == null) return;
+		drawEvent.init(e, manager.getDrawPane().getPos());
+		manager.getDrawPane().getCurrentTool().keyDown(drawEvent);
+		manager.getDrawPane().repaint();
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (layerManager.getCurrentLayer() == null || !layerManager.getCurrentLayer().isVisible() || drawPanel.getCurrent() == null) return;
-		drawEvent.init(e, drawPanel.getPos());
-		drawPanel.getCurrentTool().keyUp(drawEvent);
-		drawPanel.repaint();
+		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible() || manager.getDrawPane().getCurrent() == null) return;
+		drawEvent.init(e, manager.getDrawPane().getPos());
+		manager.getDrawPane().getCurrentTool().keyUp(drawEvent);
+		manager.getDrawPane().repaint();
 	}
 	
 	@Override

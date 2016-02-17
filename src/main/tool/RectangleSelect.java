@@ -1,7 +1,5 @@
 package main.tool;
 
-import main.DrawPanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -9,7 +7,6 @@ import java.awt.geom.*;
 
 public class RectangleSelect extends Tool
 {
-	private DrawPanel main;
 	private JSpinner spinnerX      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
 	private JSpinner spinnerY      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
 	private JSpinner spinnerWidth  = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
@@ -20,9 +17,8 @@ public class RectangleSelect extends Tool
 	
 	private Rectangle rect = new Rectangle();
 	
-	public RectangleSelect(DrawPanel main)
+	public RectangleSelect()
 	{
-		this.main = main;
 		property.setLayout(new GridLayout(4, 1));
 		addRow(property, new JLabel("X:"), spinnerX);
 		addRow(property, new JLabel("Y:"), spinnerY);

@@ -9,15 +9,8 @@ import java.awt.geom.*;
 
 public class FreeSelect extends Tool
 {
-	private DrawPanel main;
-	
 	private int lastX, lastY;
 	private Polygon polygon = new Polygon();
-	
-	public FreeSelect(DrawPanel main)
-	{
-		this.main = main;
-	}
 	
 	public void drawClip(Graphics2D g)
 	{

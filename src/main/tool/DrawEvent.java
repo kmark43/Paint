@@ -1,5 +1,6 @@
 package main.tool;
 
+import main.GUIManager;
 import main.layer.LayerManager;
 
 import java.awt.*;
@@ -41,11 +42,11 @@ public class DrawEvent
 	
 	private int y;
 	
-	private LayerManager manager;
+	private GUIManager manager;
 	
 	private Area clippingRegion = new Area();
 	
-	public DrawEvent(LayerManager manager)
+	public DrawEvent(GUIManager manager)
 	{
 		this.manager = manager;
 		invzoom = 1;
@@ -57,7 +58,7 @@ public class DrawEvent
 	* @param tempG The temporary graphics object to draw directly to the canvas
 	* @param zoom The zoom ratio of the image
 	*/
-	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG, float zoom, LayerManager manager)
+	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG, float zoom, GUIManager manager)
 	{
 		this.g = g;
 		mouseEvent = e;
@@ -74,7 +75,7 @@ public class DrawEvent
 	* @param tempG The temporary graphics object to draw directly to the canvas
 	* @param zoom The zoom ratio of the image
 	*/
-	public DrawEvent(KeyEvent e1, Graphics2D g, Graphics2D tempG, float zoom, int x, int y, LayerManager manager)
+	public DrawEvent(KeyEvent e1, Graphics2D g, Graphics2D tempG, float zoom, int x, int y, GUIManager manager)
 	{
 		this.g = g;
 		keyEvent = e1;
@@ -121,12 +122,12 @@ public class DrawEvent
 	{
 		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
 		temp.setColor(new Color(0, 0, 0, 0));
-		temp.fillRect(0, 0, manager.getTemp().getWidth(), manager.getTemp().getHeight());
+		temp.fillRect(0, 0, getManager().getTemp().getWidth(), getManager().getTemp().getHeight());
 		temp.setColor(g.getColor());
 		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	}
 	
-	public void setTempG() { temp = (Graphics2D)manager.getTemp().getGraphics(); }
+	public void setTempG(LayerManager manager) { temp = (Graphics2D)manager.getTemp().getGraphics(); }
 	public void setZoom(float zoom) { this.invzoom = 1 / zoom; }
 	
 	public void setGraphics(Graphics2D gr)
@@ -190,7 +191,9 @@ public class DrawEvent
 	*/
 	public Graphics2D getTempG() { return temp; }
 	
-	public LayerManager getManager() { return manager; }
+	public LayerManager getManager() { return manager.getLayerManager(); }
+	
+	// public void setManager(LayerManager layerManager) { manager = layerManager; }
 	
 	public Area getArea() { return clippingRegion; }
 	

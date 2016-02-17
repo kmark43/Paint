@@ -1,6 +1,6 @@
 package main.tool;
 
-import main.DrawPanel;
+import main.GUIManager;
 import main.layer.LayerManager;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class Spray extends Tool implements Runnable
 	
 	private LayerManager layerManager;
 	private Color c;
-	private DrawPanel main;
+	private GUIManager main;
 	
 	private int x, y;
 	
@@ -28,7 +28,7 @@ public class Spray extends Tool implements Runnable
 	* Defines the property panel for the spray paint tool
 	* @param main Used to repaint the main panel when more points have been painted
 	*/
-	public Spray(DrawPanel main)
+	public Spray(GUIManager main)
 	{
 		this.main = main;
 		property.setLayout(new GridLayout(2, 2));
@@ -55,7 +55,7 @@ public class Spray extends Tool implements Runnable
 				yPos += y;
 				g.drawLine(xPos, yPos, xPos, yPos);
 			}
-			main.repaint(x - radius - 1, y - radius - 1, x + radius + 1, y + radius + 1);
+			main.getDrawPane().repaint(x - radius - 1, y - radius - 1, x + radius + 1, y + radius + 1);
 			try
 			{
 				Thread.sleep(10);

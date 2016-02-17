@@ -14,6 +14,11 @@ public class NewImageDialog extends JPanel implements FocusListener
 	final static long serialVersionUID = 19287497124L;
 	
 	/**
+	* The text input to store the new image name
+	*/
+	private JTextField txtName = new JTextField(6);
+	
+	/**
 	* The spinner which specifies the width of the new image
 	*/
 	private JSpinner widthSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
@@ -50,7 +55,8 @@ public class NewImageDialog extends JPanel implements FocusListener
 		((JSpinner.DefaultEditor)widthSpinner.getEditor()).getTextField().addFocusListener(this);
 		((JSpinner.DefaultEditor)heightSpinner.getEditor()).getTextField().addFocusListener(this);
 		
-		addRow(mainPane, new JLabel("Width:"), widthSpinner);
+		addRow(mainPane, new JLabel("Name:"),   txtName);
+		addRow(mainPane, new JLabel("Width:"),  widthSpinner);
 		addRow(mainPane, new JLabel("Height:"), heightSpinner);
 		addRow(mainPane, btnFillBackground);
 		addRow(mainPane, btnFillForeground);
@@ -89,6 +95,7 @@ public class NewImageDialog extends JPanel implements FocusListener
 	@Override
 	public void focusLost(FocusEvent e){}
 	
+	public String getName() { return txtName.getText(); }
 	public int getImageWidth() { return (Integer)widthSpinner.getValue(); }
 	public int getImageHeight() { return (Integer)heightSpinner.getValue(); }
 	public FillType getFillType() { return btnFillBackground.isSelected() ? FillType.BACKGROUND : btnFillForeground.isSelected() ? FillType.FOREGROUND : FillType.TRANSPARENT; }

@@ -4,20 +4,26 @@ import main.tool.*;
 import main.filter.*;
 import main.dialog.*;
 import main.layer.*;
+import main.event.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class GUIManager implements ActionListener
+public class GUIManager implements ActionListener, ChangeListener
 {
 	private ArrayList<Tool> tools = new ArrayList<Tool>();
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
+	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
+	
 	private final JFrame frame = new JFrame("Paint");
-	private LayerManager layerManager = new LayerManager(null);
+	
+	private JButton btnForecolor = new JButton("");
+	private JButton btnBackcolor = new JButton("");
 	
 	private JPanel propertyPane = new JPanel();
 	private JPanel statusPane   = new JPanel();
@@ -40,10 +46,21 @@ public class GUIManager implements ActionListener
 	
 	private JMenu windowMenu = new JMenu("Window");
 	
+	private JPanel managerContainer = new JPanel();
+	
 	private JPanel container = new JPanel();
 	private JScrollPane scroll = new JScrollPane(container, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	
-	private final DrawPanel drawPane = new DrawPanel(layerManager, scroll, container);
+	private JTabbedPane drawPanels = new JTabbedPane();
+	private DrawPanel drawPane;// = new DrawPanel(scroll, container);
+	
+	private DrawEvent drawEvent = new DrawEvent(this);
+	private PanelKey keyListener = new PanelKey(this, drawEvent, keyToolMap);
+	private PanelMouse mouseListener = new PanelMouse(this, keyListener, drawEvent);
+	
+	private Tool currentTool;
+		// keyListener = new PanelKey(this, drawEvent, layerManager, keyToolMap);
+		// mouseListener = new PanelMouse(this, keyListener, drawEvent, layerManager, scroll);
 	
 	public GUIManager()
 	{
@@ -53,13 +70,13 @@ public class GUIManager implements ActionListener
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				drawPane.grabFocus();
-			}
-		});
+		// SwingUtilities.invokeLater(new Runnable()
+		// {
+			// public void run()
+			// {
+				// drawPane.grabFocus();
+			// }
+		// });
 	}
 	
 	private void init()
@@ -67,21 +84,20 @@ public class GUIManager implements ActionListener
 		ToolRegister.registerTools(this);
 		FilterRegister.registerFilters(this);
 		
-		layerManager.setDrawPane(drawPane);
+		// layerManager.setDrawPane(drawPane);
 		
 		JPanel mainPane = new JPanel(new BorderLayout());
 		
-		container.setLayout(null);
-		container.add(drawPane);
-		scroll.setPreferredSize(new Dimension(800, 600));
+		drawPanels.setPreferredSize(new Dimension(800, 600));
+		drawPanels.addChangeListener(this);
+		// container.setLayout(null);
+		// container.add(drawPane);
+		// scroll.setPreferredSize(new Dimension(800, 600));
 		
 		JPanel colorPane = new JPanel(new GridLayout(1, 2));
 		
-		JButton btnForecolor = new JButton();
-		btnForecolor.setBackground(drawPane.getForeColor());
-		
-		JButton btnBackcolor = new JButton();
-		btnBackcolor.setBackground(drawPane.getBackColor());
+		btnForecolor.setBackground(Color.WHITE);//drawPane.getForeColor());
+		btnBackcolor.setBackground(Color.BLACK);//drawPane.getBackColor());
 		
 		btnForecolor.setActionCommand("foreground");
 		btnForecolor.addActionListener(this);
@@ -112,7 +128,7 @@ public class GUIManager implements ActionListener
 		
 		JPanel eastPane = new JPanel(new BorderLayout());
 		eastPane.add(propertyPane, BorderLayout.NORTH);
-		eastPane.add(layerManager, BorderLayout.SOUTH);
+		eastPane.add(managerContainer, BorderLayout.SOUTH);
 		
 		fileMenu  .setMnemonic('F');
 		itmNew    .setMnemonic('N');
@@ -149,16 +165,26 @@ public class GUIManager implements ActionListener
 		menu.add(windowMenu);
 		
 		mainPane.add(toolPane, BorderLayout.WEST);
-		mainPane.add(scroll, BorderLayout.CENTER);
+		mainPane.add(drawPanels, BorderLayout.CENTER);
 		mainPane.add(eastPane, BorderLayout.EAST);
 		mainPane.add(menu, BorderLayout.NORTH);
 		
 		frame.add(mainPane);
 		
-		drawPane.addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
+		// drawPane.addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
 		removeFocus(mainPane);
-		drawPane.setFocusable(true);
+		// drawPane.setFocusable(true);
 		bg.getElements().nextElement().doClick();
+	}
+	
+	public void addTab(String title, DrawPanel pane)
+	{
+		// DrawPanel newPane = new DrawPanel(this, drawEvent);
+		drawPanels.addTab(title, pane.getScroll());
+		pane.getScroll().addMouseWheelListener(mouseListener);
+		pane.addMouseListener(mouseListener);
+		pane.addMouseMotionListener(mouseListener);
+		pane.addKeyListener(keyListener);
 	}
 	
 	public void removeFocus(Container root)
@@ -181,10 +207,11 @@ public class GUIManager implements ActionListener
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Graphics2D g = (Graphics2D)layerManager.getCurrentLayer().getImage().getGraphics();
+				if (drawPane == null) return;
+				Graphics2D g = (Graphics2D)drawPane.getLayerManager().getCurrentLayer().getImage().getGraphics();
 				drawPane.getDrawEvent().setGraphics(g);
 				drawPane.getDrawEvent().init(null, drawPane.getPos());
-				layerManager.addHistory();
+				drawPane.getLayerManager().addHistory();
 				f.modifyImage(drawPane.getDrawEvent());
 				drawPane.repaint();
 			}
@@ -202,7 +229,7 @@ public class GUIManager implements ActionListener
 		toolMenu.add(itm);
 		
 		if (t.getShortcut() != 0)
-			drawPane.getKeyToolMap().put(t.getShortcut(), btn);
+			keyToolMap.put(t.getShortcut(), btn);
 		
 		itm.addActionListener(new ActionListener()
 		{
@@ -225,7 +252,8 @@ public class GUIManager implements ActionListener
 	
 	public void setTool(Tool tool)
 	{
-		drawPane.setTool(tool);
+		// drawPane.setTool(tool);
+		currentTool = tool;
 		propertyPane.removeAll();
 		propertyPane.add(tool.getProperty());
 		frame.pack();
@@ -249,20 +277,22 @@ public class GUIManager implements ActionListener
 					NewImageDialog dialog = new NewImageDialog();
 					int res = JOptionPane.showConfirmDialog(frame, dialog, "New Image", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 					if (res == JOptionPane.YES_OPTION)
-						drawPane.loadNew(dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType());
+					{
+						// drawPane.loadNew(dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType());
+						// addTab(dialog.getName(), new DrawPanel(this, drawEvent, dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType()));
+						drawPane = new DrawPanel(this, drawEvent, dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType());
+						addTab(dialog.getName(), drawPane);
+						// drawPane.getLayerManager.setTempG();
+					}
 				}
 				else if (itm == itmOpen)
-				{
-					ImageLoader.open(drawPane, layerManager);
-				}
+					ImageLoader.open(drawPane, drawPane.getLayerManager());
 				else if (itm == itmSave)
-				{
-					ImageLoader.save(drawPane, layerManager);
-				}
+					ImageLoader.save(drawPane, drawPane.getLayerManager());
 				else if (itm == itmSaveAs)
 				{
 					ImageLoader.clearFilePath();
-					ImageLoader.save(drawPane, layerManager);
+					ImageLoader.save(drawPane, drawPane.getLayerManager());
 				}
 				else if (itm == itmExit)
 					System.exit(0);
@@ -270,11 +300,11 @@ public class GUIManager implements ActionListener
 			{
 				if (itm == itmUndo)
 				{
-					layerManager.undo();
+					drawPane.getLayerManager().undo();
 				}
 				else if (itm == itmRedo)
 				{
-					layerManager.redo();
+					drawPane.getLayerManager().redo();
 				}
 			}
 		}
@@ -297,5 +327,20 @@ public class GUIManager implements ActionListener
 		}
 	}
 	
+	@Override
+	public void stateChanged(ChangeEvent e)
+	{
+		drawPane = (DrawPanel)((Container)((Container)((Container)drawPanels.getSelectedComponent()).getComponent(0)).getComponent(0)).getComponent(0);
+		drawPane.grabFocus();
+		// drawEvent.setManager(drawPane.getLayerManager());
+		managerContainer.removeAll();
+		managerContainer.add(drawPane.getLayerManager());
+		frame.revalidate();
+	}
+	
 	public DrawPanel getDrawPane() { return drawPane; }
+	public LayerManager getLayerManager() { return drawPane.getLayerManager(); }
+	public Color getForeColor() { return btnForecolor.getBackground(); }
+	public Color getBackColor() { return btnBackcolor.getBackground(); }
+	public Tool getCurrentTool() { return currentTool; }
 }

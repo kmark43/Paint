@@ -1,5 +1,6 @@
 package main;
 
+import main.GUIManager;
 import main.dialog.*;
 import main.tool.*;
 import main.filter.*;
@@ -19,9 +20,9 @@ public class DrawPanel extends JPanel
 {
 	final static long serialVersionUID = 214897289174L;
 	
-	private LayerManager layerManager;
+	private LayerManager layerManager = new LayerManager(this);
 	
-	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
+	// private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
 	
 	private Color foreColor = Color.BLACK, backColor = Color.WHITE;
 	
@@ -32,36 +33,48 @@ public class DrawPanel extends JPanel
 	
 	private float zoom = 1;
 	
-	
-	private Tool currentTool;
+	// private Tool currentTool;
 	private Color current;
 	private Point pos = new Point();
 	
+	private GUIManager gui;
+	
 	private DrawEvent drawEvent;
+	private Shape clip;
 	
-	private PanelKey keyListener;
-	private PanelMouse mouseListener;
+	// private PanelKey keyListener;
+	// private PanelMouse mouseListener;
 	
-	public DrawPanel(LayerManager layerManager, JScrollPane scroll, JPanel container)
+	public DrawPanel(GUIManager gui, DrawEvent drawEvent)//JScrollPane scroll, JPanel container)
 	{
-		this.layerManager = layerManager;
-		this.scroll = scroll;
-		this.container = container;
+		this.gui = gui;
+		this.drawEvent = drawEvent;
+		// this.scroll = scroll;
+		// this.container = container;
+		container = new JPanel(null);
+		container.add(this);
+		scroll = new JScrollPane(container);
+		scroll.setPreferredSize(new Dimension(800, 600));
 		
-		drawEvent = new DrawEvent(layerManager);
+		// keyListener = new PanelKey(this, drawEvent, layerManager, keyToolMap);
+		// mouseListener = new PanelMouse(this, keyListener, drawEvent, layerManager, scroll);
 		
-		keyListener = new PanelKey(this, drawEvent, layerManager, keyToolMap);
-		mouseListener = new PanelMouse(this, keyListener, drawEvent, layerManager, scroll);
-		container.addMouseWheelListener(mouseListener);
-		addMouseListener(mouseListener);
-		addMouseMotionListener(mouseListener);
-		addKeyListener(keyListener);
+		// container.addMouseWheelListener(mouseListener);
+		// addMouseListener(mouseListener);
+		// addMouseMotionListener(mouseListener);
+		// addKeyListener(keyListener);
 	}
 	
-	public void setTool(Tool tool)
+	public DrawPanel(GUIManager gui, DrawEvent drawEvent, int width, int height, FillType type)
 	{
-		currentTool = tool;
+		this(gui, drawEvent);
+		loadNew(width, height, type);
 	}
+	
+	// public void setTool(Tool tool)
+	// {
+		// currentTool = tool;
+	// }
 	
 	public void loadNew(int width, int height, FillType type) { ImageLoader.loadNew(width, height, type, this, layerManager); }
 	
@@ -73,7 +86,7 @@ public class DrawPanel extends JPanel
 		layerManager.setTemp(new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB));
 		if (drawEvent.getTempG() != null)
 			drawEvent.getTempG().dispose();
-		drawEvent.setTempG();
+		drawEvent.setTempG(layerManager);
 		scroll.revalidate();
 	}
 	
@@ -107,7 +120,7 @@ public class DrawPanel extends JPanel
 	public void setPos(Point p) { this.pos = p; }
 	public Point getPos() { return pos; }
 	
-	public Tool getCurrentTool() { return currentTool; }
+	public Tool getCurrentTool() { return gui.getCurrentTool(); }
 	
 	public void setCurrent(Color current) { this.current = current; }
 	public Color getCurrent() { return current; }
@@ -118,9 +131,13 @@ public class DrawPanel extends JPanel
 	public Color getForeColor() { return foreColor; }
 	public Color getBackColor() { return backColor; }
 	
-	public HashMap<Integer, JToggleButton> getKeyToolMap() { return keyToolMap; }
+	// public HashMap<Integer, JToggleButton> getKeyToolMap() { return keyToolMap; }
 	
 	public DrawEvent getDrawEvent() { return drawEvent; }
+	
+	public LayerManager getLayerManager() { return layerManager; }
+	
+	public JScrollPane getScroll() { return scroll; }
 	
 	@Override
 	public void paintComponent(Graphics g)

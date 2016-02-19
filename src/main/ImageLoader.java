@@ -9,10 +9,19 @@ import java.awt.image.*;
 import java.awt.*;
 import java.io.*;
 
+/**
+* Provides IO functions to load and save images
+*/
 public class ImageLoader
 {
+	/**
+	* The file path of the last file opened
+	*/
 	private static String filePath = "";
 	
+	/**
+	* Loads a blank image
+	*/
 	public static void loadNew(int width, int height, FillType fillType, DrawPanel panel, LayerManager layerManager)
 	{
 		panel.setSize(width, height);
@@ -37,6 +46,9 @@ public class ImageLoader
 		panel.grabFocus();
 	}
 	
+	/**
+	* Loads an image from the filesystem
+	*/
 	public static void open(DrawPanel panel, LayerManager layerManager)
 	{
 		JFileChooser fc = new JFileChooser();
@@ -47,6 +59,10 @@ public class ImageLoader
 		open(file, panel, layerManager);
 	}
 	
+	/**
+	* Loads an image from the filesystem
+	* @param file The file to load
+	*/
 	public static void open(File file, DrawPanel panel, LayerManager layerManager)
 	{
 		try
@@ -84,6 +100,9 @@ public class ImageLoader
 		panel.grabFocus();
 	}
 	
+	/**
+	* Saves an image to the filesystem
+	*/
 	public static void save(DrawPanel panel, LayerManager layerManager)
 	{
 		if (filePath.equals(""))
@@ -98,6 +117,9 @@ public class ImageLoader
 			save(new File(filePath), panel, layerManager);
 	}
 	
+	/**
+	* Saves an image to the filesystem
+	*/
 	public static void save(File file, DrawPanel panel, LayerManager layerManager)
 	{
 		try
@@ -114,5 +136,8 @@ public class ImageLoader
 		}
 	}
 	
+	/**
+	* Resets the file path
+	*/
 	public static void clearFilePath() { filePath = ""; }
 }

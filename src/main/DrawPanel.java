@@ -22,8 +22,6 @@ public class DrawPanel extends JPanel
 	
 	private LayerManager layerManager = new LayerManager(this);
 	
-	// private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
-	
 	private Color foreColor = Color.BLACK, backColor = Color.WHITE;
 	
 	private String filePath = "";
@@ -33,7 +31,6 @@ public class DrawPanel extends JPanel
 	
 	private float zoom = 1;
 	
-	// private Tool currentTool;
 	private Color current;
 	private Point pos = new Point();
 	
@@ -42,27 +39,14 @@ public class DrawPanel extends JPanel
 	private DrawEvent drawEvent;
 	private Shape clip;
 	
-	// private PanelKey keyListener;
-	// private PanelMouse mouseListener;
-	
-	public DrawPanel(GUIManager gui, DrawEvent drawEvent)//JScrollPane scroll, JPanel container)
+	public DrawPanel(GUIManager gui, DrawEvent drawEvent)
 	{
 		this.gui = gui;
 		this.drawEvent = drawEvent;
-		// this.scroll = scroll;
-		// this.container = container;
 		container = new JPanel(null);
 		container.add(this);
 		scroll = new JScrollPane(container);
 		scroll.setPreferredSize(new Dimension(800, 600));
-		
-		// keyListener = new PanelKey(this, drawEvent, layerManager, keyToolMap);
-		// mouseListener = new PanelMouse(this, keyListener, drawEvent, layerManager, scroll);
-		
-		// container.addMouseWheelListener(mouseListener);
-		// addMouseListener(mouseListener);
-		// addMouseMotionListener(mouseListener);
-		// addKeyListener(keyListener);
 	}
 	
 	public DrawPanel(GUIManager gui, DrawEvent drawEvent, int width, int height, FillType type)
@@ -70,11 +54,6 @@ public class DrawPanel extends JPanel
 		this(gui, drawEvent);
 		loadNew(width, height, type);
 	}
-	
-	// public void setTool(Tool tool)
-	// {
-		// currentTool = tool;
-	// }
 	
 	public void loadNew(int width, int height, FillType type) { ImageLoader.loadNew(width, height, type, this, layerManager); }
 	
@@ -130,8 +109,6 @@ public class DrawPanel extends JPanel
 	
 	public Color getForeColor() { return foreColor; }
 	public Color getBackColor() { return backColor; }
-	
-	// public HashMap<Integer, JToggleButton> getKeyToolMap() { return keyToolMap; }
 	
 	public DrawEvent getDrawEvent() { return drawEvent; }
 	

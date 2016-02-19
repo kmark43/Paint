@@ -13,16 +13,39 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+* Manages all the GUI components of the project
+*/
 public class GUIManager implements ActionListener, ChangeListener
 {
+	/**
+	* A list of tools registered in the tool register
+	*/
 	private ArrayList<Tool> tools = new ArrayList<Tool>();
+	
+	/**
+	* A list of filters registered in the filter register
+	*/
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
+	/**
+	* An input map to create shortcuts to access tools
+	*/
 	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
 	
+	/**
+	* The frame that holds the user interface for the project
+	*/
 	private final JFrame frame = new JFrame("Paint");
 	
+	/**
+	* The foreground color button - changeable by the user
+	*/
 	private JButton btnForecolor = new JButton("");
+	
+	/**
+	* The background color button - changeable by the user
+	*/
 	private JButton btnBackcolor = new JButton("");
 	
 	private JPanel propertyPane = new JPanel();
@@ -51,16 +74,35 @@ public class GUIManager implements ActionListener, ChangeListener
 	private JPanel container = new JPanel();
 	private JScrollPane scroll = new JScrollPane(container, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	
+	/**
+	* The tabbed panel storing the drawing panels
+	*/
 	private JTabbedPane drawPanels = new JTabbedPane();
-	private DrawPanel drawPane;// = new DrawPanel(scroll, container);
 	
+	/**
+	* The selected drawing panel
+	*/
+	private DrawPanel drawPane;
+	
+	/**
+	* The event to pass into mouse events and key events
+	*/
 	private DrawEvent drawEvent = new DrawEvent(this);
+	
+	/**
+	* Listens for key presses and calls the proper tool's methods
+	*/
 	private PanelKey keyListener = new PanelKey(this, drawEvent, keyToolMap);
+	
+	/**
+	* Listens for mouse presses and calls the proper tool's methods
+	*/
 	private PanelMouse mouseListener = new PanelMouse(this, keyListener, drawEvent);
 	
+	/**
+	* The tool to be used when the mouse is pressed on a draw panel
+	*/
 	private Tool currentTool;
-		// keyListener = new PanelKey(this, drawEvent, layerManager, keyToolMap);
-		// mouseListener = new PanelMouse(this, keyListener, drawEvent, layerManager, scroll);
 	
 	public GUIManager()
 	{
@@ -69,14 +111,6 @@ public class GUIManager implements ActionListener, ChangeListener
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
-		// SwingUtilities.invokeLater(new Runnable()
-		// {
-			// public void run()
-			// {
-				// drawPane.grabFocus();
-			// }
-		// });
 	}
 	
 	private void init()
@@ -84,20 +118,26 @@ public class GUIManager implements ActionListener, ChangeListener
 		ToolRegister.registerTools(this);
 		FilterRegister.registerFilters(this);
 		
-		// layerManager.setDrawPane(drawPane);
-		
 		JPanel mainPane = new JPanel(new BorderLayout());
 		
 		drawPanels.setPreferredSize(new Dimension(800, 600));
 		drawPanels.addChangeListener(this);
-		// container.setLayout(null);
-		// container.add(drawPane);
-		// scroll.setPreferredSize(new Dimension(800, 600));
+		drawPanels.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), "removeTab");
+		drawPanels.getActionMap().put("removeTab", new AbstractAction()
+		{
+			final static long serialVersionUID = 12984798714L;
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (drawPanels.getSelectedIndex() != -1)
+					drawPanels.remove(drawPanels.getSelectedIndex());
+			}
+		});
 		
 		JPanel colorPane = new JPanel(new GridLayout(1, 2));
 		
-		btnForecolor.setBackground(Color.WHITE);//drawPane.getForeColor());
-		btnBackcolor.setBackground(Color.BLACK);//drawPane.getBackColor());
+		btnForecolor.setBackground(Color.WHITE);
+		btnBackcolor.setBackground(Color.BLACK);
 		
 		btnForecolor.setActionCommand("foreground");
 		btnForecolor.addActionListener(this);
@@ -171,23 +211,51 @@ public class GUIManager implements ActionListener, ChangeListener
 		
 		frame.add(mainPane);
 		
-		// drawPane.addMouseWheelListener(new MouseWheelListener() { public void mouseWheelMoved(MouseWheelEvent e) { container.dispatchEvent(e); } });
 		removeFocus(mainPane);
-		// drawPane.setFocusable(true);
 		bg.getElements().nextElement().doClick();
 	}
 	
-	public void addTab(String title, DrawPanel pane)
+	/**
+	* Adds a new tab to drawPanels
+	* @param title The title of the DrawPanel
+	* @param pane The DrawPanel to add
+	*/
+	private void addTab(String title, final DrawPanel pane)
 	{
-		// DrawPanel newPane = new DrawPanel(this, drawEvent);
-		drawPanels.addTab(title, pane.getScroll());
+		// drawPanels.addTab(title, pane.getScroll());
+		JPanel temp = new JPanel();
+		JButton btnExit = new JButton("X");
+		temp.add(new JLabel(title));
+		temp.add(btnExit);
+		drawPanels.add(pane.getScroll());
+		drawPanels.setTabComponentAt(drawPanels.getTabCount() - 1, temp);
+		btnExit.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				drawPanels.remove(pane.getScroll());
+			}
+		});
+		btnExit.setOpaque(false);
+		btnExit.setBorderPainted(false);
+		btnExit.setMargin(new Insets(0, 0, 0, 0));
+		// btnExit.setBackground(Color.RED);
+		btnExit.setBackground(new Color(0, 0, 0, 0));
+		btnExit.setForeground(Color.RED);
+		btnExit.setFocusable(false);
+		temp.setOpaque(false);
 		pane.getScroll().addMouseWheelListener(mouseListener);
 		pane.addMouseListener(mouseListener);
 		pane.addMouseMotionListener(mouseListener);
 		pane.addKeyListener(keyListener);
 	}
 	
-	public void removeFocus(Container root)
+	/**
+	* Removes the focusable property of all added components
+	* @param root The current component to assign properties of children to
+	*/
+	private void removeFocus(Container root)
 	{
 		Component comp[] = root.getComponents();
 		root.setFocusable(false);
@@ -198,6 +266,11 @@ public class GUIManager implements ActionListener, ChangeListener
 				c.setFocusable(false);
 	}
 	
+	/**
+	* Adds a filter to the filter JMenu
+	* @param f The filter to add
+	* @param filterMenu The menu to add the button to
+	*/
 	private void addFilter(Filter f, JMenu filterMenu)
 	{
 		JMenuItem itm = new JMenuItem(f.getName());
@@ -218,6 +291,13 @@ public class GUIManager implements ActionListener, ChangeListener
 		});
 	}
 	
+	/**
+	* Adds a tool to the toolMenu and the toolPane
+	* @param t The tool
+	* @param toolMenu the menu to add the tool to
+	* @param toolPane the panel to add the tool to
+	* @param bg the ButtonGroup to add the tool to so only one tool is selected at a time
+	*/
 	private void addTool(Tool t, JMenu toolMenu, JPanel toolPane, ButtonGroup bg)
 	{
 		JToggleButton btn = new JToggleButton(t.getName());
@@ -250,9 +330,12 @@ public class GUIManager implements ActionListener, ChangeListener
 		});
 	}
 	
+	/**
+	* Reassigns the current tool
+	* @param tool The new tool to set
+	*/
 	public void setTool(Tool tool)
 	{
-		// drawPane.setTool(tool);
 		currentTool = tool;
 		propertyPane.removeAll();
 		propertyPane.add(tool.getProperty());
@@ -260,7 +343,14 @@ public class GUIManager implements ActionListener, ChangeListener
 		frame.revalidate();
 	}
 	
+	/**
+	* Called by the ToolRegister to add a new tool
+	*/
 	public void registerTool(Tool tool) { tools.add(tool); }
+	
+	/**
+	* Called by the FilterRegister to add a new filter
+	*/
 	public void registerFilter(Filter filter) { filters.add(filter); }
 	
 	@Override
@@ -278,11 +368,8 @@ public class GUIManager implements ActionListener, ChangeListener
 					int res = JOptionPane.showConfirmDialog(frame, dialog, "New Image", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 					if (res == JOptionPane.YES_OPTION)
 					{
-						// drawPane.loadNew(dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType());
-						// addTab(dialog.getName(), new DrawPanel(this, drawEvent, dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType()));
 						drawPane = new DrawPanel(this, drawEvent, dialog.getImageWidth(), dialog.getImageHeight(), dialog.getFillType());
 						addTab(dialog.getName(), drawPane);
-						// drawPane.getLayerManager.setTempG();
 					}
 				}
 				else if (itm == itmOpen)
@@ -299,13 +386,9 @@ public class GUIManager implements ActionListener, ChangeListener
 			} else if (parent == editMenu)
 			{
 				if (itm == itmUndo)
-				{
 					drawPane.getLayerManager().undo();
-				}
 				else if (itm == itmRedo)
-				{
 					drawPane.getLayerManager().redo();
-				}
 			}
 		}
 		else
@@ -330,9 +413,9 @@ public class GUIManager implements ActionListener, ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
+		if (drawPanels.getSelectedComponent() == null) return;
 		drawPane = (DrawPanel)((Container)((Container)((Container)drawPanels.getSelectedComponent()).getComponent(0)).getComponent(0)).getComponent(0);
 		drawPane.grabFocus();
-		// drawEvent.setManager(drawPane.getLayerManager());
 		managerContainer.removeAll();
 		managerContainer.add(drawPane.getLayerManager());
 		frame.revalidate();

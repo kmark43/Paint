@@ -1,6 +1,7 @@
 package main.event;
 
 import main.GUIManager;
+import main.DrawPanel;
 import main.layer.*;
 import main.tool.*;
 
@@ -29,11 +30,14 @@ public class PanelKey implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		DrawPanel pane = manager.getDrawPane();
+		LayerManager layerManager = pane.getLayerManager();
+		Layer currentLayer = layerManager.getCurrentLayer();
 		if (e.isControlDown())
 		{
 			int index = e.getKeyChar() - '1';
-			if (index < Math.min(9, manager.getDrawPane().getLayerManager().getLayerCount()) && index >= 0)
-				manager.getDrawPane().getLayerManager().setSelected(index);
+			if (index < Math.min(9, layerManager.getLayerCount()) && index >= 0)
+				layerManager.setSelected(index);
 		} else if (!e.isAltDown() && !e.isShiftDown())
 		{
 			if (!phraseActive)
@@ -79,17 +83,20 @@ public class PanelKey implements KeyListener
 				}
 			}
 		}
-		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible() || manager.getDrawPane().getCurrent() == null) return;
-		drawEvent.init(e, manager.getDrawPane().getPos());
-		manager.getDrawPane().getCurrentTool().keyDown(drawEvent);
-		manager.getDrawPane().repaint();
+		if (currentLayer == null || !currentLayer.isVisible() || pane.getCurrent() == null) return;
+		drawEvent.init(e, pane.getPos());
+		pane.getCurrentTool().keyDown(drawEvent);
+		pane.repaint();
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible() || manager.getDrawPane().getCurrent() == null) return;
-		drawEvent.init(e, manager.getDrawPane().getPos());
+		
+		DrawPanel pane = manager.getDrawPane();
+		Layer currentLayer = pane.getLayerManager().getCurrentLayer();
+		if (currentLayer == null || !currentLayer.isVisible() || pane.getCurrent() == null) return;
+		drawEvent.init(e, pane.getPos());
 		manager.getDrawPane().getCurrentTool().keyUp(drawEvent);
 		manager.getDrawPane().repaint();
 	}

@@ -124,30 +124,30 @@ public class DrawPanel extends JPanel
 		}
 	}
 	
-	public float getZoom() { return zoom; }
+	public float getZoom() 					{ return zoom; }
 	
-	public void setPos(Point p) { this.pos = p; }
-	public Point getPos() { return pos; }
+	public void setPos(Point p) 			{ this.pos = p; }
+	public Point getPos() 					{ return pos; }
 	
-	public Tool getCurrentTool() { return gui.getCurrentTool(); }
+	public Tool getCurrentTool() 			{ return gui.getCurrentTool(); }
 	
-	public void setCurrent(Color current) { this.current = current; }
-	public Color getCurrent() { return current; }
+	public void setCurrent(Color current) 	{ this.current = current; }
+	public Color getCurrent() 				{ return current; }
 	
-	public void setForeColor(Color c) { foreColor = c; }
-	public void setBackColor(Color c) { backColor = c; }
+	public void setForeColor(Color c) 		{ foreColor = c; }
+	public void setBackColor(Color c) 		{ backColor = c; }
 	
-	public Color getForeColor() { return foreColor; }
-	public Color getBackColor() { return backColor; }
+	public Color getForeColor() 			{ return foreColor; }
+	public Color getBackColor() 			{ return backColor; }
 	
-	public DrawEvent getDrawEvent() { return drawEvent; }
+	public DrawEvent getDrawEvent() 		{ return drawEvent; }
 	
-	public LayerManager getLayerManager() { return layerManager; }
+	public LayerManager getLayerManager() 	{ return layerManager; }
 	
-	public JScrollPane getScroll() { return scroll; }
-	public Rectangle getMaxBounds() { return gui.getDrawPanels().getBounds(); }
+	public JScrollPane getScroll() 			{ return scroll; }
+	public Rectangle getMaxBounds() 		{ return gui.getDrawPanels().getBounds(); }
 	
-	public String getPath() { return filePath; }
-	public void setPath(String path) { this.filePath = path; }
-	public void clearPath() { this.filePath = ""; }
+	public String getPath() 				{ return filePath; }
+	public void setPath(String path) 		{ this.filePath = path; }
+	public void clearPath() 				{ this.filePath = ""; }
 }

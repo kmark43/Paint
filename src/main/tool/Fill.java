@@ -32,14 +32,18 @@ public class Fill extends Tool
 			q.add(p);
 			Shape clipArea = e.getGraphics().getClip();
 			if (clipArea == null)
-				clipArea = new Rectangle(0, 0, e.getManager().getCurrentLayer().getImage().getWidth(), e.getManager().getCurrentLayer().getImage().getHeight());
+				clipArea = new Rectangle(0, 0, img.getWidth(), img.getHeight());
 			while (!q.isEmpty())
 			{
 				p = q.remove();
 				if (clipArea.contains(p.x, p.y))
 				{
 					Color current = new Color(img.getRGB(p.x, p.y), true);
-					if (!painted[p.y][p.x] && targetColor.getAlpha() == current.getAlpha() && Math.abs(current.getRed() - targetColor.getRed()) <= tolerance && Math.abs(current.getGreen() - targetColor.getGreen()) <= tolerance && Math.abs(current.getBlue() - targetColor.getBlue()) <= tolerance)
+					if (!painted[p.y][p.x] && 
+						targetColor.getAlpha() == current.getAlpha() && 
+						Math.abs(current.getRed() - targetColor.getRed()) <= tolerance && 
+						Math.abs(current.getGreen() - targetColor.getGreen()) <= tolerance && 
+						Math.abs(current.getBlue() - targetColor.getBlue()) <= tolerance)
 					{
 						painted[p.y][p.x] = true;
 						img.setRGB(p.x, p.y, changeColor.getRGB());

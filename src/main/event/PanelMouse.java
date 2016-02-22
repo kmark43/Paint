@@ -28,68 +28,60 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		if (keyListener.isPhraseActive())
-		{
-			switch(e.getButton())
-			{
-				case 1:
-					System.out.println("Accept");
-					keyListener.clearPhrase();
-					break;
-				case 3:
-					System.out.println("Cancel");
-					keyListener.clearPhrase();
-					break;
-			}
-			manager.getDrawPane().setCurrent(null);
-			return;
-		}
-		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible()) return;
-		manager.getDrawPane().getLayerManager().addHistory();
-		drawEvent.setTempG(manager.getDrawPane().getLayerManager());
-		drawEvent.setZoom(manager.getDrawPane().getZoom());
+		DrawPanel pane = manager.getDrawPane();
+		LayerManager layerManager = pane.getLayerManager();
+		Layer currentLayer = layerManager.getCurrentLayer();
+		if (currentLayer == null || !currentLayer.isVisible()) return;
+		layerManager.addHistory();
+		drawEvent.setTempG(layerManager);
+		drawEvent.setZoom(pane.getZoom());
 		switch(e.getButton())
 		{
 			case 1:
-				manager.getDrawPane().setCurrent(manager.getDrawPane().getForeColor());
+				pane.setCurrent(pane.getForeColor());
 				break;
 			case 3:
-				manager.getDrawPane().setCurrent(manager.getDrawPane().getBackColor());
+				pane.setCurrent(pane.getBackColor());
 				break;
 			default:
-				manager.getDrawPane().setCurrent(null);
+				pane.setCurrent(null);
 				return;
 		}
 		if (drawEvent.getGraphics() != null)
 			drawEvent.getGraphics().dispose();
-		Graphics2D g = (Graphics2D)manager.getDrawPane().getLayerManager().getCurrentLayer().getImage().getGraphics();
+		Graphics2D g = (Graphics2D)currentLayer.getImage().getGraphics();
 		drawEvent.setGraphics(g);
 		drawEvent.init(e);
-		drawEvent.setColor(manager.getDrawPane().getCurrent());
+		drawEvent.setColor(pane.getCurrent());
 		manager.getCurrentTool().mouseDown(drawEvent);
-		manager.getDrawPane().repaint();
+		pane.repaint();
 	}
 	
 	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-		Point mouse = manager.getDrawPane().getPos();
+		DrawPanel pane = manager.getDrawPane();
+		LayerManager layerManager = pane.getLayerManager();
+		Layer currentLayer = layerManager.getCurrentLayer();
+		Point mouse = pane.getPos();
 		mouse.x = e.getX();
 		mouse.y = e.getY();
-		manager.getDrawPane().setPos(mouse);
-		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible() || manager.getDrawPane().getCurrent() == null) return;
+		pane.setPos(mouse);
+		if (currentLayer == null || !currentLayer.isVisible() || pane.getCurrent() == null) return;
 		drawEvent.init(e);
 		manager.getCurrentTool().mouseDrag(drawEvent);
-		manager.getDrawPane().repaint();
+		pane.repaint();
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible() || manager.getDrawPane().getCurrent() == null) return;
+		DrawPanel pane = manager.getDrawPane();
+		Layer currentLayer = pane.getLayerManager().getCurrentLayer();
+		if (currentLayer == null || !currentLayer.isVisible() || pane.getCurrent() == null) return;
 		drawEvent.init(e);
 		manager.getCurrentTool().mouseUp(drawEvent);
-		manager.getDrawPane().repaint();
+		pane.repaint();
 	}
 	
 	@Override

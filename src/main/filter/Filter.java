@@ -18,4 +18,11 @@ public abstract class Filter
 	* @return The name of the filter
 	*/
 	public abstract String getName();
+	
+	
+	/**
+	* Retrieves shortcut key
+	* @return KeyCode for filter shortcut
+	*/
+	public int getShortcut() { return 0; }
 }

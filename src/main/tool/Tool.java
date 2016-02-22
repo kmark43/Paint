@@ -55,7 +55,7 @@ public abstract class Tool
 	public JPanel getProperty() { return property; }
 	
 	/**
-	* Retreives shortcut key
+	* Retrieves shortcut key
 	* @return KeyCode for tool shortcut
 	*/
 	public int getShortcut() { return 0; }

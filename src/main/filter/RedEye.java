@@ -41,4 +41,5 @@ public class RedEye extends Filter
 	}
 	
 	public String getName() { return "Red Eye Remover"; }
+	public int getShortcut() { return 'R'; }
 }

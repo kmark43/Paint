@@ -133,4 +133,5 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 	}
 	
 	public String getName() { return "Brightness"; }
+	public int getShortcut() { return 'B'; }
 }

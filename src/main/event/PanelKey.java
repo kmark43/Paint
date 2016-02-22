@@ -18,13 +18,15 @@ public class PanelKey implements KeyListener
 	private char initialChar = ' ';
 	private boolean phraseActive = false;
 	
-	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
+	private HashMap<Integer, JToggleButton> keyToolMap   = new HashMap<Integer, JToggleButton>();
+	private HashMap<Integer, JMenuItem> keyFilterMap = new HashMap<Integer, JMenuItem>();
 	
-	public PanelKey(GUIManager manager, DrawEvent e, HashMap<Integer, JToggleButton> keyToolMap)
+	public PanelKey(GUIManager manager, DrawEvent e, HashMap<Integer, JToggleButton> keyToolMap, HashMap<Integer, JMenuItem> keyFilterMap)
 	{
 		this.manager = manager;
 		drawEvent = e;
 		this.keyToolMap = keyToolMap;
+		this.keyFilterMap = keyFilterMap;
 	}
 	
 	@Override
@@ -46,7 +48,8 @@ public class PanelKey implements KeyListener
 				{
 					case 'T':
 						break;
-					
+					case 'F':
+						break;
 					default:
 						return;
 				}
@@ -60,12 +63,10 @@ public class PanelKey implements KeyListener
 				{
 					case KeyEvent.VK_ENTER:
 						phraseActive = false;
-						System.out.println("Accept");
 						currentPhrase.setLength(0);
 						break;
 					case KeyEvent.VK_ESCAPE:
 						phraseActive = false;
-						System.out.println("Cancel");
 						currentPhrase.setLength(0);
 						break;
 					default:
@@ -75,6 +76,13 @@ public class PanelKey implements KeyListener
 								JToggleButton btn = keyToolMap.get(e.getKeyCode());
 								if (btn != null)
 									btn.doClick();
+								phraseActive = false;
+								currentPhrase.setLength(0);
+								break;
+							case 'F':
+								JMenuItem itm = keyFilterMap.get(e.getKeyCode());
+								if (itm != null)
+									itm.doClick();
 								phraseActive = false;
 								currentPhrase.setLength(0);
 								break;

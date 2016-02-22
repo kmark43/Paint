@@ -37,4 +37,6 @@ public class Grayscale extends Filter
 	}
 	
 	public String getName() { return "Grayscale"; }
+	
+	public int getShortcut() { return 'G'; }
 }

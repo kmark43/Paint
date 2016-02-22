@@ -36,4 +36,5 @@ public class Negative extends Filter
 	}
 	
 	public String getName() { return "Negative"; }
+	public int getShortcut() { return 'N'; }
 }

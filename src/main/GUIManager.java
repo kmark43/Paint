@@ -34,6 +34,12 @@ public class GUIManager implements ActionListener, ChangeListener
 	*/
 	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
 	
+	
+	/**
+	* An input map to create shortcuts to access tools
+	*/
+	private HashMap<Integer, JMenuItem> keyFilterMap = new HashMap<Integer, JMenuItem>();
+	
 	/**
 	* The frame that holds the user interface for the project
 	*/
@@ -93,7 +99,7 @@ public class GUIManager implements ActionListener, ChangeListener
 	/**
 	* Listens for key presses and calls the proper tool's methods
 	*/
-	private PanelKey keyListener = new PanelKey(this, drawEvent, keyToolMap);
+	private PanelKey keyListener = new PanelKey(this, drawEvent, keyToolMap, keyFilterMap);
 	
 	/**
 	* Listens for mouse presses and calls the proper tool's methods
@@ -276,6 +282,10 @@ public class GUIManager implements ActionListener, ChangeListener
 	{
 		JMenuItem itm = new JMenuItem(f.getName());
 		filterMenu.add(itm);
+		
+		if (f.getShortcut() != 0)
+			keyFilterMap.put(f.getShortcut(), itm);
+			
 		itm.addActionListener(new ActionListener()
 		{
 			@Override

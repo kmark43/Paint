@@ -117,4 +117,5 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 	}
 	
 	public String getName() { return "Multiplier"; }
+	public int getShortcut() { return 'M'; }
 }

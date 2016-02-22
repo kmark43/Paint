@@ -129,7 +129,11 @@ public class GUIManager implements ActionListener, ChangeListener
 		
 		drawPanels.setPreferredSize(new Dimension(800, 600));
 		drawPanels.addChangeListener(this);
+		
 		drawPanels.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, KeyEvent.CTRL_DOWN_MASK), "removeTab");
+		drawPanels.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_DOWN_MASK), "selectRight");
+		drawPanels.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_DOWN_MASK), "selectLeft");
+		
 		drawPanels.getActionMap().put("removeTab", new AbstractAction()
 		{
 			final static long serialVersionUID = 12984798714L;
@@ -138,6 +142,36 @@ public class GUIManager implements ActionListener, ChangeListener
 			{
 				if (drawPanels.getSelectedIndex() != -1)
 					drawPanels.remove(drawPanels.getSelectedIndex());
+			}
+		});
+		
+		drawPanels.getActionMap().put("selectRight", new AbstractAction()
+		{
+			final static long serialVersionUID = 8857275L;
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				int index = drawPanels.getSelectedIndex();
+				if (index == -1) return;
+				index++;
+				if (index >= drawPanels.getTabCount())
+					index = 0;
+				drawPanels.setSelectedIndex(index);
+			}
+		});
+		
+		drawPanels.getActionMap().put("selectLeft", new AbstractAction()
+		{
+			final static long serialVersionUID = 8857275L;
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				int index = drawPanels.getSelectedIndex();
+				if (index == -1) return;
+				index--;
+				if (index < 0)
+					index = drawPanels.getTabCount() - 1;
+				drawPanels.setSelectedIndex(index);
 			}
 		});
 		
@@ -256,6 +290,7 @@ public class GUIManager implements ActionListener, ChangeListener
 		pane.addMouseListener(mouseListener);
 		pane.addMouseMotionListener(mouseListener);
 		pane.addKeyListener(keyListener);
+		drawPanels.setSelectedComponent(pane.getScroll());
 	}
 	
 	/**
@@ -393,6 +428,7 @@ public class GUIManager implements ActionListener, ChangeListener
 						return;
 					drawPane = new DrawPanel(this, drawEvent, file);
 					addTab(file.getName().substring(0, file.getName().lastIndexOf(".")), drawPane);
+					drawPanels.setSelectedComponent(drawPane);
 				}
 				else if (itm == itmSave)
 				{

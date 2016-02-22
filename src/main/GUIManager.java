@@ -435,10 +435,10 @@ public class GUIManager implements ActionListener, ChangeListener
 	@Override
 	public void stateChanged(ChangeEvent e)
 	{
+		managerContainer.removeAll();
 		if (drawPanels.getSelectedComponent() == null) return;
 		drawPane = (DrawPanel)((Container)((Container)((Container)drawPanels.getSelectedComponent()).getComponent(0)).getComponent(0)).getComponent(0);
 		drawPane.grabFocus();
-		managerContainer.removeAll();
 		managerContainer.add(drawPane.getLayerManager());
 		frame.revalidate();
 	}

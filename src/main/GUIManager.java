@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -339,7 +340,7 @@ public class GUIManager implements ActionListener, ChangeListener
 		currentTool = tool;
 		propertyPane.removeAll();
 		propertyPane.add(tool.getProperty());
-		frame.pack();
+		// frame.pack();
 		frame.revalidate();
 	}
 	
@@ -373,9 +374,20 @@ public class GUIManager implements ActionListener, ChangeListener
 					}
 				}
 				else if (itm == itmOpen)
-					ImageLoader.open(drawPane, drawPane.getLayerManager());
+				{
+					// ImageLoader.open(drawPane, drawPane.getLayerManager());
+					JFileChooser fc = new JFileChooser();
+					fc.showOpenDialog(null);
+					File file = fc.getSelectedFile();
+					if (file == null)
+						return;
+					drawPane = new DrawPanel(this, drawEvent, file);
+					addTab(file.getName().substring(0, file.getName().lastIndexOf(".")), drawPane);
+				}
 				else if (itm == itmSave)
+				{
 					ImageLoader.save(drawPane, drawPane.getLayerManager());
+				}
 				else if (itm == itmSaveAs)
 				{
 					ImageLoader.clearFilePath();
@@ -422,6 +434,7 @@ public class GUIManager implements ActionListener, ChangeListener
 	}
 	
 	public DrawPanel getDrawPane() { return drawPane; }
+	public JTabbedPane getDrawPanels() { return drawPanels; }
 	public LayerManager getLayerManager() { return drawPane.getLayerManager(); }
 	public Color getForeColor() { return btnForecolor.getBackground(); }
 	public Color getBackColor() { return btnBackcolor.getBackground(); }

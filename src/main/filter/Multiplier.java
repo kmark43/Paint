@@ -1,6 +1,6 @@
 package main.filter;
 
-import main.DrawPanel;
+import main.GUIManager;
 import main.tool.DrawEvent;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ import main.layer.*;
 
 public class Multiplier extends Filter implements Runnable, ChangeListener
 {
-	private DrawPanel drawPane;
+	private GUIManager manager;
 	private JPanel multiplierDialog = new JPanel(new GridLayout(2, 1));
 	private JSlider multiplierSlider = new JSlider(0, 510, 255);
 	private JLabel lblMultiplier = new JLabel("0");
@@ -21,9 +21,9 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 	private BufferedImage orig;
 	private DrawEvent drawEvent;
 	
-	public Multiplier(DrawPanel pane)
+	public Multiplier(GUIManager manager)
 	{
-		this.drawPane = pane;
+		this.manager = manager;
 		JPanel temp = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		temp.add(new JLabel("Multiplier"));
 		temp.add(multiplierSlider);
@@ -50,7 +50,7 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 			Graphics g = img.getGraphics();
 			g.drawImage(orig, 0, 0, null);
 			g.dispose();
-			drawPane.repaint();
+			manager.getDrawPane().repaint();
 		}
 	}
 	
@@ -86,7 +86,7 @@ public class Multiplier extends Filter implements Runnable, ChangeListener
 				}
 			}
 		}
-		drawPane.repaint();
+		manager.getDrawPane().repaint();
 	}
 	
 	private int clamp(int value)

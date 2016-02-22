@@ -49,6 +49,12 @@ public class DrawPanel extends JPanel
 		scroll.setPreferredSize(new Dimension(800, 600));
 	}
 	
+	public DrawPanel(GUIManager gui, DrawEvent drawEvent, File file)
+	{
+		this(gui, drawEvent);
+		ImageLoader.open(file, this, layerManager);
+	}
+	
 	public DrawPanel(GUIManager gui, DrawEvent drawEvent, int width, int height, FillType type)
 	{
 		this(gui, drawEvent);
@@ -75,7 +81,6 @@ public class DrawPanel extends JPanel
 		{
 			setSize((int)(layerManager.getLayer(0).getImage().getWidth() * zoom), (int)(layerManager.getLayer(0).getImage().getHeight() * zoom));
 			this.zoom = zoom;
-			drawEvent.setZoom(zoom);
 		}
 	}
 	
@@ -90,31 +95,8 @@ public class DrawPanel extends JPanel
 			view.y = (int)(view.y * dzoom);
 			scroll.getViewport().scrollRectToVisible(view);
 			this.zoom = zoom;
-			drawEvent.setZoom(zoom);
 		}
 	}
-	
-	public float getZoom() { return zoom; }
-	
-	public void setPos(Point p) { this.pos = p; }
-	public Point getPos() { return pos; }
-	
-	public Tool getCurrentTool() { return gui.getCurrentTool(); }
-	
-	public void setCurrent(Color current) { this.current = current; }
-	public Color getCurrent() { return current; }
-	
-	public void setForeColor(Color c) { foreColor = c; }
-	public void setBackColor(Color c) { backColor = c; }
-	
-	public Color getForeColor() { return foreColor; }
-	public Color getBackColor() { return backColor; }
-	
-	public DrawEvent getDrawEvent() { return drawEvent; }
-	
-	public LayerManager getLayerManager() { return layerManager; }
-	
-	public JScrollPane getScroll() { return scroll; }
 	
 	@Override
 	public void paintComponent(Graphics g)
@@ -141,4 +123,31 @@ public class DrawPanel extends JPanel
 			g2.draw(outline);
 		}
 	}
+	
+	public float getZoom() { return zoom; }
+	
+	public void setPos(Point p) { this.pos = p; }
+	public Point getPos() { return pos; }
+	
+	public Tool getCurrentTool() { return gui.getCurrentTool(); }
+	
+	public void setCurrent(Color current) { this.current = current; }
+	public Color getCurrent() { return current; }
+	
+	public void setForeColor(Color c) { foreColor = c; }
+	public void setBackColor(Color c) { backColor = c; }
+	
+	public Color getForeColor() { return foreColor; }
+	public Color getBackColor() { return backColor; }
+	
+	public DrawEvent getDrawEvent() { return drawEvent; }
+	
+	public LayerManager getLayerManager() { return layerManager; }
+	
+	public JScrollPane getScroll() { return scroll; }
+	public Rectangle getMaxBounds() { return gui.getDrawPanels().getBounds(); }
+	
+	public String getPath() { return filePath; }
+	public void setPath(String path) { this.filePath = path; }
+	public void clearPath() { this.filePath = ""; }
 }

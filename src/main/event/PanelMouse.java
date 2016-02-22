@@ -47,6 +47,7 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		if (manager.getDrawPane().getLayerManager().getCurrentLayer() == null || !manager.getDrawPane().getLayerManager().getCurrentLayer().isVisible()) return;
 		manager.getDrawPane().getLayerManager().addHistory();
 		drawEvent.setTempG(manager.getDrawPane().getLayerManager());
+		drawEvent.setZoom(manager.getDrawPane().getZoom());
 		switch(e.getButton())
 		{
 			case 1:

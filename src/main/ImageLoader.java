@@ -75,8 +75,10 @@ public class ImageLoader
 			if (layerManager.getCurrentLayer() == null)
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
-				double width = (double)panel.getParent().getWidth() / img.getWidth();
-				double height = (double)panel.getParent().getHeight() / img.getHeight();
+				// double width = (double)panel.getScroll().getWidth() / img.getWidth();
+				// double height = (double)panel.getScroll().getHeight() / img.getHeight();
+				double width = (double)panel.getMaxBounds().width / img.getWidth();
+				double height = (double)panel.getMaxBounds().height / img.getHeight();
 				if (width < 1 && height < 1)
 					panel.setZoom((float)Math.max(width * .9, height * .9));
 				else
@@ -89,7 +91,8 @@ public class ImageLoader
 				panel.setSize(width, height);
 			}
 			
-			filePath = file.getPath();
+			// filePath = file.getPath();
+			panel.setPath(file.getPath());
 			
 			layerManager.setTemp(new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB));
 		} catch(IOException ex)
@@ -105,7 +108,8 @@ public class ImageLoader
 	*/
 	public static void save(DrawPanel panel, LayerManager layerManager)
 	{
-		if (filePath.equals(""))
+		// if (filePath.equals(""))
+		if (panel.getPath().equals(""))
 		{
 			JFileChooser fc = new JFileChooser();
 			fc.showSaveDialog(null);
@@ -114,7 +118,7 @@ public class ImageLoader
 				return;
 			save(file, panel, layerManager);
 		} else
-			save(new File(filePath), panel, layerManager);
+			save(new File(panel.getPath()), panel, layerManager);
 	}
 	
 	/**
@@ -128,7 +132,7 @@ public class ImageLoader
 			Graphics2D g = (Graphics2D)img.getGraphics();
 			layerManager.draw(g, 1);
 			ImageIO.write(img, "PNG", file);
-			filePath = file.getPath();
+			panel.setPath(file.getPath());
 		} catch(IOException ex)
 		{
 			System.err.println("Error saving " + file.getPath());

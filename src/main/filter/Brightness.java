@@ -1,6 +1,6 @@
 package main.filter;
 
-import main.DrawPanel;
+import main.GUIManager;
 import main.tool.DrawEvent;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ import main.layer.*;
 
 public class Brightness extends Filter implements Runnable, ChangeListener
 {
-	private DrawPanel drawPane;
+	private GUIManager manager;
 	private JPanel brightnessDialog = new JPanel(new GridLayout(3, 1));
 	private JSlider brightnessSlider = new JSlider(-255, 255);
 	private JSlider contrastSlider = new JSlider(-255, 255);
@@ -23,9 +23,9 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 	private BufferedImage orig;
 	private DrawEvent drawEvent;
 	
-	public Brightness(DrawPanel pane)
+	public Brightness(GUIManager pane)
 	{
-		this.drawPane = pane;
+		this.manager = pane;
 		JPanel temp = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		temp.add(new JLabel("Brightness"));
 		temp.add(brightnessSlider);
@@ -60,7 +60,7 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 			Graphics g = img.getGraphics();
 			g.drawImage(orig, 0, 0, null);
 			g.dispose();
-			drawPane.repaint();
+			manager.getDrawPane().repaint();
 		}
 	}
 	
@@ -102,7 +102,7 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 				}
 			}
 		}
-		drawPane.repaint();
+		manager.getDrawPane().repaint();
 	}
 	
 	private int clamp(int value)

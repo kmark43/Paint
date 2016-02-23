@@ -16,7 +16,7 @@ public class RedEye extends Filter
 		Area area = e.getArea();
 		Rectangle bounds = area.getBounds();
 		if (e.getGraphics().getClip() ==  null)
-			area.add(new Area(new Rectangle(0, 0, e.getManager().getCurrentLayer().getImage().getWidth(), e.getManager().getCurrentLayer().getImage().getHeight())));
+			area.add(new Area(new Rectangle(0, 0, img.getWidth(), img.getHeight())));
 		bounds = area.getBounds();
 		for (int x = bounds.x; x < bounds.x + bounds.width; x++)
 		{

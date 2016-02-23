@@ -79,7 +79,7 @@ public class Brightness extends Filter implements Runnable, ChangeListener
 		Area area = drawEvent.getArea();
 		Rectangle bounds = area.getBounds();
 		if (drawEvent.getGraphics().getClip() ==  null)
-			area.add(new Area(new Rectangle(0, 0, drawEvent.getManager().getCurrentLayer().getImage().getWidth(), drawEvent.getManager().getCurrentLayer().getImage().getHeight())));
+			area.add(new Area(new Rectangle(0, 0, img.getWidth(), img.getHeight())));
 		bounds = area.getBounds();
 		int db = brightnessSlider.getValue();
 		int contrast = contrastSlider.getValue();

@@ -428,7 +428,7 @@ public class GUIManager implements ActionListener, ChangeListener
 						return;
 					drawPane = new DrawPanel(this, drawEvent, file);
 					addTab(file.getName().substring(0, file.getName().lastIndexOf(".")), drawPane);
-					drawPanels.setSelectedComponent(drawPane);
+					drawPanels.setSelectedComponent(drawPane.getScroll());
 				}
 				else if (itm == itmSave)
 				{

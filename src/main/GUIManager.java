@@ -436,7 +436,7 @@ public class GUIManager implements ActionListener, ChangeListener
 				}
 				else if (itm == itmSaveAs)
 				{
-					ImageLoader.clearFilePath();
+					drawPane.clearPath();
 					ImageLoader.save(drawPane, drawPane.getLayerManager());
 				}
 				else if (itm == itmExit)

@@ -13,12 +13,7 @@ import java.io.*;
 * Provides IO functions to load and save images
 */
 public class ImageLoader
-{
-	/**
-	* The file path of the last file opened
-	*/
-	private static String filePath = "";
-	
+{	
 	/**
 	* Loads a blank image
 	*/
@@ -139,9 +134,4 @@ public class ImageLoader
 			ex.printStackTrace();
 		}
 	}
-	
-	/**
-	* Resets the file path
-	*/
-	public static void clearFilePath() { filePath = ""; }
 }

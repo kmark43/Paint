@@ -29,6 +29,7 @@ src/main/tool/Spray.java
 src/main/tool/Fill.java
 src/main/tool/Oval.java
 src/main/tool/Rect.java
+src/main/tool/Gradient.java
 src/main/tool/RectangleSelect.java
 src/main/tool/FreeSelect.java
 src/main/tool/Tool.java

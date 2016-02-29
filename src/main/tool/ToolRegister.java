@@ -21,5 +21,6 @@ public class ToolRegister
 		main.registerTool(new Rect());
 		main.registerTool(new Oval());
 		main.registerTool(new Circle());
+		main.registerTool(new Gradient());
 	}
 }

@@ -52,6 +52,7 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		Graphics2D g = (Graphics2D)currentLayer.getImage().getGraphics();
 		drawEvent.setGraphics(g);
 		drawEvent.init(e);
+		drawEvent.setStroke(new BasicStroke(1, BasicStroke.JOIN_ROUND, BasicStroke.CAP_ROUND));
 		drawEvent.setColor(pane.getCurrent());
 		manager.getCurrentTool().mouseDown(drawEvent);
 		pane.repaint();

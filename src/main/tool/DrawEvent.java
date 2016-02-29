@@ -42,6 +42,8 @@ public class DrawEvent
 	
 	private int y;
 	
+	private Color foreColor, backColor;
+	
 	private GUIManager manager;
 	
 	private Area clippingRegion = new Area();
@@ -220,4 +222,6 @@ public class DrawEvent
 		g.setStroke(stroke);
 		temp.setStroke(stroke);
 	}
+	public Color getForeColor() { return manager.getDrawPane().getForeColor(); }
+	public Color getBackColor() { return manager.getDrawPane().getBackColor(); }
 }

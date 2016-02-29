@@ -86,9 +86,35 @@ public class Gradient extends Tool
 		Point endPoint = new Point(e.getX(), e.getY());
 		int alpha = (Integer)ocpacitySpinner.getValue();
 		Graphics2D g = e.getGraphics();
-		int minX = Math.min(lastX, Math.min(0, e.getX()));
-		int maxX = Math.max(lastX, Math.max(0, e.getX()));
+		int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, e.getX()));
+		int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, e.getX()));
 		
+		int startY = Math.min(lastY, Math.min(e.getArea().getBounds().y, e.getY()));
+		int endY = Math.max(lastY, Math.max(e.getArea().getBounds().y + e.getArea().getBounds().height, e.getY()));
+		
+		int minX = Math.min(lastX, e.getX());
+		int maxX = Math.max(lastX, e.getX());
+		int minY = Math.min(lastY, e.getY());
+		int maxY = Math.max(lastY, e.getY());
+		
+		int dx = maxX - minX;
+		int dy = maxY - minY;
+		if (dx > dy && dy != 0)
+		{
+			
+		}
+		else if (dx != 0)
+		{
+			
+		}
+		else
+		{
+			Color c1 = e.getForeColor();
+			Color c2 = e.getBackColor();
+			Color c3 = new Color((c1.getRed() + c2.getRed()) / 2, (c1.getGreen() + c2.getGreen()) / 2, (c1.getBlue() + c2.getBlue()) / 2);
+			g.setColor(c3);
+			g.drawLine(e.getX(), e.getY(), e.getX(), e.getY());
+		}
 	}
 	
 	private void drawTransparency(DrawEvent e, BufferedImage img)

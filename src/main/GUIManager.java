@@ -180,6 +180,9 @@ public class GUIManager implements ActionListener, ChangeListener
 		btnForecolor.setBackground(Color.WHITE);
 		btnBackcolor.setBackground(Color.BLACK);
 		
+		btnForecolor.setPreferredSize(new Dimension(3, 3));
+		btnBackcolor.setPreferredSize(new Dimension(3, 3));
+		
 		btnForecolor.setActionCommand("foreground");
 		btnForecolor.addActionListener(this);
 		btnBackcolor.setActionCommand("background");
@@ -350,6 +353,7 @@ public class GUIManager implements ActionListener, ChangeListener
 		JMenuItem itm = new JMenuItem(t.getName());
 		toolPane.add(btn);
 		btn.setFocusable(false);
+		btn.setMargin(new Insets(0, 0, 0, 0));
 		bg.add(btn);
 		
 		toolMenu.add(itm);
@@ -430,18 +434,18 @@ public class GUIManager implements ActionListener, ChangeListener
 					addTab(file.getName().substring(0, file.getName().lastIndexOf(".")), drawPane);
 					drawPanels.setSelectedComponent(drawPane.getScroll());
 				}
-				else if (itm == itmSave)
+				else if (itm == itmSave && drawPane != null)
 				{
 					ImageLoader.save(drawPane, drawPane.getLayerManager());
 				}
-				else if (itm == itmSaveAs)
+				else if (itm == itmSaveAs && drawPane != null)
 				{
 					drawPane.clearPath();
 					ImageLoader.save(drawPane, drawPane.getLayerManager());
 				}
 				else if (itm == itmExit)
 					System.exit(0);
-			} else if (parent == editMenu)
+			} else if (parent == editMenu && drawPane != null)
 			{
 				if (itm == itmUndo)
 					drawPane.getLayerManager().undo();
@@ -452,13 +456,13 @@ public class GUIManager implements ActionListener, ChangeListener
 		else
 		{
 			JButton source = (JButton)e.getSource();
-			if (e.getActionCommand().equals("foreground"))
+			if (e.getActionCommand().equals("foreground") && drawPane != null)
 			{
 				Color c = JColorChooser.showDialog(frame, "Pick Color", drawPane.getForeColor());
 				if (c != null)
 					drawPane.setForeColor(c);
 				source.setBackground(c);
-			} else
+			} else if (drawPane != null)
 			{
 				Color c = JColorChooser.showDialog(frame, "Pick Color", drawPane.getBackColor());
 				if (c != null)

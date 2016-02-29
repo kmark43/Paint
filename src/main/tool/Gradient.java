@@ -32,7 +32,7 @@ public class Gradient extends Tool
 	{
 		property.setLayout(new GridLayout(2, 1));
 		addRow(property, new JLabel("Type:"), selectionTypeBox);
-		addRow(property, new JLabel("Ocpacity:"), ocpacitySpinner);
+		addRow(property, new JLabel("Opacity:"), ocpacitySpinner);
 	}
 	
 	private void addRow(JPanel mainPane, Component... comps)
@@ -82,26 +82,76 @@ public class Gradient extends Tool
 	{
 		Color startColor = e.getForeColor();
 		Color endColor = e.getBackColor();
+		
 		Point startPoint = new Point(lastX, lastY);
 		Point endPoint = new Point(e.getX(), e.getY());
+		
 		int alpha = (Integer)ocpacitySpinner.getValue();
+		
 		Graphics2D g = e.getGraphics();
-		int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, e.getX()));
-		int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, e.getX()));
 		
 		int startY = Math.min(lastY, Math.min(e.getArea().getBounds().y, e.getY()));
 		int endY = Math.max(lastY, Math.max(e.getArea().getBounds().y + e.getArea().getBounds().height, e.getY()));
 		
-		int minX = Math.min(lastX, e.getX());
-		int maxX = Math.max(lastX, e.getX());
-		int minY = Math.min(lastY, e.getY());
-		int maxY = Math.max(lastY, e.getY());
+		int dx = Math.abs(e.getX() - lastX);
+		int dy = Math.abs(e.getY() - lastY);
 		
-		int dx = maxX - minX;
-		int dy = maxY - minY;
-		if (dx > dy && dy != 0)
+		if (dx > dy && dx != 0)
 		{
+			int minX = lastX;
+			int minY = lastY;
+			int maxX = e.getX();
+			int maxY = e.getY();
+			if (minX > maxX)
+			{
+				minX = e.getX();
+				minY = e.getY();
+				maxX = lastX;
+				maxY = lastY;
+			}
 			
+			int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, e.getX()));
+			int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, e.getX()));
+			
+			float dydx = (float)(maxY - minY) / (maxX - minX);
+			float recipSlope = -1 / dydx;
+			
+			Color c1 = e.getForeColor();
+			Color c2 = e.getBackColor();
+			
+			float red1   = c1.getRed();
+			float green1 = c1.getGreen();
+			float blue1  = c1.getBlue();
+			
+			float red2   = c2.getRed();
+			float green2 = c2.getGreen();
+			float blue2  = c2.getBlue();
+			
+			float dRed   = (red2 - red1)     / (e.getX() - lastX);
+			float dGreen = (green2 - green1) / (e.getX() - lastX);
+			float dBlue  = (blue2 - blue1)   / (e.getX() - lastX);
+			
+			int keyPixelCount = 1 << 4;	//To prevent rounding errors when accumulating based off of slope
+			
+			for (int i = startX; i <= maxX; i += keyPixelCount)
+			{
+				float yValue = dydx * (i - minX) + minY;
+				int lastValue = i + keyPixelCount;
+				float redValue   = dRed   * (i - lastX) + red1;
+				float greenValue = dGreen * (i - lastX) + green1;
+				float blueValue  = dBlue  * (i - lastX) + blue1;
+				if (i + keyPixelCount > maxX)
+					lastValue = maxX;
+				for (int j = i; j < lastValue; j++, yValue += dydx, redValue += dRed, greenValue += dGreen, blueValue += dBlue)
+				{
+					int y1 = minY;
+					int x1 = (int)((y1 - yValue + recipSlope * j) / recipSlope);
+					int x2 = minX;
+					int y2 = (int)(recipSlope * (x2 - j) + yValue);
+					g.setColor(new Color((int)redValue, (int)greenValue, (int)blueValue, alpha));
+					g.drawLine(x1, y1, x2, y2);
+				}
+			}
 		}
 		else if (dx != 0)
 		{

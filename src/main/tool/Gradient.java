@@ -85,6 +85,10 @@ public class Gradient extends Tool
 		Point startPoint = new Point(lastX, lastY);
 		Point endPoint = new Point(e.getX(), e.getY());
 		int alpha = (Integer)ocpacitySpinner.getValue();
+		Graphics2D g = e.getGraphics();
+		int minX = Math.min(lastX, Math.min(0, e.getX()));
+		int maxX = Math.max(lastX, Math.max(0, e.getX()));
+		
 	}
 	
 	private void drawTransparency(DrawEvent e, BufferedImage img)
@@ -101,6 +105,5 @@ public class Gradient extends Tool
 	}
 	
 	public String getName() { return "Gradient"; }
-	
 	public int getShortcut() { return 'G'; }
 }

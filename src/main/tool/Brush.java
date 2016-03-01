@@ -30,7 +30,16 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
+			int x = e.getX();
+			int y = e.getY();
+			if (e.isControlDown())
+			{
+				if (Math.abs(y - lastY) > Math.abs(x - lastX))
+					x = lastX;
+				else
+					y = lastY;
+			}
+			g.drawLine(lastX, lastY, x, y);
 		}
 	}
 	
@@ -45,16 +54,34 @@ public class Brush extends Tool
 		} else
 		{
 			Graphics2D g = e.getTempG();
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
+			int x = e.getX();
+			int y = e.getY();
+			if (e.isControlDown())
+			{
+				if (Math.abs(y - lastY) > Math.abs(x - lastX))
+					x = lastX;
+				else
+					y = lastY;
+			}
+			g.drawLine(lastX, lastY, x, y);
 		}
 	}
 	
 	public void mouseUp(DrawEvent e)
 	{
 		Graphics2D g = e.getGraphics();
-		g.drawLine(lastX, lastY, e.getX(), e.getY());
-		lastX = e.getX();
-		lastY = e.getY();
+		int x = e.getX();
+		int y = e.getY();
+		if (e.isControlDown())
+		{
+			if (Math.abs(y - lastY) > Math.abs(x - lastX))
+				x = lastX;
+			else
+				y = lastY;
+		}
+		g.drawLine(lastX, lastY, x, y);
+		lastX = x;
+		lastY = y;
 	}
 	
 	public boolean mouseMove(DrawEvent e)
@@ -64,7 +91,16 @@ public class Brush extends Tool
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
 			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
+			int x = e.getX();
+			int y = e.getY();
+			if (e.isControlDown())
+			{
+				if (Math.abs(y - lastY) > Math.abs(x - lastX))
+					x = lastX;
+				else
+					y = lastY;
+			}
+			g.drawLine(lastX, lastY, x, y);
 			return true;
 		}
 		return false;
@@ -76,7 +112,16 @@ public class Brush extends Tool
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
-			g.drawLine(lastX, lastY, e.getX(), e.getY());
+			int x = e.getX();
+			int y = e.getY();
+			if (e.getKeyEvent().isControlDown())
+			{
+				if (Math.abs(y - lastY) > Math.abs(x - lastX))
+					x = lastX;
+				else
+					y = lastY;
+			}
+			g.drawLine(lastX, lastY, x, y);
 			g.setStroke(new BasicStroke(1));
 		}
 	}

@@ -18,6 +18,8 @@ public class PanelKey implements KeyListener
 	private char initialChar = ' ';
 	private boolean phraseActive = false;
 	
+	private boolean keysDown[] = new boolean[256];
+	
 	private HashMap<Integer, JToggleButton> keyToolMap   = new HashMap<Integer, JToggleButton>();
 	private HashMap<Integer, JMenuItem> keyFilterMap = new HashMap<Integer, JMenuItem>();
 	
@@ -32,6 +34,11 @@ public class PanelKey implements KeyListener
 	@Override
 	public void keyPressed(KeyEvent e)
 	{
+		if (keysDown[e.getKeyCode()]) return;
+		try
+		{
+			keysDown[e.getKeyCode()] = true;
+		} catch(Exception ex){}
 		DrawPanel pane = manager.getDrawPane();
 		LayerManager layerManager = pane.getLayerManager();
 		Layer currentLayer = layerManager.getCurrentLayer();
@@ -100,7 +107,10 @@ public class PanelKey implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		
+		try
+		{
+			keysDown[e.getKeyCode()] = false;
+		} catch(Exception ex){}
 		DrawPanel pane = manager.getDrawPane();
 		Layer currentLayer = pane.getLayerManager().getCurrentLayer();
 		if (currentLayer == null || !currentLayer.isVisible() || pane.getCurrent() == null) return;
@@ -111,6 +121,8 @@ public class PanelKey implements KeyListener
 	
 	@Override
 	public void keyTyped(KeyEvent e){}
+	
+	public boolean isKeyDown(int index) { return keysDown[index]; }
 	
 	public char getInitialChar() { return initialChar; }
 	public void setInitialChar(char c) { initialChar = c; }

@@ -88,6 +88,8 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 	@Override
 	public void mouseMoved(MouseEvent e)
 	{
+		DrawPanel pane = manager.getDrawPane();
+		Layer currentLayer = pane.getLayerManager().getCurrentLayer();
 		Point mouse = manager.getDrawPane().getPos();
 		int dx = e.getX() - mouse.x;
 		int dy = e.getY() - mouse.y;
@@ -98,6 +100,13 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		{
 			
 		}
+		Graphics2D g = (Graphics2D)currentLayer.getImage().getGraphics();
+		drawEvent.setGraphics(g);
+		drawEvent.init(e);
+		drawEvent.setStroke(new BasicStroke(1, BasicStroke.JOIN_ROUND, BasicStroke.CAP_ROUND));
+		drawEvent.setColor(pane.getCurrent());
+		if (manager.getCurrentTool().mouseMove(drawEvent))
+			pane.repaint();
 	}
 	
 	@Override

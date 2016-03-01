@@ -45,6 +45,8 @@ public abstract class Tool
 	*/
 	public abstract String getName();
 	
+	public boolean mouseMove(DrawEvent e) { return false; }
+	
 	public void keyDown(DrawEvent e){}
 	public void keyUp(DrawEvent e){}
 	

@@ -56,29 +56,48 @@ public class Gradient extends Tool
 	@Override
 	public void mouseDrag(DrawEvent e)
 	{
-		e.getTempG().drawLine(lastX, lastY, e.getX(), e.getY());
+		int x = e.getX();
+		int y = e.getY();
+		if (e.isShiftDown())
+		{
+			if (Math.abs(y - lastY) > Math.abs(x - lastX))
+				x = lastX;
+			else
+				y = lastY;
+		}
+		e.getTempG().drawLine(lastX, lastY, x, y);
 	}
 	
 	@Override
 	public void mouseUp(DrawEvent e)
 	{
+		int x = e.getX();
+		int y = e.getY();
+		if (e.isShiftDown())
+		{
+			if (Math.abs(y - lastY) > Math.abs(x - lastX))
+				x = lastX;
+			else
+				y = lastY;
+		}
+		
 		Graphics2D g = e.getGraphics();
 		
 		switch(mode)
 		{
 			case COLOR:
-				drawColor(e);
+				drawColor(e, x, y);
 				break;
 			case TRANSPARENCY:
-				drawTransparency(e, e.getManager().getCurrentLayer().getImage());
+				drawTransparency(e, x, y, e.getManager().getCurrentLayer().getImage());
 				break;
 			case MULTIPLIER:
-				drawMultiplier(e, e.getManager().getCurrentLayer().getImage());
+				drawMultiplier(e, x, y, e.getManager().getCurrentLayer().getImage());
 				break;
 		}
 	}
 	
-	private void drawColor(DrawEvent e)
+	private void drawColor(DrawEvent e, int x, int y)
 	{
 		Color startColor = e.getForeColor();
 		Color endColor = e.getBackColor();
@@ -89,6 +108,7 @@ public class Gradient extends Tool
 		int alpha = (Integer)ocpacitySpinner.getValue();
 		
 		Graphics2D g = e.getGraphics();
+		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		
 		int startY = Math.min(lastY, Math.min(e.getArea().getBounds().y, e.getY()));
 		int endY = Math.max(lastY, Math.max(e.getArea().getBounds().y + e.getArea().getBounds().height, e.getY()));
@@ -96,7 +116,94 @@ public class Gradient extends Tool
 		int dx = Math.abs(e.getX() - lastX);
 		int dy = Math.abs(e.getY() - lastY);
 		
-		if (dx > dy && dx != 0)
+		
+		if (dy == 0)
+		{
+			int x1 = lastX;
+			int x2 = e.getX();
+			if (x1 > x2)
+			{
+				Color c1 = e.getForeColor();
+				Color c2 = e.getBackColor();
+				float r1 = c1.getRed();
+				float g1 = c1.getGreen();
+				float b1 = c1.getBlue();
+				float r2 = c2.getRed();
+				float g2 = c2.getGreen();
+				float b2 = c2.getBlue();
+				float dr = (r2 - r1) / (x1 - x2);
+				float dg = (g2 - g1) / (x1 - x2);
+				float db = (b2 - b1) / (x1 - x2);
+				for (int i = x2; i <= x1; i++, r1 += dr, g1 += dg, b1 += db)
+				{
+					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
+					g.drawLine(i, e.getY(), i, e.getY());
+				}
+			}
+			else
+			{
+				Color c1 = e.getBackColor();
+				Color c2 = e.getForeColor();
+				float r1 = c1.getRed();
+				float g1 = c1.getGreen();
+				float b1 = c1.getBlue();
+				float r2 = c2.getRed();
+				float g2 = c2.getGreen();
+				float b2 = c2.getBlue();
+				float dr = (r2 - r1) / (x2 - x1);
+				float dg = (g2 - g1) / (x2 - x1);
+				float db = (b2 - b1) / (x2 - x1);
+				for (int i = x1; i <= x2; i++, r1 += dr, g1 += dg, b1 += db)
+				{
+					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
+					g.drawLine(i, e.getY(), i, e.getY());
+				}
+			}
+		}
+		else if (dx == 0)
+		{
+			int y1 = lastY;
+			int y2 = e.getY();
+			if (y1 > y2)
+			{
+				Color c1 = e.getForeColor();
+				Color c2 = e.getBackColor();
+				float r1 = c1.getRed();
+				float g1 = c1.getGreen();
+				float b1 = c1.getBlue();
+				float r2 = c2.getRed();
+				float g2 = c2.getGreen();
+				float b2 = c2.getBlue();
+				float dr = (r2 - r1) / (y1 - y2);
+				float dg = (g2 - g1) / (y1 - y2);
+				float db = (b2 - b1) / (y1 - y2);
+				for (int i = y2; i <= y1; i++, r1 += dr, g1 += dg, b1 += db)
+				{
+					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
+					g.drawLine(e.getX(), i, e.getX(), i);
+				}
+			}
+			else
+			{
+				Color c1 = e.getBackColor();
+				Color c2 = e.getForeColor();
+				float r1 = c1.getRed();
+				float g1 = c1.getGreen();
+				float b1 = c1.getBlue();
+				float r2 = c2.getRed();
+				float g2 = c2.getGreen();
+				float b2 = c2.getBlue();
+				float dr = (r2 - r1) / (y2 - y1);
+				float dg = (g2 - g1) / (y2 - y1);
+				float db = (b2 - b1) / (y2 - y1);
+				for (int i = y1; i <= y2; i++, r1 += dr, g1 += dg, b1 += db)
+				{
+					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
+					g.drawLine(e.getX(), i, e.getX(), i);
+				}
+			}
+		}
+		else if (dx > dy)
 		{
 			int minX = lastX;
 			int minY = lastY;
@@ -113,7 +220,7 @@ public class Gradient extends Tool
 			int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, e.getX()));
 			int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, e.getX()));
 			
-			float dydx = (float)(maxY - minY) / (maxX - minX);
+			float dydx = (float)(maxY - minY) / (maxX - minX + 1);
 			float recipSlope = -1 / dydx;
 			
 			Color c1 = e.getForeColor();
@@ -127,54 +234,46 @@ public class Gradient extends Tool
 			float green2 = c2.getGreen();
 			float blue2  = c2.getBlue();
 			
-			float dRed   = (red2 - red1)     / (e.getX() - lastX);
-			float dGreen = (green2 - green1) / (e.getX() - lastX);
-			float dBlue  = (blue2 - blue1)   / (e.getX() - lastX);
+			float dRed   = (red2 - red1)     / (e.getX() - lastX + 1);
+			float dGreen = (green2 - green1) / (e.getX() - lastX + 1);
+			float dBlue  = (blue2 - blue1)   / (e.getX() - lastX + 1);
 			
 			int keyPixelCount = 1 << 4;	//To prevent rounding errors when accumulating based off of slope
+			float yValue = minY;
 			
-			for (int i = startX; i <= maxX; i += keyPixelCount)
+			float redValue   = red1;
+			float greenValue = green1;
+			float blueValue  = blue1;
+			
+			for (int i = startX; i <= maxX; i++, yValue += dydx, redValue += dRed, greenValue += dGreen, blueValue += dBlue)
 			{
-				float yValue = dydx * (i - minX) + minY;
-				int lastValue = i + keyPixelCount;
-				float redValue   = dRed   * (i - lastX) + red1;
-				float greenValue = dGreen * (i - lastX) + green1;
-				float blueValue  = dBlue  * (i - lastX) + blue1;
-				if (i + keyPixelCount > maxX)
-					lastValue = maxX;
-				for (int j = i; j < lastValue; j++, yValue += dydx, redValue += dRed, greenValue += dGreen, blueValue += dBlue)
-				{
-					int y1 = minY;
-					int x1 = (int)((y1 - yValue + recipSlope * j) / recipSlope);
-					int x2 = minX;
-					int y2 = (int)(recipSlope * (x2 - j) + yValue);
-					g.setColor(new Color((int)redValue, (int)greenValue, (int)blueValue, alpha));
-					g.drawLine(x1, y1, x2, y2);
-				}
+				int y1 = minY;
+				int x1 = (int)((y1 - yValue + recipSlope * i) / recipSlope);
+				int x2 = minX;
+				int y2 = (int)(recipSlope * (x2 - i) + yValue);
+				g.setColor(new Color(clamp(redValue), clamp(greenValue), clamp(blueValue), alpha));
+				g.drawLine(x1, y1, x2, y2);
 			}
-		}
-		else if (dx != 0)
-		{
-			
 		}
 		else
 		{
-			Color c1 = e.getForeColor();
-			Color c2 = e.getBackColor();
-			Color c3 = new Color((c1.getRed() + c2.getRed()) / 2, (c1.getGreen() + c2.getGreen()) / 2, (c1.getBlue() + c2.getBlue()) / 2);
-			g.setColor(c3);
-			g.drawLine(e.getX(), e.getY(), e.getX(), e.getY());
+			
 		}
 	}
 	
-	private void drawTransparency(DrawEvent e, BufferedImage img)
+	private int clamp(float value)
+	{
+		return (int)Math.min(255, Math.max(value, 0));
+	}
+	
+	private void drawTransparency(DrawEvent e, int x, int y, BufferedImage img)
 	{
 		Point startPoint = new Point(lastX, lastY);
 		Point endPoint = new Point(e.getX(), e.getY());
 		int alpha = (Integer)ocpacitySpinner.getValue();
 	}
 	
-	private void drawMultiplier(DrawEvent e, BufferedImage img)
+	private void drawMultiplier(DrawEvent e, int x, int y, BufferedImage img)
 	{
 		Point startPoint = new Point(lastX, lastY);
 		Point endPoint = new Point(e.getX(), e.getY());

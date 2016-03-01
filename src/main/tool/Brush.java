@@ -18,7 +18,7 @@ public class Brush extends Tool
 	
 	public void mouseDown(DrawEvent e)
 	{
-		if (lastX == -100 || !e.isControlDown())
+		if (lastX == -100 || !e.isShiftDown())
 		{
 			Graphics2D g = e.getGraphics();
 			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
@@ -29,14 +29,14 @@ public class Brush extends Tool
 		else
 		{
 			Graphics2D g = e.getTempG();
-			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
 		}
 	}
 	
 	public void mouseDrag(DrawEvent e)
 	{
-		if (!e.isControlDown())
+		if (!e.isShiftDown())
 		{
 			Graphics2D g = e.getGraphics();
 			g.drawLine(lastX, lastY, e.getX(), e.getY());
@@ -57,9 +57,22 @@ public class Brush extends Tool
 		lastY = e.getY();
 	}
 	
+	public boolean mouseMove(DrawEvent e)
+	{
+		if (e.isShiftDown())
+		{
+			Graphics2D g = e.getTempG();
+			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));
+			e.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue(), BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+			g.drawLine(lastX, lastY, e.getX(), e.getY());
+			return true;
+		}
+		return false;
+	}
+	
 	public void keyDown(DrawEvent e)
 	{
-		if (e.getKeyEvent().getKeyCode() == KeyEvent.VK_CONTROL)
+		if (e.getKeyEvent().getKeyCode() == KeyEvent.VK_SHIFT)
 		{
 			Graphics2D g = e.getTempG();
 			g.setStroke(new BasicStroke((Integer)thicknessSpinner.getValue()));

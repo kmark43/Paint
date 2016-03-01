@@ -16,7 +16,7 @@ public class Gradient extends Tool
 	private final static int BGTOFG = 1;
 	
 	private final static String gradientTypes[] = new String[]{"Color", "Transparency", "Multiplier"};
-	private final static String fadeColorChangeTypes[] = new String[]{"FG to BG", "BG to FG"};
+	private final static String fadeColorChangeTypes[] = new String[]{"BG to FG", "FG to BG"};
 	private final static String fadeTransparencyChangeTypes[] = new String[]{"FG to Transparent", "Transparent to FG"};
 	
 	private int mode = COLOR;
@@ -103,24 +103,24 @@ public class Gradient extends Tool
 		Color endColor = e.getBackColor();
 		
 		Point startPoint = new Point(lastX, lastY);
-		Point endPoint = new Point(e.getX(), e.getY());
+		Point endPoint = new Point(x, y);
 		
 		int alpha = (Integer)ocpacitySpinner.getValue();
 		
 		Graphics2D g = e.getGraphics();
 		g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 		
-		int startY = Math.min(lastY, Math.min(e.getArea().getBounds().y, e.getY()));
-		int endY = Math.max(lastY, Math.max(e.getArea().getBounds().y + e.getArea().getBounds().height, e.getY()));
+		int startY = Math.min(lastY, Math.min(e.getArea().getBounds().y, y));
+		int endY = Math.max(lastY, Math.max(e.getArea().getBounds().y + e.getArea().getBounds().height, y));
 		
-		int dx = Math.abs(e.getX() - lastX);
-		int dy = Math.abs(e.getY() - lastY);
+		int dx = Math.abs(x - lastX);
+		int dy = Math.abs(y - lastY);
 		
 		
 		if (dy == 0)
 		{
 			int x1 = lastX;
-			int x2 = e.getX();
+			int x2 = x;
 			if (x1 > x2)
 			{
 				Color c1 = e.getForeColor();
@@ -137,7 +137,7 @@ public class Gradient extends Tool
 				for (int i = x2; i <= x1; i++, r1 += dr, g1 += dg, b1 += db)
 				{
 					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					g.drawLine(i, e.getY(), i, e.getY());
+					g.drawLine(i, y, i, y);
 				}
 			}
 			else
@@ -156,14 +156,14 @@ public class Gradient extends Tool
 				for (int i = x1; i <= x2; i++, r1 += dr, g1 += dg, b1 += db)
 				{
 					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					g.drawLine(i, e.getY(), i, e.getY());
+					g.drawLine(i, y, i, y);
 				}
 			}
 		}
 		else if (dx == 0)
 		{
 			int y1 = lastY;
-			int y2 = e.getY();
+			int y2 = y;
 			if (y1 > y2)
 			{
 				Color c1 = e.getForeColor();
@@ -180,7 +180,7 @@ public class Gradient extends Tool
 				for (int i = y2; i <= y1; i++, r1 += dr, g1 += dg, b1 += db)
 				{
 					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					g.drawLine(e.getX(), i, e.getX(), i);
+					g.drawLine(x, i, x, i);
 				}
 			}
 			else
@@ -199,7 +199,7 @@ public class Gradient extends Tool
 				for (int i = y1; i <= y2; i++, r1 += dr, g1 += dg, b1 += db)
 				{
 					g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					g.drawLine(e.getX(), i, e.getX(), i);
+					g.drawLine(x, i, x, i);
 				}
 			}
 		}
@@ -207,18 +207,18 @@ public class Gradient extends Tool
 		{
 			int minX = lastX;
 			int minY = lastY;
-			int maxX = e.getX();
-			int maxY = e.getY();
+			int maxX = x;
+			int maxY = y;
 			if (minX > maxX)
 			{
-				minX = e.getX();
-				minY = e.getY();
+				minX = x;
+				minY = y;
 				maxX = lastX;
 				maxY = lastY;
 			}
 			
-			int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, e.getX()));
-			int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, e.getX()));
+			int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, x));
+			int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, x));
 			
 			float dydx = (float)(maxY - minY) / (maxX - minX + 1);
 			float recipSlope = -1 / dydx;
@@ -234,9 +234,9 @@ public class Gradient extends Tool
 			float green2 = c2.getGreen();
 			float blue2  = c2.getBlue();
 			
-			float dRed   = (red2 - red1)     / (e.getX() - lastX + 1);
-			float dGreen = (green2 - green1) / (e.getX() - lastX + 1);
-			float dBlue  = (blue2 - blue1)   / (e.getX() - lastX + 1);
+			float dRed   = (red2 - red1)     / (x - lastX + 1);
+			float dGreen = (green2 - green1) / (x - lastX + 1);
+			float dBlue  = (blue2 - blue1)   / (x - lastX + 1);
 			
 			int keyPixelCount = 1 << 4;	//To prevent rounding errors when accumulating based off of slope
 			float yValue = minY;

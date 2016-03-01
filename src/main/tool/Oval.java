@@ -42,6 +42,7 @@ public class Oval extends Tool
 		int y1 = lastY;
 		int x2 = e.getX();
 		int y2 = e.getY();
+		
 		if (x2 < x1)
 		{
 			x1 = e.getX();
@@ -52,6 +53,8 @@ public class Oval extends Tool
 			y1 = e.getY();
 			y2 = lastY;
 		}
+		
+		
 		switch (currentDrawer)
 		{
 			case OUTLINE:

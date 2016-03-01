@@ -177,8 +177,8 @@ public class GUIManager implements ActionListener, ChangeListener
 		
 		JPanel colorPane = new JPanel(new GridLayout(1, 2));
 		
-		btnForecolor.setBackground(Color.WHITE);
-		btnBackcolor.setBackground(Color.BLACK);
+		btnForecolor.setBackground(Color.BLACK);
+		btnBackcolor.setBackground(Color.WHITE);
 		
 		btnForecolor.setPreferredSize(new Dimension(3, 3));
 		btnBackcolor.setPreferredSize(new Dimension(3, 3));

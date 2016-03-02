@@ -124,18 +124,10 @@ public class Gradient extends Tool
 		int heightMultiplier = 1;
 		
 		if (x1 > x2)
-		{
-			// x1 = e.getX();
-			// x2 = lastX;
 			widthMultiplier = -1;
-		}
 		
 		if (y1 > y2)
-		{
-			// y1 = e.getY();
-			// y2 = lastY;
 			heightMultiplier = -1;
-		}
 		
 		Rectangle rect = new Rectangle(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1));
 		
@@ -162,158 +154,6 @@ public class Gradient extends Tool
 				g.drawLine(i * widthMultiplier + rect.x, j * heightMultiplier + rect.y, i * widthMultiplier + rect.x, j * heightMultiplier + rect.y);
 			}
 		}
-		
-		// if (absdy == 0)
-		// {
-			// int x1 = lastX;
-			// int x2 = x;
-			// if (x1 > x2)
-			// {
-				// Color c1 = e.getForeColor();
-				// Color c2 = e.getBackColor();
-				// float r1 = c1.getRed();
-				// float g1 = c1.getGreen();
-				// float b1 = c1.getBlue();
-				// float r2 = c2.getRed();
-				// float g2 = c2.getGreen();
-				// float b2 = c2.getBlue();
-				// float dr = (r2 - r1) / (x1 - x2);
-				// float dg = (g2 - g1) / (x1 - x2);
-				// float db = (b2 - b1) / (x1 - x2);
-				// for (int i = x2; i <= x1; i++, r1 += dr, g1 += dg, b1 += db)
-				// {
-					// g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					// g.drawLine(i, y, i, y);
-				// }
-			// }
-			// else
-			// {
-				// Color c1 = e.getBackColor();
-				// Color c2 = e.getForeColor();
-				// float r1 = c1.getRed();
-				// float g1 = c1.getGreen();
-				// float b1 = c1.getBlue();
-				// float r2 = c2.getRed();
-				// float g2 = c2.getGreen();
-				// float b2 = c2.getBlue();
-				// float dr = (r2 - r1) / (x2 - x1);
-				// float dg = (g2 - g1) / (x2 - x1);
-				// float db = (b2 - b1) / (x2 - x1);
-				// for (int i = x1; i <= x2; i++, r1 += dr, g1 += dg, b1 += db)
-				// {
-					// g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					// g.drawLine(i, y, i, y);
-				// }
-			// }
-		// }
-		// else if (absdx == 0)
-		// {
-			// int y1 = lastY;
-			// int y2 = y;
-			// if (y1 > y2)
-			// {
-				// Color c1 = e.getForeColor();
-				// Color c2 = e.getBackColor();
-				// float r1 = c1.getRed();
-				// float g1 = c1.getGreen();
-				// float b1 = c1.getBlue();
-				// float r2 = c2.getRed();
-				// float g2 = c2.getGreen();
-				// float b2 = c2.getBlue();
-				// float dr = (r2 - r1) / (y1 - y2);
-				// float dg = (g2 - g1) / (y1 - y2);
-				// float db = (b2 - b1) / (y1 - y2);
-				// for (int i = y2; i <= y1; i++, r1 += dr, g1 += dg, b1 += db)
-				// {
-					// g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					// g.drawLine(x, i, x, i);
-				// }
-			// }
-			// else
-			// {
-				// Color c1 = e.getBackColor();
-				// Color c2 = e.getForeColor();
-				// float r1 = c1.getRed();
-				// float g1 = c1.getGreen();
-				// float b1 = c1.getBlue();
-				// float r2 = c2.getRed();
-				// float g2 = c2.getGreen();
-				// float b2 = c2.getBlue();
-				// float dr = (r2 - r1) / (y2 - y1);
-				// float dg = (g2 - g1) / (y2 - y1);
-				// float db = (b2 - b1) / (y2 - y1);
-				// for (int i = y1; i <= y2; i++, r1 += dr, g1 += dg, b1 += db)
-				// {
-					// g.setColor(new Color((int)r1, (int)g1, (int)b1, alpha));
-					// g.drawLine(x, i, x, i);
-				// }
-			// }
-		// }
-		// else if (absdx > absdy)
-		// {
-			// int minX = lastX;
-			// int minY = lastY;
-			// int maxX = x;
-			// int maxY = y;
-			// if (minX > maxX)
-			// {
-				// minX = x;
-				// minY = y;
-				// maxX = lastX;
-				// maxY = lastY;
-			// }
-			
-			// int startX = Math.min(lastX, Math.min(e.getArea().getBounds().x, x));
-			// int endX = Math.max(lastX, Math.max(e.getArea().getBounds().x + e.getArea().getBounds().width, x));
-			
-			// float invDX = 1 / (float)(maxX - minX + 1);
-			
-			// float dydx = (maxY - minY) * invDX;
-			// float recipSlope = -1 / dydx;
-			
-			// Color c1 = e.getForeColor();
-			// Color c2 = e.getBackColor();
-			
-			// float red1   = c1.getRed();
-			// float green1 = c1.getGreen();
-			// float blue1  = c1.getBlue();
-			
-			// float red2   = c2.getRed();
-			// float green2 = c2.getGreen();
-			// float blue2  = c2.getBlue();
-			
-			// float dRed   = (red2 - red1)     * invDX;
-			// float dGreen = (green2 - green1) * invDX;
-			// float dBlue  = (blue2 - blue1)   * invDX;
-			
-			// float yValue = minY;
-			
-			// float redValue   = red1;
-			// float greenValue = green1;
-			// float blueValue  = blue1;
-			// System.out.println(dydx);
-			// for (int i = minX; i <= maxX; i++, yValue += dydx, redValue += dRed, greenValue += dGreen, blueValue += dBlue)
-			// {
-				// int y1 = minY;
-				// int x1 = (int)((y1 - yValue + recipSlope * i) / (recipSlope));
-				// int x1 = (int)((-y1 + yValue - recipSlope * i) * dydx);
-				// int x2 = minX;
-				// int y2 = (int)(recipSlope * (x2 - i) + yValue);
-				// g.setColor(new Color(clamp(redValue), clamp(greenValue), clamp(blueValue), alpha));
-				// g.drawLine(x1, y1, x2, y2);
-				// g.drawLine(i, (int)yValue, x1, y1);
-				// g.drawLine(i, (int)yValue, i, (int)yValue);
-			// }
-		// }
-		// else
-		// {
-			
-		// }
-	}
-	
-	private int clamp(float value)
-	{
-		return (int)Math.min(255, Math.max(value, 0));
 	}
 	
 	private void drawTransparency(DrawEvent e, int x, int y, BufferedImage img)
@@ -327,6 +167,11 @@ public class Gradient extends Tool
 	{
 		Point startPoint = new Point(lastX, lastY);
 		Point endPoint = new Point(e.getX(), e.getY());
+	}
+	
+	private int clamp(float value)
+	{
+		return (int)Math.min(255, Math.max(value, 0));
 	}
 	
 	public String getName() { return "Gradient"; }

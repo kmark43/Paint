@@ -120,19 +120,24 @@ public class Gradient extends Tool
 		int y1 = lastY;
 		int y2 = e.getY();
 		
+		int widthMultiplier = 1;
+		int heightMultiplier = 1;
+		
 		if (x1 > x2)
 		{
-			x1 = e.getX();
-			x2 = lastX;
+			// x1 = e.getX();
+			// x2 = lastX;
+			widthMultiplier = -1;
 		}
 		
 		if (y1 > y2)
 		{
-			y1 = e.getY();
-			y2 = lastY;
+			// y1 = e.getY();
+			// y2 = lastY;
+			heightMultiplier = -1;
 		}
 		
-		Rectangle rect = new Rectangle(x1, y1, x2 - x1, y2 - y1);
+		Rectangle rect = new Rectangle(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1));
 		
 		Color c1 = e.getBackColor();
 		Color c2 = e.getForeColor();
@@ -154,7 +159,7 @@ public class Gradient extends Tool
 				int green = (int)((green1 * (wh - ij) + green2 * ij) / wh);
 				int blue = (int)((blue1 * (wh - ij) + blue2 * ij) / wh);
 				g.setColor(new Color(clamp(red), clamp(green), clamp(blue), alpha));
-				g.drawLine(i + rect.x, j + rect.y, i + rect.x, j + rect.y);
+				g.drawLine(i * widthMultiplier + rect.x, j * heightMultiplier + rect.y, i * widthMultiplier + rect.x, j * heightMultiplier + rect.y);
 			}
 		}
 		

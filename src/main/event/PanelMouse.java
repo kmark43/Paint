@@ -33,8 +33,8 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		Layer currentLayer = layerManager.getCurrentLayer();
 		if (currentLayer == null || !currentLayer.isVisible()) return;
 		layerManager.addHistory();
-		drawEvent.setTempG(layerManager);
 		drawEvent.setZoom(pane.getZoom());
+		drawEvent.setTempG(layerManager);
 		switch(e.getButton())
 		{
 			case 1:
@@ -49,7 +49,7 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		}
 		if (drawEvent.getGraphics() != null)
 			drawEvent.getGraphics().dispose();
-		Graphics2D g = (Graphics2D)currentLayer.getImage().getGraphics();
+		Graphics2D g = currentLayer.getImage().createGraphics();
 		drawEvent.setGraphics(g);
 		drawEvent.init(e);
 		drawEvent.setStroke(new BasicStroke(1, BasicStroke.JOIN_ROUND, BasicStroke.CAP_ROUND));
@@ -100,7 +100,7 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		{
 			
 		}
-		Graphics2D g = (Graphics2D)currentLayer.getImage().getGraphics();
+		Graphics2D g = currentLayer.getImage().createGraphics();
 		drawEvent.setGraphics(g);
 		drawEvent.init(e);
 		drawEvent.setStroke(new BasicStroke(1, BasicStroke.JOIN_ROUND, BasicStroke.CAP_ROUND));

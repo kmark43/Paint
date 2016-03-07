@@ -7,14 +7,20 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.image.*;
 
+/**
+* Creates a linear gradient over an image
+*/
+//TODO: Add support for exponential gradients
 public class Gradient extends Tool
 {
+	//Pointers
 	private final static int COLOR        = 0;
 	private final static int MULTIPLIER   = 1;
 	
 	private final static int FGTOBG = 0;
 	private final static int BGTOFG = 1;
 	
+	//Dialog options
 	private final static String gradientTypes[] = new String[]{"Color", "Multiplier"};
 	private final static String fadeColorChangeTypes[] = new String[]{"BG to FG", "FG to BG"};
 	
@@ -24,7 +30,6 @@ public class Gradient extends Tool
 	private JComboBox<String> selectionTypeBox = new JComboBox<String>(gradientTypes);
 	private JComboBox<String> fadeColorTypeBox = new JComboBox<String>(fadeColorChangeTypes);
 	
-	private BufferedImage modifierImage;
 	private int lastX, lastY;
 	
 	public Gradient()

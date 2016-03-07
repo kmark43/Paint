@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.*;
 
+/**
+* The panel that manages the current image for manipulation and viewing
+*/
 public class DrawPanel extends JPanel
 {
 	final static long serialVersionUID = 214897289174L;
@@ -39,6 +42,11 @@ public class DrawPanel extends JPanel
 	private DrawEvent drawEvent;
 	private Shape clip;
 	
+	/**
+	* Constructs the default draw panel
+	* @param gui The GUIManager for reference
+	* @param drawEvent The draw event for tool management
+	*/
 	public DrawPanel(GUIManager gui, DrawEvent drawEvent)
 	{
 		this.gui = gui;
@@ -49,12 +57,26 @@ public class DrawPanel extends JPanel
 		scroll.setPreferredSize(new Dimension(800, 600));
 	}
 	
+	/**
+	* Constructs a draw panel with an image from a file
+	* @param gui The GUIManager for reference
+	* @param drawEvent The draw event for tool management
+	* @param file The file to open
+	*/
 	public DrawPanel(GUIManager gui, DrawEvent drawEvent, File file)
 	{
 		this(gui, drawEvent);
 		ImageLoader.open(file, this, layerManager);
 	}
 	
+	/**
+	* Constructs a blank draw panel
+	* @param gui The GUIManager for reference
+	* @param drawEvent The draw event for tool management
+	* @param width The width of the image
+	* @param height The height of the image
+	* @param type The filling rule for this instance
+	*/
 	public DrawPanel(GUIManager gui, DrawEvent drawEvent, int width, int height, FillType type)
 	{
 		this(gui, drawEvent);

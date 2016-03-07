@@ -3,6 +3,9 @@ package main.tool;
 import java.awt.*;
 import javax.swing.*;
 
+/**
+* Draws an oval to the image
+*/
 public class Oval extends Tool
 {
 	private int lastX, lastY;

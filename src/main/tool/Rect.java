@@ -3,6 +3,10 @@ package main.tool;
 import java.awt.*;
 import javax.swing.*;
 
+/**
+* Draws a rectangle to the image
+*/
+
 public class Rect extends Tool
 {
 	private int lastX, lastY;

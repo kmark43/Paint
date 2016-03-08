@@ -35,7 +35,8 @@ public class DrawPanel extends JPanel
 	private float zoom = 1;
 	
 	private Color current;
-	private Point pos = new Point();
+	
+	private Point pos;
 	
 	private GUIManager gui;
 	
@@ -83,6 +84,12 @@ public class DrawPanel extends JPanel
 		loadNew(width, height, type);
 	}
 	
+	/**
+	* Loads a blank image
+	* @param width The width of the new image
+	* @param height The height of the new image
+	* @param type The mode for filling the image
+	*/
 	public void loadNew(int width, int height, FillType type) { ImageLoader.loadNew(width, height, type, this, layerManager); }
 	
 	@Override
@@ -97,6 +104,10 @@ public class DrawPanel extends JPanel
 		scroll.revalidate();
 	}
 	
+	/**
+	* Sets the zoom of the image
+	* @param zoom The percentage zoom
+	*/
 	public void setZoom(float zoom)
 	{
 		if (layerManager.getLayer(0).getImage() != null)
@@ -106,6 +117,12 @@ public class DrawPanel extends JPanel
 		}
 	}
 	
+	/**
+	* Sets the zoom of the image around a focal point
+	* @param zoom The percentage zoom
+	* @param focusX The x focus point
+	* @param focusY The y focus point
+	*/
 	public void setZoom(float zoom, int focusX, int focusY)
 	{
 		if (layerManager.getLayer(0).getImage() != null)
@@ -146,30 +163,91 @@ public class DrawPanel extends JPanel
 		}
 	}
 	
+	/**
+	* Gives the zoom of the panel and image
+	* @return the zoom for the panel
+	*/
 	public float getZoom() 					{ return zoom; }
 	
-	public void setPos(Point p) 			{ this.pos = p; }
-	public Point getPos() 					{ return pos; }
-	
+	/**
+	* Gives the current tool being used
+	* @return current tool
+	*/
 	public Tool getCurrentTool() 			{ return gui.getCurrentTool(); }
 	
+	/**
+	* Sets the current color for graphics
+	* @param current The color to assign to graphics
+	*/
 	public void setCurrent(Color current) 	{ this.current = current; }
+	
+	/**
+	* Retrieves the current graphics color
+	* @return graphics color
+	*/
 	public Color getCurrent() 				{ return current; }
 	
+	/**
+	* Assigns the forecolor for draw panel reference
+	* @param c The color to assign to forecolor
+	*/
 	public void setForeColor(Color c) 		{ foreColor = c; }
+	
+	/**
+	* Assigns the backcolor for draw panel reference
+	* @param c The color to assign to backcolor
+	*/
 	public void setBackColor(Color c) 		{ backColor = c; }
 	
+	/**
+	* Retrieves the forecolor
+	* @return the forecolor
+	*/
 	public Color getForeColor() 			{ return foreColor; }
+	
+	/**
+	* Retrieves the backcolor
+	* @return the backcolor
+	*/
 	public Color getBackColor() 			{ return backColor; }
 	
+	/**
+	* Retrieves the drawing event
+	* @return draw event
+	*/
 	public DrawEvent getDrawEvent() 		{ return drawEvent; }
 	
 	public LayerManager getLayerManager() 	{ return layerManager; }
+
+	public Point getPos()       { return pos; }
+	public void setPos(Point p) { pos = p; }
 	
+	/**
+	* Retrieves the scroll pane wrapper
+	* @return the scroll pane
+	*/
 	public JScrollPane getScroll() 			{ return scroll; }
+	
+	/**
+	* Returns the boundaries of parents
+	* @return The boundaries of the parent wrappers
+	*/
 	public Rectangle getMaxBounds() 		{ return gui.getDrawPanels().getBounds(); }
 	
+	/**
+	* Gets the expected file path
+	* @return the expected image file path
+	*/
 	public String getPath() 				{ return filePath; }
+	
+	/**
+	* Sets the expected file path
+	* @param path The path to create
+	*/
 	public void setPath(String path) 		{ this.filePath = path; }
+	
+	/**
+	* Clears the file path
+	*/
 	public void clearPath() 				{ this.filePath = ""; }
 }

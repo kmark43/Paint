@@ -16,7 +16,6 @@ src/main/filter/RedEye.java
 
 src/main/dialog/FillType.java
 src/main/dialog/NewImageDialog.java
-src/main/dialog/SettingsDialog.java
 
 src/main/layer/Layer.java
 src/main/layer/LayerManager.java

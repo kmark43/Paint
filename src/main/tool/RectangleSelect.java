@@ -5,6 +5,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 
+/**
+* Selects image in a rectangle
+*/
 public class RectangleSelect extends Tool
 {
 	private JSpinner spinnerX      = new JSpinner(new SpinnerNumberModel(0, 0, 999999, 1));
@@ -74,15 +77,12 @@ public class RectangleSelect extends Tool
 	{
 		constructRect(e);
 		Graphics2D g = e.getTempG();
-		// Graphics2D g = (Graphics2D)e.getManager().getTemp().getGraphics();
 		drawSelection(g);
-		// g.setColor(Color.BLACK);
 		moved = true;
 	}
 	
 	public void mouseUp(DrawEvent e)
 	{
-		// System.out.println(moved);
 		if (moved || e.getGraphics().getClip() == null)
 		{
 			e.getArea().reset();
@@ -93,12 +93,7 @@ public class RectangleSelect extends Tool
 			e.clearClip();
 	}
 	
-	public void drawSelection()
-	{
-		
-	}
-	
-	public void constructRect(DrawEvent e)
+	private void constructRect(DrawEvent e)
 	{
 		int x1 = lastX;
 		int y1 = lastY;

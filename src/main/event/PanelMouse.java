@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+* Manages mouse listeners for drawing panel
+*/
 public class PanelMouse implements MouseListener, MouseMotionListener, MouseWheelListener
 {
 	private GUIManager manager;
@@ -17,7 +20,13 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 	
 	private PanelKey keyListener;
 	
-	public PanelMouse(GUIManager manager, PanelKey panelKey, DrawEvent e)//, LayerManager manager.getDrawPane().getLayerManager(), JScrollPane scroll)
+	/**
+	* Constructs a mouse listener
+	* @param manager The manager to reference the GUI
+	* @param panelKey The key panel
+	* @param e The draw event to reference when an event happens
+	*/
+	public PanelMouse(GUIManager manager, PanelKey panelKey, DrawEvent e)
 	{
 		this.manager = manager;
 		this.keyListener = panelKey;
@@ -116,11 +125,8 @@ public class PanelMouse implements MouseListener, MouseMotionListener, MouseWhee
 		if (e.isControlDown())
 		{
 			float zoom = manager.getDrawPane().getZoom() * (float)Math.pow(.99, dr);
-			// setZoom(zoom);
 			manager.getDrawPane().setZoom(zoom, e.getX(), e.getY());
 		}
-		// else
-			// scroll.dispatchEvent(e);
 	}
 	
 	@Override

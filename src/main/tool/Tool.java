@@ -8,9 +8,6 @@ import java.awt.*;
 */
 public abstract class Tool
 {
-	/**
-	* The property panel used to store user-configurabile properties for each tool
-	*/
 	protected JPanel property = new JPanel();
 	
 	protected SpinnerNumberModel thicknessModel = new SpinnerNumberModel(3, 1, 100, 1);
@@ -45,14 +42,26 @@ public abstract class Tool
 	*/
 	public abstract String getName();
 	
+	/**
+	* @param e The draw event object to pass to the current tool
+	* @return whether or not to repaint
+	*/
 	public boolean mouseMove(DrawEvent e) { return false; }
 	
+	/**
+	* @param e The draw event for tools to use
+	*/
 	public void keyDown(DrawEvent e){}
+	
+	/**
+	* @param e The draw event for tools to use
+	*/
 	public void keyUp(DrawEvent e){}
 	
 	/**
 	* This method returns the property panel used for tool properties like
 	* line thickness, radius, etc...
+	* @return The property panel for this tool
 	*/
 	public JPanel getProperty() { return property; }
 	

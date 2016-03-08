@@ -3,6 +3,9 @@ package main.tool;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+* Draws a circle with where the user first presses as the center and current location as part of edge
+*/
 public class Circle extends Tool
 {
 	private int lastX, lastY;

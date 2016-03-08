@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+* Draws at user's mouse
+*/
 public class Brush extends Tool
 {
 	private JSpinner thicknessSpinner = new JSpinner(thicknessModel);

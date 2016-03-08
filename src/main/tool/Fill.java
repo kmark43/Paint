@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.util.Queue;
 import java.util.LinkedList;
 
+/**
+* Fills an area of an image based off of tolerance
+*/
 public class Fill extends Tool
 {
 	private JSpinner toleranceSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));

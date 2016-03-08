@@ -13,39 +13,15 @@ import java.awt.geom.*;
 
 public class DrawEvent
 {
-	/**
-	* Stores the mouse configuration at the point the event is created
-	*/
 	private MouseEvent mouseEvent;
-	
-	/**
-	* Stores the key configuration at the event creation point
-	*/
 	private KeyEvent keyEvent;
-	
-	/**
-	* Used to draw directly to the current layer, 
-	*/
 	private Graphics2D g;
-	
-	/**
-	* Stores the temporary graphics object used to draw objects which will be overwritten later, for example a rescalable rectangle
-	*/
 	private Graphics2D temp;
-	
-	/**
-	* Stores the amount to scale the image and points drawn to image by
-	*/
 	private float invzoom;
-	
 	private int x;
-	
 	private int y;
-	
 	private Color foreColor, backColor;
-	
 	private GUIManager manager;
-	
 	private Area clippingRegion = new Area();
 	
 	public DrawEvent(GUIManager manager)
@@ -59,6 +35,7 @@ public class DrawEvent
 	* @param g The main graphics object which draws to the image
 	* @param tempG The temporary graphics object to draw directly to the canvas
 	* @param zoom The zoom ratio of the image
+	* @param manager The graphics manager
 	*/
 	public DrawEvent(MouseEvent e, Graphics2D g, Graphics2D tempG, float zoom, GUIManager manager)
 	{
@@ -72,10 +49,13 @@ public class DrawEvent
 	}
 	
 	/**
-	* @param e The MouseEvent used to determine mouse info for drawing
+	* @param e1 The MouseEvent used to determine mouse info for drawing
 	* @param g The main graphics object which draws to the image
 	* @param tempG The temporary graphics object to draw directly to the canvas
 	* @param zoom The zoom ratio of the image
+	* @param x The initial x coordinates
+	* @param y The initial y coordinates
+	* @param manager The graphics manager
 	*/
 	public DrawEvent(KeyEvent e1, Graphics2D g, Graphics2D tempG, float zoom, int x, int y, GUIManager manager)
 	{
@@ -88,6 +68,10 @@ public class DrawEvent
 		this.manager = manager;
 	}
 	
+	/**
+	* Updates variables for a MouseEvent
+	* @param e The MouseEvent
+	*/
 	public void init(MouseEvent e)
 	{
 		mouseEvent = e;
@@ -97,6 +81,11 @@ public class DrawEvent
 		clearTemp();
 	}
 	
+	/**
+	* Updates variables for a KeyEvent
+	* @param e1 The KeyEvent
+	* @param p The point the mouse is currently at
+	*/
 	public void init(KeyEvent e1, Point p)
 	{
 		keyEvent = e1;
@@ -106,6 +95,10 @@ public class DrawEvent
 		clearTemp();
 	}
 	
+	/**
+	* Assigns the clip to both graphics objects
+	* @param clip The clipping region
+	*/
 	public void setClip(Area clip)
 	{
 		clippingRegion = clip;
@@ -113,6 +106,10 @@ public class DrawEvent
 		temp.setClip(clip);
 	}
 	
+	
+	/**
+	* Removes the clip from both graphics objects
+	*/
 	public void clearClip()
 	{
 		clippingRegion.reset();
@@ -120,6 +117,10 @@ public class DrawEvent
 		temp.setClip(null);
 	}
 	
+	/**
+	* Clears the temporary image
+	* Use for each draw call
+	*/
 	public void clearTemp()
 	{
 		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
@@ -129,9 +130,22 @@ public class DrawEvent
 		temp.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 	}
 	
+	/**
+	* Resets the temporary graphics object
+	* @param manager The layer manager to access temp from
+	*/
 	public void setTempG(LayerManager manager) { temp = (Graphics2D)manager.getTemp().getGraphics(); }
+	
+	/**
+	* Updates zoom for x and y positions
+	* @param zoom The zoom of the draw panel
+	*/
 	public void setZoom(float zoom) { this.invzoom = 1 / zoom; }
 	
+	/**
+	* Sets the graphics object and copies previous graphics object properties
+	* @param gr The new graphics object being passed in
+	*/
 	public void setGraphics(Graphics2D gr)
 	{
 		if (g != null)
@@ -145,62 +159,67 @@ public class DrawEvent
 		g = gr;
 	}
 	
+	private int invZoom(int val) { return (int)(val * invzoom); }
+	
 	/**
-	* Returns the x coordinate of the mouse
+	* @return The x position of the mouse relative to image
 	*/
 	public int getX() { return (int)(x * invzoom); }
 	
 	/**
-	* Returns the y coordinate of the mouse
+	* @return The y position of the mouse relative to image
 	*/
 	public int getY() { return (int)(y * invzoom); }
 	
-	public int invZoom(int val) { return (int)(val * invzoom); }
-	
 	/**
-	* Determines if the control modifyer is being used
+	* @return control key state
 	*/
 	public boolean isControlDown() { return mouseEvent.isControlDown(); }
 	
 	/**
-	* Determines if the alt modifyer is being used
+	* @return alt key state
 	*/
 	public boolean isAltDown() { return mouseEvent.isAltDown(); }
 	
 	/**
-	* Determines if the shift modifyer is being used
+	* @return shift key state
 	*/
 	public boolean isShiftDown() { return mouseEvent.isShiftDown(); }
 	
 	/**
-	* Returns the MouseEvent to get extra information about the mouse status
+	* @return The MouseEvent information
 	*/
 	public MouseEvent getMouseEvent() { return mouseEvent; }
 	
 	/**
-	* Returns the KeyEvent to get the key pressed and alternate information
+	* @return The KeyEvent information
 	*/
 	public KeyEvent getKeyEvent() { return keyEvent; }
 	
 	/**
-	* Returns the graphics object that draws to the image
+	* @return The graphics object that draws to the image
 	*/
 	public Graphics2D getGraphics() { return g; }
 	
 	/**
-	* Returns the graphics object that draws to the panel
-	* and is overwritten with each draw call
+	* @return The temporary graphics object
 	*/
 	public Graphics2D getTempG() { return temp; }
 	
+	/**
+	* @return The layer manager for the current draw panel
+	*/
 	public LayerManager getManager() { return manager.getLayerManager(); }
 	
 	// public void setManager(LayerManager layerManager) { manager = layerManager; }
 	
+	/**
+	* @return The clipping region expressed as an area
+	*/
 	public Area getArea() { return clippingRegion; }
 	
 	/**
-	* The dispose method to dispose of the graphics objects
+	* Disposes both graphics objects
 	*/
 	public void dispose()
 	{
@@ -209,7 +228,8 @@ public class DrawEvent
 	}
 	
 	/**
-	* The set color method to set the color of each graphics object
+	* Sets the color of both graphics objects
+	* @param c The color the graphics object should be
 	*/
 	public void setColor(Color c)
 	{
@@ -217,11 +237,23 @@ public class DrawEvent
 		temp.setColor(c);
 	}
 	
+	/**
+	* Sets the stroke of both graphics objects
+	* @param stroke The new stroke of the graphics object
+	*/
 	public void setStroke(Stroke stroke)
 	{
 		g.setStroke(stroke);
 		temp.setStroke(stroke);
 	}
+	
+	/**
+	* @return the fore color of the GUIManager
+	*/
 	public Color getForeColor() { return manager.getDrawPane().getForeColor(); }
+	
+	/**
+	* @return the background color of the GUIManager
+	*/
 	public Color getBackColor() { return manager.getDrawPane().getBackColor(); }
 }

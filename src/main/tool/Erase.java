@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+* Erases user drawn graphics
+*/
 public class Erase extends Tool
 {
 	private JSpinner thicknessSpinner = new JSpinner(thicknessModel);

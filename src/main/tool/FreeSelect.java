@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
 
+/**
+* Selects things freely
+*/
 public class FreeSelect extends Tool
 {
 	private int lastX, lastY;

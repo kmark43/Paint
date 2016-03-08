@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 
+/**
+* Manages key listeners for drawing panel
+*/
 public class PanelKey implements KeyListener
 {
 	private GUIManager manager;
@@ -122,12 +125,34 @@ public class PanelKey implements KeyListener
 	@Override
 	public void keyTyped(KeyEvent e){}
 	
+	/**
+	* Determines specified key state
+	* @param index The key being checked
+	* @return the state of that key
+	*/
 	public boolean isKeyDown(int index) { return keysDown[index]; }
 	
+	/**
+	* Returns the initial character used for the key phrase
+	* @return The initial character
+	*/
 	public char getInitialChar() { return initialChar; }
+	
+	/**
+	* Sets the initial character used for key phrases
+	* @param c the new initial character
+	*/
 	public void setInitialChar(char c) { initialChar = c; }
+	
+	/**
+	* Determines if a key phrase is active
+	* @return phrase status
+	*/
 	public boolean isPhraseActive() { return phraseActive; }
 	
+	/**
+	* Clears the key phrase to resume normal functionality
+	*/
 	public void clearPhrase()
 	{
 		currentPhrase.setLength(0);

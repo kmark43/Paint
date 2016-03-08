@@ -13,34 +13,11 @@ public class NewImageDialog extends JPanel implements FocusListener
 {
 	final static long serialVersionUID = 19287497124L;
 	
-	/**
-	* The text input to store the new image name
-	*/
 	private JTextField txtName = new JTextField(6);
-	
-	/**
-	* The spinner which specifies the width of the new image
-	*/
 	private JSpinner widthSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
-	
-	/**
-	* The spinner which specifies the height of the new image
-	*/
 	private JSpinner heightSpinner = new JSpinner(new SpinnerNumberModel(500, 1, 999999, 1));
-	
-	/**
-	* The fill background option used to fill the image with the secondary color in a separate layer
-	*/
 	private JRadioButton btnFillBackground = new JRadioButton("Fill with background color", true);
-	
-	/**
-	* The fill foreground option used to fill the image with the first color in a separate layer
-	*/
 	private JRadioButton btnFillForeground = new JRadioButton("Fill with foreground color");
-	
-	/**
-	* The fill transparent which does not create a background layer
-	*/
 	private JRadioButton btnFillTransparent = new JRadioButton("Fill with transparency");
 	
 	/**
@@ -95,8 +72,27 @@ public class NewImageDialog extends JPanel implements FocusListener
 	@Override
 	public void focusLost(FocusEvent e){}
 	
+	/**
+	* Gets the name of the new current draw panel
+	* @return the name  of the current draw panel
+	*/
 	public String getName() { return txtName.getText(); }
+	
+	/**
+	* Gets the image width
+	* @return image width
+	*/
 	public int getImageWidth() { return (Integer)widthSpinner.getValue(); }
+	
+	/**
+	* Gets the image height
+	* @return image height
+	*/
 	public int getImageHeight() { return (Integer)heightSpinner.getValue(); }
+	
+	/**
+	* Gets the new image fill mode
+	* @return the fill mode for new images
+	*/
 	public FillType getFillType() { return btnFillBackground.isSelected() ? FillType.BACKGROUND : btnFillForeground.isSelected() ? FillType.FOREGROUND : FillType.TRANSPARENT; }
 }

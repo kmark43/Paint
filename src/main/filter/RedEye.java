@@ -7,6 +7,9 @@ import java.awt.image.*;
 import java.awt.geom.*;
 import main.layer.*;
 
+/**
+* Attempts to remove the red eye effect from the selection area
+*/
 public class RedEye extends Filter
 {
 	@Override

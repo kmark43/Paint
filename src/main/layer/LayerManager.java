@@ -20,9 +20,7 @@ import java.util.LinkedList;
 public class LayerManager extends JPanel implements ListSelectionListener, KeyListener, ActionListener
 {
 	final static long serialVersionUID = 12984791824L;
-	/**
-	* Stores the layers inside of the table
-	*/
+	
 	private LayerModel mdl = new LayerModel();
 	
 	private BufferedImage temp;
@@ -30,9 +28,6 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	private LinkedList<Layer> history = new LinkedList<Layer>();
 	private LinkedList<Layer> redo = new LinkedList<Layer>();
 	
-	/**
-	* The graphical component showing the list of layers
-	*/
 	private JTable list = new JTable(mdl);
 	
 	private JButton btnCopy   = new JButton("Copy");
@@ -152,6 +147,7 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 	}
 	
 	/**
+	* Gives the temporary image for the current LayerManager
 	* @return The temporary image to draw to the screen over the current layer
 	*/
 	public BufferedImage getTemp() { return temp; }
@@ -206,12 +202,6 @@ public class LayerManager extends JPanel implements ListSelectionListener, KeyLi
 		shiftBuffer(redo, history);
 	}
 	
-	/**
-	* Helper method to set the currentLayer as the top of the stack
-	* and move the previous current layer to the opposing stack
-	* @param removalList The stack to pop from and set current layer to
-	* @param additionList The stack to push current layer to
-	*/
 	private void shiftBuffer(LinkedList<Layer> removalList, LinkedList<Layer> additionList)
 	{
 		if (!removalList.isEmpty())

@@ -19,40 +19,16 @@ import java.util.HashMap;
 */
 public class GUIManager implements ActionListener, ChangeListener
 {
-	/**
-	* A list of tools registered in the tool register
-	*/
 	private ArrayList<Tool> tools = new ArrayList<Tool>();
-	
-	/**
-	* A list of filters registered in the filter register
-	*/
 	private ArrayList<Filter> filters = new ArrayList<Filter>();
 	
-	/**
-	* An input map to create shortcuts to access tools
-	*/
 	private HashMap<Integer, JToggleButton> keyToolMap = new HashMap<Integer, JToggleButton>();
-	
-	
-	/**
-	* An input map to create shortcuts to access tools
-	*/
 	private HashMap<Integer, JMenuItem> keyFilterMap = new HashMap<Integer, JMenuItem>();
 	
-	/**
-	* The frame that holds the user interface for the project
-	*/
 	private final JFrame frame = new JFrame("Paint");
 	
-	/**
-	* The foreground color button - changeable by the user
-	*/
 	private JButton btnForecolor = new JButton("");
 	
-	/**
-	* The background color button - changeable by the user
-	*/
 	private JButton btnBackcolor = new JButton("");
 	
 	private JPanel propertyPane = new JPanel();
@@ -81,36 +57,18 @@ public class GUIManager implements ActionListener, ChangeListener
 	private JPanel container = new JPanel();
 	private JScrollPane scroll = new JScrollPane(container, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	
-	/**
-	* The tabbed panel storing the drawing panels
-	*/
 	private JTabbedPane drawPanels = new JTabbedPane();
 	
-	/**
-	* The selected drawing panel
-	*/
 	private DrawPanel drawPane;
 	
-	/**
-	* The event to pass into mouse events and key events
-	*/
 	private DrawEvent drawEvent = new DrawEvent(this);
-	
-	/**
-	* Listens for key presses and calls the proper tool's methods
-	*/
 	private PanelKey keyListener = new PanelKey(this, drawEvent, keyToolMap, keyFilterMap);
-	
-	/**
-	* Listens for mouse presses and calls the proper tool's methods
-	*/
 	private PanelMouse mouseListener = new PanelMouse(this, keyListener, drawEvent);
-	
-	/**
-	* The tool to be used when the mouse is pressed on a draw panel
-	*/
 	private Tool currentTool;
 	
+	/**
+	* Constructs the {@link main.GUIManager} object and initializes GUI components
+	*/
 	public GUIManager()
 	{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -259,7 +217,7 @@ public class GUIManager implements ActionListener, ChangeListener
 		bg.getElements().nextElement().doClick();
 	}
 	
-	/**
+	/*
 	* Adds a new tab to drawPanels
 	* @param title The title of the DrawPanel
 	* @param pane The DrawPanel to add
@@ -296,7 +254,7 @@ public class GUIManager implements ActionListener, ChangeListener
 		drawPanels.setSelectedComponent(pane.getScroll());
 	}
 	
-	/**
+	/*
 	* Removes the focusable property of all added components
 	* @param root The current component to assign properties of children to
 	*/
@@ -311,7 +269,7 @@ public class GUIManager implements ActionListener, ChangeListener
 				c.setFocusable(false);
 	}
 	
-	/**
+	/*
 	* Adds a filter to the filter JMenu
 	* @param f The filter to add
 	* @param filterMenu The menu to add the button to
@@ -340,7 +298,7 @@ public class GUIManager implements ActionListener, ChangeListener
 		});
 	}
 	
-	/**
+	/*
 	* Adds a tool to the toolMenu and the toolPane
 	* @param t The tool
 	* @param toolMenu the menu to add the tool to

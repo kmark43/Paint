@@ -147,8 +147,16 @@ public class Layer
 	*/
 	public String getName() { return name; }
 	
+	/**
+	* Assigns a name to the layer
+	* @param n The name to assign
+	*/
 	public void setName(String n) { name = n; }
 	
+	/**
+	* Determines layer visibility
+	* @return Layer visibility
+	*/
 	public boolean isVisible() { return visible; }
 	
 	/**

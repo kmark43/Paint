@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
-* This class defines methods this program needs to implement proper draw functions
+* This class defines methods this program needs to implement proper draw functions<br>
+* This is an example of how to register tools with the main class through the {@link main.tool.ToolRegister}
+* <p><code>main.registerTool(new Brush());</code></p>
+* @see ToolRegister
 */
 public abstract class Tool
 {

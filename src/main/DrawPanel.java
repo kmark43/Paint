@@ -36,7 +36,7 @@ public class DrawPanel extends JPanel
 	
 	private Color current;
 	
-	private Point pos;
+	private Point pos = new Point();
 	
 	private GUIManager gui;
 	

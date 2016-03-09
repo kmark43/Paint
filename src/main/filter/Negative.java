@@ -7,6 +7,9 @@ import java.awt.image.*;
 import java.awt.geom.*;
 import main.layer.*;
 
+/**
+* Inverts image color values
+*/
 public class Negative extends Filter
 {
 	@Override

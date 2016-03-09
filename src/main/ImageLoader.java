@@ -14,8 +14,14 @@ import java.io.*;
 */
 public class ImageLoader
 {	
+	
 	/**
-	* Loads a blank image
+	* Constructs a blank image for a new draw panel
+	* @param width The width of the image
+	* @param height The height of the image
+	* @param type The filling rule for this instance
+	* @param panel The drawing panel to change properties based off of the image added
+	* @param layerManager The layer manager to add the new layers to
 	*/
 	public static void loadNew(int width, int height, FillType fillType, DrawPanel panel, LayerManager layerManager)
 	{
@@ -43,6 +49,8 @@ public class ImageLoader
 	
 	/**
 	* Loads an image from the filesystem
+	* @param panel The drawing panel to reference to reassign properties based off of image properties
+	* @param layerManager The LayerManager to add the image as a layer
 	*/
 	public static void open(DrawPanel panel, LayerManager layerManager)
 	{
@@ -57,6 +65,8 @@ public class ImageLoader
 	/**
 	* Loads an image from the filesystem
 	* @param file The file to load
+	* @param panel The draw panel to add the image to
+	* @param layerManager The LayerManager to add the image as a layer
 	*/
 	public static void open(File file, DrawPanel panel, LayerManager layerManager)
 	{
@@ -70,8 +80,6 @@ public class ImageLoader
 			if (layerManager.getCurrentLayer() == null)
 			{
 				layerManager.addLayer(new Layer(file.getName(), img));
-				// double width = (double)panel.getScroll().getWidth() / img.getWidth();
-				// double height = (double)panel.getScroll().getHeight() / img.getHeight();
 				double width = (double)panel.getMaxBounds().width / img.getWidth();
 				double height = (double)panel.getMaxBounds().height / img.getHeight();
 				if (width < 1 && height < 1)
@@ -86,7 +94,6 @@ public class ImageLoader
 				panel.setSize(width, height);
 			}
 			
-			// filePath = file.getPath();
 			panel.setPath(file.getPath());
 			
 			layerManager.setTemp(new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB));
@@ -100,10 +107,11 @@ public class ImageLoader
 	
 	/**
 	* Saves an image to the filesystem
+	* @param panel The {@link main.DrawPanel} to get the image path from
+	* @param layerManager The {@link main.layer.LayerManager} to get the image from
 	*/
 	public static void save(DrawPanel panel, LayerManager layerManager)
 	{
-		// if (filePath.equals(""))
 		if (panel.getPath().equals(""))
 		{
 			JFileChooser fc = new JFileChooser();
@@ -118,6 +126,9 @@ public class ImageLoader
 	
 	/**
 	* Saves an image to the filesystem
+	* @param file The object to save the image to
+	* @param panel The {@link main.DrawPanel} to get the image path from
+	* @param layerManager The {@link main.layer.LayerManager} to get the image from
 	*/
 	public static void save(File file, DrawPanel panel, LayerManager layerManager)
 	{

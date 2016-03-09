@@ -10,6 +10,9 @@ import java.awt.image.*;
 import java.awt.geom.*;
 import main.layer.*;
 
+/**
+* Multiplies rgb values in an image
+*/
 public class Multiplier extends Filter implements Runnable, ChangeListener
 {
 	private GUIManager manager;

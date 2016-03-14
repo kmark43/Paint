@@ -90,7 +90,7 @@ public class Gradient extends Tool
 		switch(mode)
 		{
 			case COLOR:
-				drawColor(e, x, y);
+				drawColor(e, x, y, e.getManager().getCurrentLayer().getImage());
 				break;
 			case MULTIPLIER:
 				drawMultiplier(e, x, y, e.getManager().getCurrentLayer().getImage());
@@ -98,7 +98,7 @@ public class Gradient extends Tool
 		}
 	}
 	
-	private void drawColor(DrawEvent e, int x, int y)
+	private void drawColor(DrawEvent e, int x, int y, BufferedImage img)
 	{
 		Graphics2D g = e.getGraphics();
 		
@@ -138,6 +138,10 @@ public class Gradient extends Tool
 		float red2   = c2.getRed();
 		float green2 = c2.getGreen();
 		float blue2  = c2.getBlue();
+		
+		Area area = e.getArea();
+		if (e.getGraphics().getClip() ==  null)
+			area.add(new Area(new Rectangle(0, 0, img.getWidth(), img.getHeight())));
 		
 		int wh = rect.width + rect.height;
 		for (int i = 0; i <= rect.width; i++)

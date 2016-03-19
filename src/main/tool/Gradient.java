@@ -186,6 +186,12 @@ public class Gradient extends Tool
 		Color c1 = e.getBackColor();
 		Color c2 = e.getForeColor();
 		
+		if (fadeColorTypeBox.getSelectedIndex() == 1)
+		{
+			c1 = e.getForeColor();
+			c2 = e.getBackColor();
+		}
+		
 		float mul = 1f / 255f;
 		
 		float red1   = c1.getRed() * mul;
